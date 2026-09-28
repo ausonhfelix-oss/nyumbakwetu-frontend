@@ -335,7 +335,7 @@ async function chukuaNyumbaZangu() {
             mkoa: n.mkoa,
             bei: n.bei,
             hali: n.hali,
-            picha: (n.picha && n.picha[0]) ? n.picha[0] : "images/house1.jpg",
+            picha: (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg",
             chanzo: "API"
           });
         });
@@ -361,7 +361,7 @@ async function chukuaNyumbaZangu() {
       mkoa: d.mkoa,
       bei: d.bei,
       hali: d.hali || "Draft",
-      picha: "images/house1.jpg",
+      picha: "Images/house1.jpg",
       chanzo: "LocalStorage"
     });
   });

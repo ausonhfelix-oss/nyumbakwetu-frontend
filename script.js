@@ -24,7 +24,7 @@ function onyeshaNyumba(nyumba) {
   for (var j = 0; j < nyumba.length; j++) {
     var n = nyumba[j];
     var id = n["_id"];
-    var picha = "images/house1.jpg";
+    var picha = "Images/house1.jpg";
     if (n.picha && n.picha.length > 0 && n.picha[0]) {
       picha = n.picha[0];
     }

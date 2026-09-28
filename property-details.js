@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("ID ya nyumba:", id);
 
   if (!id) {
-    document.body.innerHTML =
+    document.body.innerHTML
       "<div style='padding:40px;text-align:center;'>" +
       "<h1>Hakuna nyumba iliyochaguliwa</h1>" +
       "<a href='index.html'>Rudi Nyumbani</a></div>";
@@ -52,7 +52,7 @@ function onyeshaNyumba(n) {
   // 1. Picha
   var img = document.querySelector(".property-image-section img");
   if (img) {
-    var picha = "images/house1.jpg";
+    var picha = "Images/house1.jpg";
     if (n.picha && n.picha.length > 0 && n.picha[0]) {
       picha = n.picha[0];
     }

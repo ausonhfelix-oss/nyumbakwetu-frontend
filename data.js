@@ -12,7 +12,7 @@ const nyumbaZote = [
     vyumba: 2,
     bafu: 1,
     parking: "Parking",
-    picha: "images/house1.jpg",
+    picha: "Images/house1.jpg",
     maelezo: "Nyumba hii ina mazingira mazuri na inafaa kwa familia. Ipo katika eneo lenye huduma muhimu zinazopatikana kwa urahisi."
   },
   {
@@ -26,7 +26,7 @@ const nyumbaZote = [
     vyumba: 3,
     bafu: 2,
     parking: "Parking",
-    picha: "images/house2.jpg",
+    picha: "Images/house2.jpg",
     maelezo: "Apartment ya kisasa karibu na ufukwe wa Mbezi. Ina vyumba 3 vya kulala, sebule kubwa, na mazingira tulivu."
   },
   {
@@ -40,7 +40,7 @@ const nyumbaZote = [
     vyumba: 4,
     bafu: 3,
     parking: "Garage",
-    picha: "images/house3.jpg",
+    picha: "Images/house3.jpg",
     maelezo: "Nyumba ya kifahari inauzwa Goba, Dodoma. Ina vyumba 4 vya kulala, bafu 3 za kisasa, na garage kubwa."
   },
   {
@@ -54,7 +54,7 @@ const nyumbaZote = [
     vyumba: 3,
     bafu: 2,
     parking: "Parking",
-    picha: "images/house4.jpg",
+    picha: "Images/house4.jpg",
     maelezo: "Nyumba nzuri ya familia iliyopo Njiro, Arusha. Ina vyumba 3, bafu 2, na mazingira ya kuvutia."
   }
 ];
