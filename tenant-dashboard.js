@@ -1,441 +1,459 @@
-// tenant-dashboard.js
+// tenant-dashboard.js — Tenant
+
+const API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  // ==========================================
-  // KIPENGELE #5: VIEWING REQUESTS
-  // ==========================================
-  
-  var card = document.querySelector(".viewing-card");
-  var countEl = document.getElementById("viewingCount");
-
-  if (card) {
-    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-
-    if (countEl) {
-      countEl.textContent = " (" + maombi.length + ")";
-    }
-
-    var oldItems = card.querySelectorAll(".viewing-item");
-    oldItems.forEach(function (item) {
-      item.remove();
-    });
-
-    if (maombi.length === 0) {
-      var empty = document.createElement("p");
-      empty.className = "no-viewings";
-      empty.textContent = "Hakuna maombi ya viewing bado.";
-      card.appendChild(empty);
-    } else {
-      maombi.slice().reverse().forEach(function (ombi) {
-        var item = document.createElement("div");
-        item.className = "viewing-item";
-
-        var statusClass = "pending";
-        var statusText = "Pending";
-
-        if (ombi.hali === "Confirmed" || ombi.hali === "Ime thibitishwa") {
-          statusClass = "confirmed";
-          statusText = "Ime thibitishwa";
-        } else if (ombi.hali === "Cancelled" || ombi.hali === "Ime kataliwa") {
-          statusClass = "cancelled";
-          statusText = "Ime kataliwa";
-        }
-
-        item.innerHTML =
-          '<div class="viewing-icon">' +
-            '<i class="fa-regular fa-calendar"></i>' +
-          '</div>' +
-          '<div>' +
-            '<h4>' + ombi.nyumbaJina + '</h4>' +
-            '<p>' +
-              '<i class="fa-regular fa-calendar"></i> ' +
-              ombi.tarehe + ' - ' + ombi.muda +
-            '</p>' +
-          '</div>' +
-          '<span class="status ' + statusClass + '">' + statusText + '</span>';
-
-        card.appendChild(item);
-      });
-    }
+  // CHECK LOGIN
+  var mtumiajiStr = localStorage.getItem("mtumiaji");
+  if (!mtumiajiStr) {
+    alert("Tafadhali ingia kwanza!");
+    window.location.href = "login.html";
+    return;
   }
 
+  var mtumiaji = JSON.parse(mtumiajiStr);
 
-  // ==========================================
-  // KIPENGELE #8: TAFUTA NYUMBA (MODAL)
-  // ==========================================
+  // UPDATE JINA
+  var jina = mtumiaji.jina || "Mtumiaji";
+  document.getElementById("headerJina").textContent = jina;
+  document.getElementById("sidebarJina").textContent = jina;
+  document.getElementById("welcomeJina").textContent = "Karibu tena, " + jina.split(" ")[0] + "! 👋";
 
-  var menuTafutaNyumba = document.getElementById("menuTafutaNyumba");
+  // DRAWER
+  var menuToggle = document.getElementById("menuToggle");
+  var drawerMenu = document.getElementById("drawerMenu");
+  var drawerClose = document.getElementById("drawerClose");
+  var drawerOverlay = document.getElementById("drawerOverlay");
 
-  if (menuTafutaNyumba) {
-    menuTafutaNyumba.addEventListener("click", function (e) {
-      e.preventDefault();
-      funguaModalTafuta();
+  if (menuToggle && drawerMenu && drawerOverlay) {
+    menuToggle.addEventListener("click", function () {
+      drawerMenu.classList.add("open");
+      drawerOverlay.classList.add("open");
+    });
+  }
+  if (drawerClose) {
+    drawerClose.addEventListener("click", function () {
+      drawerMenu.classList.remove("open");
+      drawerOverlay.classList.remove("open");
+    });
+  }
+  if (drawerOverlay) {
+    drawerOverlay.addEventListener("click", function () {
+      drawerMenu.classList.remove("open");
+      drawerOverlay.classList.remove("open");
     });
   }
 
-  function funguaModalTafuta() {
-    console.log("Modal inafunguka...");
-
-    var existing = document.getElementById("tafutaModal");
-    if (existing) existing.remove();
-
-    var modal = document.createElement("div");
-    modal.id = "tafutaModal";
-    modal.style.cssText =
-      "position:fixed; top:0; left:0; width:100%; height:100%; " +
-      "background:rgba(0,0,0,0.6); z-index:9999; display:flex; " +
-      "align-items:flex-start; justify-content:center; padding:20px; " +
-      "overflow-y:auto;";
-
-    modal.innerHTML =
-      '<div style="background:white; border-radius:16px; max-width:800px; ' +
-      'width:100%; max-height:90vh; overflow-y:auto; padding:24px;">' +
-
-        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">' +
-          '<h2 style="margin:0; color:#1a5c2e;">Tafuta Nyumba</h2>' +
-          '<button onclick="document.getElementById(\'tafutaModal\').remove()" ' +
-          'style="background:none; border:none; font-size:24px; cursor:pointer; color:#888;">X</button>' +
-        '</div>' +
-
-        '<div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:20px;">' +
-          '<input id="tafutaJina" type="text" placeholder="Tafuta kwa jina/eneo..." ' +
-          'style="padding:12px; border:1px solid #ccc; border-radius:8px; font-size:15px;">' +
-          '<select id="tafutaAina" style="padding:12px; border:1px solid #ccc; border-radius:8px; font-size:15px;">' +
-            '<option value="">Aina yote</option>' +
-            '<option value="Nyumba">Nyumba</option>' +
-            '<option value="Apartment">Apartment</option>' +
-          '</select>' +
-          '<select id="tafutaBei" style="padding:12px; border:1px solid #ccc; border-radius:8px; font-size:15px;">' +
-            '<option value="">Bei yoyote</option>' +
-            '<option value="400000">Chini ya 400K</option>' +
-            '<option value="600000">Chini ya 600K</option>' +
-            '<option value="1000000">Chini ya 1M</option>' +
-          '</select>' +
-        '</div>' +
-
-        '<div id="tafutaMatokeo"></div>' +
-
-      '</div>';
-
-    document.body.appendChild(modal);
-
-    onyeshaMatokeoYaTafuta();
-
-    document.getElementById("tafutaJina").addEventListener("input", onyeshaMatokeoYaTafuta);
-    document.getElementById("tafutaAina").addEventListener("change", onyeshaMatokeoYaTafuta);
-    document.getElementById("tafutaBei").addEventListener("change", onyeshaMatokeoYaTafuta);
+  // ==========================================
+  // CHUKUA NYUMBA KUTOKA API
+  // ==========================================
+  async function chukuaNyumba() {
+    try {
+      var response = await fetch(API_URL + "/properties");
+      var data = await response.json();
+      onyeshaNyumba(data.nyumba || []);
+    } catch (error) {
+      console.error("Error:", error);
+      document.getElementById("orodhaYaNyumba").innerHTML =
+        "<p style='padding:20px; color:red;'>Imeshindikana kupata nyumba.</p>";
+    }
   }
 
-  function onyeshaMatokeoYaTafuta() {
-    if (typeof nyumbaZote === "undefined") {
-      document.getElementById("tafutaMatokeo").innerHTML =
-        "<p style='text-align:center; padding:40px; color:red;'>Error: data.js haijapakiwa!</p>";
-      return;
-    }
+  function onyeshaNyumba(nyumba) {
+    var container = document.getElementById("orodhaYaNyumba");
+    if (!container) return;
 
-    var jina = (document.getElementById("tafutaJina")?.value || "").toLowerCase().trim();
-    var aina = document.getElementById("tafutaAina")?.value || "";
-    var beiMax = document.getElementById("tafutaBei")?.value ? parseInt(document.getElementById("tafutaBei").value) : null;
-
-    var matokeo = nyumbaZote.filter(function (n) {
-      var matchJina = !jina || n.jina.toLowerCase().includes(jina) || n.eneo.toLowerCase().includes(jina);
-      var matchAina = !aina || n.aina === aina;
-      var matchBei = !beiMax || n.bei <= beiMax;
-      return matchJina && matchAina && matchBei;
-    });
-
-    var container = document.getElementById("tafutaMatokeo");
-
-    if (matokeo.length === 0) {
-      container.innerHTML =
-        "<p style='text-align:center; padding:40px; color:#888;'>Hakuna nyumba inayolingana.</p>";
+    if (nyumba.length === 0) {
+      container.innerHTML = "<p style='padding:20px; color:#888;'>Hakuna nyumba.</p>";
       return;
     }
 
     var html = "";
+    nyumba.slice(0, 4).forEach(function (n) {
+      var picha = (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg";
+      var bei = "TZS " + (n.bei || 0).toLocaleString() + " / mwezi";
 
-    matokeo.forEach(function (n) {
       html +=
-        '<div onclick="window.location.href=\'property-details.html?id=' + n.id + '\'" ' +
-        'style="display:flex; gap:16px; padding:16px; margin-bottom:12px; ' +
-        'background:#f9f9f9; border-radius:12px; cursor:pointer;">' +
-
-          '<img src="' + n.picha + '" alt="' + n.jina + '" ' +
-          'style="width:120px; height:90px; object-fit:cover; border-radius:8px;">' +
-
-          '<div style="flex:1;">' +
-            '<h3 style="margin:0 0 6px 0; color:#1a5c2e;">' + n.jina + '</h3>' +
-            '<p style="margin:0 0 4px 0; color:#666; font-size:14px;">' + n.eneo + '</p>' +
-            '<p style="margin:0; font-weight:600; color:#1a5c2e;">' + n.beiDisplay + '</p>' +
-            '<p style="margin:6px 0 0 0; color:#888; font-size:13px;">' +
-              n.vyumba + ' Vyumba | ' + n.bafu + ' Bafu | ' + n.aina +
-            '</p>' +
+        '<article class="house-card" onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'" style="cursor:pointer;">' +
+          '<div class="house-image">' +
+            '<img src="' + picha + '" alt="' + n.jina + '">' +
+            '<span class="new-label">MPYA</span>' +
+            '<button class="favorite" onclick="event.stopPropagation(); toggleFavorite(\'' + n["_id"] + '\', this)">' +
+              '<i class="fa-regular fa-heart"></i>' +
+            '</button>' +
           '</div>' +
-
-        '</div>';
+          '<div class="house-info">' +
+            '<h4>' + n.jina + '</h4>' +
+            '<p class="location"><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
+            '<strong class="price">' + bei + '</strong>' +
+            '<div class="house-features">' +
+              '<span><i class="fa-solid fa-bed"></i> ' + (n.vyumba || 0) + ' Vyumba</span>' +
+              '<span><i class="fa-solid fa-bath"></i> ' + (n.bafu || 0) + ' Bafu</span>' +
+            '</div>' +
+          '</div>' +
+        '</article>';
     });
-
     container.innerHTML = html;
   }
 
+  // FAVORITES
+  window.toggleFavorite = function (id, btn) {
+    var favs = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
+    var idx = favs.indexOf(String(id));
+    var icon = btn.querySelector("i");
 
-// ==========================================
-// KIPENGELE #9: ZILIZOHIFADHIWA
-// ==========================================
+    if (idx === -1) {
+      favs.push(String(id));
+      icon.classList.remove("fa-regular");
+      icon.classList.add("fa-solid");
+      icon.style.color = "#e63946";
+    } else {
+      favs.splice(idx, 1);
+      icon.classList.remove("fa-solid");
+      icon.classList.add("fa-regular");
+      icon.style.color = "";
+    }
+    localStorage.setItem("nyumbaFavorites", JSON.stringify(favs));
+    sasishaSaved();
+  };
 
-var menuZilizohifadhiwa = document.getElementById("menuZilizohifadhiwa");
+  // SAVED (Right Sidebar)
+  function sasishaSaved() {
+    var favs = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
+    var container = document.getElementById("savedItemsContainer");
+    var header = document.getElementById("savedCountHeader");
+    if (header) header.textContent = "Zilizohifadhiwa (" + favs.length + ")";
+    if (!container) return;
 
-if (menuZilizohifadhiwa) {
-  menuZilizohifadhiwa.addEventListener("click", function (e) {
-    e.preventDefault();
-    funguaModalZilizohifadhiwa();
-  });
-}
+    if (favs.length === 0) {
+      container.innerHTML = "<p style='padding:20px; text-align:center; color:#888; font-size:12px;'>Hakuna nyumba zilizohifadhiwa.</p>";
+      return;
+    }
 
-function funguaModalZilizohifadhiwa() {
-  console.log("Modal ya Zilizohifadhiwa inafunguka...");
+    // Chukua nyumba kutoka API
+    fetch(API_URL + "/properties")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var nyumba = data.nyumba || [];
+        var zetu = nyumba.filter(function (n) { return favs.includes(n["_id"]); });
 
-  var existing = document.getElementById("zilizohifadhiwaModal");
-  if (existing) existing.remove();
-
-  var modal = document.createElement("div");
-  modal.id = "zilizohifadhiwaModal";
-  modal.style.cssText =
-    "position:fixed; top:0; left:0; width:100%; height:100%; " +
-    "background:rgba(0,0,0,0.6); z-index:9999; display:flex; " +
-    "align-items:flex-start; justify-content:center; padding:20px; " +
-    "overflow-y:auto;";
-
-  modal.innerHTML =
-    '<div style="background:white; border-radius:16px; max-width:700px; ' +
-    'width:100%; max-height:90vh; overflow-y:auto; padding:24px;">' +
-
-      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">' +
-        '<h2 style="margin:0; color:#1a5c2e;">❤️ Zilizohifadhiwa</h2>' +
-        '<button onclick="document.getElementById(\'zilizohifadhiwaModal\').remove()" ' +
-        'style="background:none; border:none; font-size:24px; cursor:pointer; color:#888;">X</button>' +
-      '</div>' +
-
-      '<div id="zilizohifadhiwaMatokeo"></div>' +
-
-    '</div>';
-
-  document.body.appendChild(modal);
-
-  onyeshaZilizohifadhiwa();
-}
-
-function onyeshaZilizohifadhiwa() {
-  if (typeof nyumbaZote === "undefined") {
-    document.getElementById("zilizohifadhiwaMatokeo").innerHTML =
-      "<p style='text-align:center; padding:40px; color:red;'>Error: data.js haijapakiwa!</p>";
-    return;
+        var html = "";
+        zetu.slice(0, 3).forEach(function (n) {
+          var picha = (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg";
+          html +=
+            '<div class="saved-item" onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'" style="cursor:pointer;">' +
+              '<img src="' + picha + '" alt="' + n.jina + '">' +
+              '<div>' +
+                '<h4>' + n.jina + '</h4>' +
+                '<p><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + '</p>' +
+                '<strong>TZS ' + (n.bei || 0).toLocaleString() + '</strong>' +
+              '</div>' +
+              '<i class="fa-solid fa-heart saved-heart"></i>' +
+            '</div>';
+        });
+        container.innerHTML = html;
+      });
   }
 
-  var favorites = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
-  var container = document.getElementById("zilizohifadhiwaMatokeo");
+  // VIEWING REQUESTS
+  function sasishaViewings() {
+    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
+    var count = document.getElementById("viewingCount");
+    var container = document.getElementById("viewingItemsContainer");
 
-  if (favorites.length === 0) {
-    container.innerHTML =
-      "<p style='text-align:center; padding:40px; color:#888; font-size:15px;'>" +
-      "💔 Bado hujahifadhi nyumba yoyote.<br><br>" +
-      "Rudi <a href='index.html' style='color:#1a5c2e; font-weight:600;'>Nyumbani</a> " +
-      "na bonyeza moyo ❤️ kuongeza." +
-      "</p>";
-    return;
-  }
+    if (count) count.textContent = " (" + maombi.length + ")";
+    if (!container) return;
 
-  // Chukua nyumba zote ambazo ID zake zipo kwenye favorites
-  var nyumbaZilizohifadhiwa = nyumbaZote.filter(function (n) {
-    return favorites.includes(String(n.id));
-  });
+    if (maombi.length === 0) {
+      container.innerHTML = "<p style='padding:20px; text-align:center; color:#888; font-size:12px;'>Hakuna maombi ya viewing bado.</p>";
+      return;
+    }
 
-  if (nyumbaZilizohifadhiwa.length === 0) {
-    container.innerHTML =
-      "<p style='text-align:center; padding:40px; color:#888;'>" +
-      "Nyumba ulizohifadhi hazipatikani.</p>";
-    return;
-  }
+    var html = "";
+    maombi.slice().reverse().slice(0, 3).forEach(function (ombi) {
+      var statusClass = "pending";
+      var statusText = "Inasubiri";
+      if (ombi.hali === "Confirmed" || ombi.hali === "Ime thibitishwa") {
+        statusClass = "confirmed"; statusText = "Imethibitishwa";
+      } else if (ombi.hali === "Cancelled" || ombi.hali === "Ime kataliwa") {
+        statusClass = "cancelled"; statusText = "Imekataliwa";
+      }
 
-  var html = "";
-
-  nyumbaZilizohifadhiwa.forEach(function (n) {
-    html +=
-      '<div style="display:flex; gap:16px; padding:16px; margin-bottom:12px; ' +
-      'background:#f9f9f9; border-radius:12px; align-items:center;">' +
-
-        '<img src="' + n.picha + '" alt="' + n.jina + '" ' +
-        'onclick="window.location.href=\'property-details.html?id=' + n.id + '\'" ' +
-        'style="width:120px; height:90px; object-fit:cover; border-radius:8px; cursor:pointer;">' +
-
-        '<div style="flex:1; cursor:pointer;" ' +
-        'onclick="window.location.href=\'property-details.html?id=' + n.id + '\'">' +
-          '<h3 style="margin:0 0 6px 0; color:#1a5c2e;">' + n.jina + '</h3>' +
-          '<p style="margin:0 0 4px 0; color:#666; font-size:14px;">' + n.eneo + '</p>' +
-          '<p style="margin:0; font-weight:600; color:#1a5c2e;">' + n.beiDisplay + '</p>' +
-        '</div>' +
-
-        '<button onclick="ondoaKutokaFavorites(' + n.id + ')" ' +
-        'style="background:none; border:none; font-size:22px; cursor:pointer; color:#e63946;" ' +
-        'title="Ondoa">❤️</button>' +
-
-      '</div>';
-  });
-
-  container.innerHTML = html;
-}
-
-// Ondoa kutoka favorites
-window.ondoaKutokaFavorites = function (id) {
-  var favorites = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
-  var idStr = String(id);
-
-  var index = favorites.indexOf(idStr);
-  if (index > -1) {
-    favorites.splice(index, 1);
-    localStorage.setItem("nyumbaFavorites", JSON.stringify(favorites));
-  }
-
-  // Sasisha modal
-  onyeshaZilizohifadhiwa();
-  console.log("Nyumba " + id + " imeondolewa kutoka favorites.");
-};
-// ==========================================
-// KIPENGELE #10: ARIFA (NOTIFICATIONS)
-// ==========================================
-
-var menuArifa = document.getElementById("menuArifa");
-
-if (menuArifa) {
-  menuArifa.addEventListener("click", function (e) {
-    e.preventDefault();
-    funguaModalArifa();
-  });
-}
-
-function funguaModalArifa() {
-  console.log("Modal ya Arifa inafunguka...");
-
-  var existing = document.getElementById("arifaModal");
-  if (existing) existing.remove();
-
-  var modal = document.createElement("div");
-  modal.id = "arifaModal";
-  modal.style.cssText =
-    "position:fixed; top:0; left:0; width:100%; height:100%; " +
-    "background:rgba(0,0,0,0.6); z-index:9999; display:flex; " +
-    "align-items:flex-start; justify-content:center; padding:20px; " +
-    "overflow-y:auto;";
-
-  modal.innerHTML =
-    '<div style="background:white; border-radius:16px; max-width:650px; ' +
-    'width:100%; max-height:90vh; overflow-y:auto; padding:24px;">' +
-
-      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">' +
-        '<h2 style="margin:0; color:#1a5c2e;">Arifa</h2>' +
-        '<button onclick="document.getElementById(\'arifaModal\').remove()" ' +
-        'style="background:none; border:none; font-size:24px; cursor:pointer; color:#888;">X</button>' +
-      '</div>' +
-
-      '<div id="arifaMatokeo"></div>' +
-
-    '</div>';
-
-  document.body.appendChild(modal);
-
-  onyeshaArifa();
-}
-
-function onyeshaArifa() {
-  var container = document.getElementById("arifaMatokeo");
-
-  // Kusanya arifa kutoka vyanzo mbalimbali
-  var arifa = [];
-
-  // 1. Arifa za maombi ya viewing
-  var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-  maombi.forEach(function (ombi) {
-    arifa.push({
-      aina: "viewing",
-      rangi: "#3b82f6",
-      icon: "fa-calendar-check",
-      jina: "Ombi la Viewing",
-      maelezo: "Uliomba kuona " + ombi.nyumbaJina + " - " + ombi.tarehe,
-      muda: ombi.tareheYaOmbi || "Hivi karibuni"
+      html +=
+        '<div class="viewing-item">' +
+          '<div class="viewing-icon"><i class="fa-regular fa-calendar"></i></div>' +
+          '<div>' +
+            '<h4>' + (ombi.nyumbaJina || "Nyumba") + '</h4>' +
+            '<p><i class="fa-regular fa-calendar"></i> ' + (ombi.tarehe || "") + ' - ' + (ombi.muda || "") + '</p>' +
+          '</div>' +
+          '<span class="status ' + statusClass + '">' + statusText + '</span>' +
+        '</div>';
     });
-  });
-
-  // 2. Arifa za favorites
-  var favorites = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
-  if (favorites.length > 0) {
-    arifa.push({
-      aina: "favorite",
-      rangi: "#e63946",
-      icon: "fa-heart",
-      jina: "Zilizohifadhiwa",
-      maelezo: "Umeweka nyumba " + favorites.length + " kwenye orodha yako ya kupenda",
-      muda: "Karibuni"
-    });
+    container.innerHTML = html;
   }
 
-  // 3. Arifa za nyumba mpya kutoka kwa landlord (mock)
-  arifa.push({
-    aina: "new",
-    rangi: "#16a34a",
-    icon: "fa-house-circle-check",
-    jina: "Nyumba Mpya Zimewekwa",
-    maelezo: "Kuna nyumba 4 mpya zilizowekwa katika eneo lako",
-    muda: "Leo"
-  });
+  // ==========================================
+  // MODALS
+  // ==========================================
 
-  // Onyesha
-  if (arifa.length === 0) {
-    container.innerHTML =
-      "<p style='text-align:center; padding:40px; color:#888;'>" +
-      "Hakuna arifa kwa sasa.</p>";
-    return;
-  }
+  function tengenezaModal(id, title, content) {
+    var existing = document.getElementById(id);
+    if (existing) existing.remove();
 
-  var html = "";
+    var modal = document.createElement("div");
+    modal.id = id;
+    modal.style.cssText =
+      "position:fixed;top:0;left:0;width:100%;height:100%;" +
+      "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
+      "align-items:center;justify-content:center;padding:20px;";
 
-  arifa.forEach(function (a) {
-    html +=
-      '<div style="display:flex; gap:14px; padding:14px; margin-bottom:10px; ' +
-      'background:#f9f9f9; border-radius:12px; border-left:4px solid ' + a.rangi + ';">' +
-
-        '<div style="width:40px; height:40px; border-radius:50%; background:' + a.rangi + '22; ' +
-        'display:flex; align-items:center; justify-content:center; flex-shrink:0;">' +
-          '<i class="fa-solid ' + a.icon + '" style="color:' + a.rangi + '; font-size:16px;"></i>' +
-        '</div>' +
-
-        '<div style="flex:1;">' +
-          '<h4 style="margin:0 0 4px 0; color:#1a5c2e; font-size:15px;">' + a.jina + '</h4>' +
-          '<p style="margin:0 0 6px 0; color:#555; font-size:14px;">' + a.maelezo + '</p>' +
-          '<small style="color:#999; font-size:12px;">' + a.muda + '</small>' +
-        '</div>' +
-
+    modal.innerHTML =
+      '<div style="background:white;border-radius:16px;max-width:650px;' +
+      'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+      '<h2 style="margin:0;color:#299d38;">' + title + '</h2>' +
+      '<button onclick="document.getElementById(\'' + id + '\').remove()" ' +
+      'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
+      '</div>' +
+      '<div>' + content + '</div>' +
       '</div>';
+
+    document.body.appendChild(modal);
+  }
+
+  // TAFUTA NYUMBA
+  function funguaTafuta() {
+    var content =
+      '<input id="tafutaInput" type="text" placeholder="Tafuta jina au eneo..." ' +
+      'style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:15px;margin-bottom:15px;">' +
+      '<div id="tafutaMatokeo" style="max-height:400px;overflow-y:auto;">Inapakia...</div>';
+    tengenezaModal("tafutaModal", "Tafuta Nyumba", content);
+
+    fetch(API_URL + "/properties")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var nyumba = data.nyumba || [];
+        function onyesha(filter) {
+          var f = (filter || "").toLowerCase();
+          var matokeo = nyumba.filter(function (n) {
+            return !f || n.jina.toLowerCase().includes(f) || (n.eneo || "").toLowerCase().includes(f);
+          });
+          var html = "";
+          matokeo.forEach(function (n) {
+            var picha = (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg";
+            html +=
+              '<div onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'" ' +
+              'style="display:flex;gap:12px;padding:12px;margin-bottom:10px;background:#f9f9f9;border-radius:10px;cursor:pointer;">' +
+              '<img src="' + picha + '" style="width:80px;height:60px;object-fit:cover;border-radius:8px;">' +
+              '<div><h4 style="margin:0 0 4px 0;color:#299d38;">' + n.jina + '</h4>' +
+              '<p style="margin:0;color:#666;font-size:13px;">' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
+              '<strong style="color:#299d38;font-size:14px;">TZS ' + (n.bei || 0).toLocaleString() + '</strong></div></div>';
+          });
+          document.getElementById("tafutaMatokeo").innerHTML = html || "<p style='text-align:center;padding:20px;color:#888;'>Hakuna matokeo.</p>";
+        }
+        onyesha("");
+        document.getElementById("tafutaInput").addEventListener("input", function (e) { onyesha(e.target.value); });
+      });
+  }
+
+  // ZILIZOHIFADHIWA
+  function funguaZilizohifadhiwa() {
+    var favs = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
+
+    if (favs.length === 0) {
+      tengenezaModal("zilizohifadhiwaModal", "Zilizohifadhiwa",
+        "<p style='text-align:center;padding:40px;color:#888;'>Hakuna nyumba zilizohifadhiwa.</p>");
+      return;
+    }
+
+    fetch(API_URL + "/properties")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var nyumba = (data.nyumba || []).filter(function (n) { return favs.includes(n["_id"]); });
+        var html = "";
+        nyumba.forEach(function (n) {
+          var picha = (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg";
+          html +=
+            '<div style="display:flex;gap:12px;padding:12px;margin-bottom:10px;background:#f9f9f9;border-radius:10px;">' +
+            '<img src="' + picha + '" style="width:100px;height:75px;object-fit:cover;border-radius:8px;cursor:pointer;" ' +
+            'onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'">' +
+            '<div style="flex:1;"><h4 style="margin:0 0 4px 0;color:#299d38;">' + n.jina + '</h4>' +
+            '<p style="margin:0;color:#666;font-size:13px;">' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
+            '<strong style="color:#299d38;">TZS ' + (n.bei || 0).toLocaleString() + '</strong></div></div>';
+        });
+        tengenezaModal("zilizohifadhiwaModal", "Zilizohifadhiwa", html);
+      });
+  }
+
+  // MAOMBI/VIEWING
+  function funguaMaombi() {
+    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
+    if (maombi.length === 0) {
+      tengenezaModal("maombiModal", "Maombi ya Viewing",
+        "<p style='text-align:center;padding:40px;color:#888;'>Hakuna maombi bado.</p>");
+      return;
+    }
+
+    var html = "";
+    maombi.slice().reverse().forEach(function (ombi) {
+      html +=
+        '<div style="padding:14px;margin-bottom:10px;background:#f9f9f9;border-radius:12px;border-left:4px solid #f59e0b;">' +
+        '<h4 style="margin:0 0 6px 0;color:#299d38;">' + (ombi.nyumbaJina || "Nyumba") + '</h4>' +
+        '<p style="margin:3px 0;color:#666;font-size:13px;"><i class="fa-solid fa-user"></i> ' + (ombi.jina || "") + '</p>' +
+        '<p style="margin:3px 0;color:#666;font-size:13px;"><i class="fa-regular fa-calendar"></i> ' + (ombi.tarehe || "") + ' - ' + (ombi.muda || "") + '</p>' +
+        '</div>';
+    });
+    tengenezaModal("maombiModal", "Maombi ya Viewing", html);
+  }
+
+  // UJUMBE
+  function funguaUjumbe() {
+    var ujumbe = [
+      { jina: "Juma Mwangi", picha: "J", waMwisho: "Habari, naomba kuona nyumba kesho?", muda: "10:30", rangi: "#299d38" },
+      { jina: "Asha Kileo", picha: "A", waMwisho: "Asante kwa kunijibu!", muda: "Jana", rangi: "#3b82f6" }
+    ];
+    var html = "";
+    ujumbe.forEach(function (u) {
+      html +=
+        '<div style="display:flex;gap:12px;padding:14px;margin-bottom:8px;background:#f9f9f9;border-radius:12px;cursor:pointer;">' +
+        '<div style="width:44px;height:44px;border-radius:50%;background:' + u.rangi + ';display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">' + u.picha + '</div>' +
+        '<div style="flex:1;"><h4 style="margin:0 0 4px 0;color:#299d38;">' + u.jina + '</h4>' +
+        '<p style="margin:0;color:#666;font-size:13px;">' + u.waMwisho + '</p></div>' +
+        '<small style="color:#999;font-size:11px;">' + u.muda + '</small></div>';
+    });
+    tengenezaModal("ujumbeModal", "Ujumbe", html);
+  }
+
+  // ARIFA
+  function funguaArifa() {
+    var arifa = [
+      { jina: "Karibu NyumbaKwetu!", maelezo: "Asante kwa kujiunga.", rangi: "#299d38", icon: "fa-check-circle" },
+      { jina: "Nyumba Mpya", maelezo: "Kuna nyumba 4 mpya zimewekwa.", rangi: "#f59e0b", icon: "fa-bell" }
+    ];
+    var html = "";
+    arifa.forEach(function (a) {
+      html +=
+        '<div style="display:flex;gap:14px;padding:14px;margin-bottom:10px;background:#f9f9f9;border-radius:12px;border-left:4px solid ' + a.rangi + ';">' +
+        '<div style="width:40px;height:40px;border-radius:50%;background:' + a.rangi + '22;display:flex;align-items:center;justify-content:center;">' +
+        '<i class="fa-solid ' + a.icon + '" style="color:' + a.rangi + ';"></i></div>' +
+        '<div><h4 style="margin:0 0 4px 0;color:#299d38;">' + a.jina + '</h4>' +
+        '<p style="margin:0;color:#666;font-size:13px;">' + a.maelezo + '</p></div></div>';
+    });
+    tengenezaModal("arifaModal", "Arifa", html);
+  }
+
+  // MALIPO
+  function funguaMalipo() {
+    var malipo = [
+      { jina: "Apartment Mlimani City", kodi: 600000, mwezi: "Septemba 2026", hali: "imelipwa" },
+      { jina: "Nyumba Goba", kodi: 450000, mwezi: "Septemba 2026", hali: "inasubiri" }
+    ];
+    var html = "";
+    malipo.forEach(function (m) {
+      var rangi = m.hali === "imelipwa" ? "#16a34a" : "#f59e0b";
+      var jina = m.hali === "imelipwa" ? "Imelipwa" : "Inasubiri";
+      html +=
+        '<div style="padding:14px;margin-bottom:10px;background:#f9f9f9;border-radius:12px;border-left:4px solid ' + rangi + ';display:flex;justify-content:space-between;align-items:center;">' +
+        '<div><h4 style="margin:0 0 4px 0;color:#299d38;">' + m.jina + '</h4>' +
+        '<p style="margin:0;color:#666;font-size:13px;">' + m.mwezi + '</p>' +
+        '<p style="margin:4px 0 0 0;font-weight:600;color:#299d38;">TZS ' + m.kodi.toLocaleString() + '</p></div>' +
+        '<span style="padding:4px 12px;border-radius:20px;color:white;font-size:11px;font-weight:600;background:' + rangi + ';">' + jina + '</span></div>';
+    });
+    tengenezaModal("malipoModal", "Malipo", html);
+  }
+
+  // MIPANGILIO
+  function funguaMipangilio() {
+    var html =
+      '<div style="margin-bottom:16px;"><label style="display:block;color:#666;font-size:13px;margin-bottom:6px;">Jina</label>' +
+      '<input type="text" value="' + jina + '" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;"></div>' +
+      '<div style="margin-bottom:16px;"><label style="display:block;color:#666;font-size:13px;margin-bottom:6px;">Email</label>' +
+      '<input type="email" value="' + (mtumiaji.email || "") + '" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;"></div>' +
+      '<div style="margin-bottom:16px;"><label style="display:block;color:#666;font-size:13px;margin-bottom:6px;">Namba ya Simu</label>' +
+      '<input type="tel" placeholder="0754123456" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;"></div>' +
+      '<button style="width:100%;padding:14px;background:#299d38;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Hifadhi Mabadiliko</button>';
+    tengenezaModal("mipangilioModal", "Mipangilio", html);
+  }
+
+  // MSAADA
+  function funguaMsaada() {
+    var html =
+      '<div style="background:#e8f5e9;padding:16px;border-radius:12px;margin-bottom:20px;">' +
+      '<h3 style="margin:0 0 12px 0;color:#299d38;font-size:16px;">Wasiliana Nasi</h3>' +
+      '<div style="margin-bottom:8px;"><i class="fa-solid fa-phone" style="color:#299d38;"></i> +255 754 123 456</div>' +
+      '<div style="margin-bottom:8px;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> +255 754 123 456</div>' +
+      '<div><i class="fa-solid fa-envelope" style="color:#299d38;"></i> msaada@nyumbakwetu.co.tz</div></div>' +
+      '<h3 style="color:#299d38;font-size:15px;margin-bottom:12px;">Maswali</h3>' +
+      '<div style="border-bottom:1px solid #eee;padding:12px 0;"><strong>Jinsi ya kuomba viewing?</strong><p style="margin:6px 0 0 0;color:#666;font-size:13px;">Fungua nyumba — bonyeza Omba Kuiona Nyumba.</p></div>' +
+      '<div style="border-bottom:1px solid #eee;padding:12px 0;"><strong>Kuna malipo?</strong><p style="margin:6px 0 0 0;color:#666;font-size:13px;">Kuomba viewing ni bure.</p></div>' +
+      '<a href="https://wa.me/255754123456" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;margin-top:20px;font-weight:600;">' +
+      '<i class="fa-brands fa-whatsapp"></i> Wasiliana WhatsApp</a>';
+    tengenezaModal("msaadaModal", "Msaada", html);
+  }
+
+  // ==========================================
+  // UNGANISHA MENU ZOTE
+  // ==========================================
+  var menuMap = {
+    "menuTafutaNyumba": funguaTafuta,
+    "menuTafutaNyumbaMobile": funguaTafuta,
+    "menuZilizohifadhiwa": funguaZilizohifadhiwa,
+    "menuZilizohifadhiwaMobile": funguaZilizohifadhiwa,
+    "menuMaombi": funguaMaombi,
+    "menuMaombiMobile": funguaMaombi,
+    "menuUjumbe": funguaUjumbe,
+    "menuUjumbeMobile": funguaUjumbe,
+    "menuArifa": funguaArifa,
+    "menuArifaMobile": funguaArifa,
+    "menuMalipo": funguaMalipo,
+    "menuMalipoMobile": funguaMalipo,
+    "menuMipangilio": funguaMipangilio,
+    "menuMipangilioMobile": funguaMipangilio,
+    "menuMsaada": funguaMsaada,
+    "menuMsaadaMobile": funguaMsaada
+  };
+
+  Object.keys(menuMap).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (drawerMenu) drawerMenu.classList.remove("open");
+        if (drawerOverlay) drawerOverlay.classList.remove("open");
+        menuMap[id]();
+      });
+    }
   });
 
-  container.innerHTML = html;
-}
+  // BOTTOM NAV
+  document.getElementById("navTafuta")?.addEventListener("click", function (e) { e.preventDefault(); funguaTafuta(); });
+  document.getElementById("navZilizohifadhiwa")?.addEventListener("click", function (e) { e.preventDefault(); funguaZilizohifadhiwa(); });
 
-// Bonus: Sasisha notification count kwenye header
-var notifCount = document.querySelector(".notification-icon span");
-if (notifCount) {
-  var maombiCount = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]").length;
-  var favCount = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]").length;
-  var total = maombiCount + favCount;
+  // LOGOUT
+  ["logoutDesktop", "logoutMobile"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (confirm("Una uhakika unataka kutoka?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("mtumiaji");
+          window.location.href = "login.html";
+        }
+      });
+    }
+  });
 
-  // Kama 0, ficha; kama zaidi, onyesha
-  if (total === 0) {
-    notifCount.style.display = "none";
-  } else {
-    notifCount.style.display = "";
-    notifCount.textContent = total;
-  }
-}
-  console.log("tenant-dashboard.js imepakiwa vizuri!");
+  // CTA
+  document.getElementById("ctaTafuta")?.addEventListener("click", funguaTafuta);
+  document.getElementById("onaSaved")?.addEventListener("click", function (e) { e.preventDefault(); funguaZilizohifadhiwa(); });
+  document.getElementById("onaViewings")?.addEventListener("click", function (e) { e.preventDefault(); funguaMaombi(); });
 
+  // ANZISHA
+  chukuaNyumba();
+  sasishaSaved();
+  sasishaViewings();
+
+  console.log("tenant-dashboard.js imepakiwa!");
 });
