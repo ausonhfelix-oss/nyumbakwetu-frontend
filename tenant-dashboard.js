@@ -425,24 +425,164 @@ function funguaUjumbe() {
   document.body.appendChild(modal);
 }
 
-  // ARIFA
-  function funguaArifa() {
-    var arifa = [
-      { jina: "Karibu NyumbaKwetu!", maelezo: "Asante kwa kujiunga.", rangi: "#299d38", icon: "fa-check-circle" },
-      { jina: "Nyumba Mpya", maelezo: "Kuna nyumba 4 mpya zimewekwa.", rangi: "#f59e0b", icon: "fa-bell" }
-    ];
+  // ==========================================
+// MODAL: ARIFA (Kutoka API + LocalStorage)
+// ==========================================
+async function funguaArifa() {
+  var existing = document.getElementById("arifaModal");
+  if (existing) existing.remove();
+
+  var modal = document.createElement("div");
+  modal.id = "arifaModal";
+  modal.style.cssText =
+    "position:fixed;top:0;left:0;width:100%;height:100%;" +
+    "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
+    "align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;";
+
+  modal.innerHTML =
+    '<div style="background:white;border-radius:16px;max-width:650px;' +
+    'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+      '<h2 style="margin:0;color:#299d38;">Arifa</h2>' +
+      '<button onclick="document.getElementById(\'arifaModal\').remove()" ' +
+      'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
+    '</div>' +
+
+    '<div id="arifaOrodha">' +
+      '<p style="text-align:center;padding:40px;color:#888;">Inapakia arifa...</p>' +
+    '</div>' +
+
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  // Chukua arifa
+  try {
+    // 1. Nyumba kutoka API
+    var response = await fetch(API_URL + "/properties");
+    var data = await response.json();
+    var nyumbaZote = data.nyumba || [];
+
+    // 2. Maombi yangu
+    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
+
+    // 3. Favorites zangu
+    var favorites = JSON.parse(localStorage.getItem("nyumbaFavorites") || "[]");
+
+    // 4. Nyumba mpya (zilizowekwa hivi karibuni - siku 7 zilizopita)
+    var siku7Zilizopita = new Date();
+    siku7Zilizopita.setDate(siku7Zilizopita.getDate() - 7);
+
+    var nyumbaMpya = nyumbaZote.filter(function (n) {
+      if (!n.createdAt) return false;
+      var tarehe = new Date(n.createdAt);
+      return tarehe >= siku7Zilizopita;
+    });
+
+    // KUSANYA ARIFA
+    var arifa = [];
+
+    // Arifa 1: Nyumba mpya kwenye database
+    if (nyumbaMpya.length > 0) {
+      arifa.push({
+        rangi: "#16a34a",
+        icon: "fa-house-circle-check",
+        jina: "Nyumba Mpya " + nyumbaMpya.length + " Zimewekwa",
+        maelezo: "Kuna nyumba " + nyumbaMpya.length + " mpya zilizowekwa katika siku 7 zilizopita",
+        muda: "Wiki hii"
+      });
+    }
+
+    // Arifa 2: Jumla ya nyumba
+    arifa.push({
+      rangi: "#3b82f6",
+      icon: "fa-building",
+      jina: "Nyumba " + nyumbaZote.length + " Zinapatikana",
+      maelezo: "Kuna nyumba " + nyumbaZote.length + " zinazopatikana kwenye NyumbaKwetu",
+      muda: "Sasa hivi"
+    });
+
+    // Arifa 3: Maombi ya viewing
+    if (maombi.length > 0) {
+      arifa.push({
+        rangi: "#f59e0b",
+        icon: "fa-calendar-check",
+        jina: "Maombi Yako ya Viewing (" + maombi.length + ")",
+        maelezo: "Umeweka maombi " + maombi.length + " ya viewing",
+        muda: "Hivi karibuni"
+      });
+    }
+
+    // Arifa 4: Favorites
+    if (favorites.length > 0) {
+      arifa.push({
+        rangi: "#e63946",
+        icon: "fa-heart",
+        jina: "Zilizohifadhiwa (" + favorites.length + ")",
+        maelezo: "Una nyumba " + favorites.length + " kwenye orodha yako ya kupenda",
+        muda: "Karibuni"
+      });
+    }
+
+    // Arifa 5: Karibu (kama ni mtumiaji mpya)
+    arifa.push({
+      rangi: "#8b5cf6",
+      icon: "fa-star",
+      jina: "Karibu NyumbaKwetu!",
+      maelezo: "Asante kwa kutumia huduma zetu. Tafuta nyumba yako kwa urahisi.",
+      muda: "Kila wakati"
+    });
+
+    // ONYESHA
+    var container = document.getElementById("arifaOrodha");
+
+    if (arifa.length === 0) {
+      container.innerHTML =
+        '<p style="text-align:center;padding:40px;color:#888;">Hakuna arifa kwa sasa.</p>';
+      return;
+    }
+
     var html = "";
     arifa.forEach(function (a) {
       html +=
-        '<div style="display:flex;gap:14px;padding:14px;margin-bottom:10px;background:#f9f9f9;border-radius:12px;border-left:4px solid ' + a.rangi + ';">' +
-        '<div style="width:40px;height:40px;border-radius:50%;background:' + a.rangi + '22;display:flex;align-items:center;justify-content:center;">' +
-        '<i class="fa-solid ' + a.icon + '" style="color:' + a.rangi + ';"></i></div>' +
-        '<div><h4 style="margin:0 0 4px 0;color:#299d38;">' + a.jina + '</h4>' +
-        '<p style="margin:0;color:#666;font-size:13px;">' + a.maelezo + '</p></div></div>';
-    });
-    tengenezaModal("arifaModal", "Arifa", html);
-  }
+        '<div style="display:flex;gap:14px;padding:14px;margin-bottom:10px;' +
+        'background:#f9f9f9;border-radius:12px;border-left:4px solid ' + a.rangi + ';">' +
 
+        '<div style="width:40px;height:40px;border-radius:50%;background:' + a.rangi + '22;' +
+        'display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+          '<i class="fa-solid ' + a.icon + '" style="color:' + a.rangi + ';font-size:16px;"></i>' +
+        '</div>' +
+
+        '<div style="flex:1;">' +
+          '<h4 style="margin:0 0 4px 0;color:#299d38;font-size:15px;">' + a.jina + '</h4>' +
+          '<p style="margin:0 0 6px 0;color:#555;font-size:14px;">' + a.maelezo + '</p>' +
+          '<small style="color:#999;font-size:12px;">' + a.muda + '</small>' +
+        '</div>' +
+
+        '</div>';
+    });
+
+    container.innerHTML = html;
+
+    // Sasisha notification count kwenye header
+    var notifCount = document.querySelector(".notification-icon span");
+    if (notifCount) {
+      var total = nyumbaMpya.length + maombi.length;
+      if (total === 0) {
+        notifCount.style.display = "none";
+      } else {
+        notifCount.style.display = "";
+        notifCount.textContent = total;
+      }
+    }
+
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById("arifaOrodha").innerHTML =
+      "<p style='text-align:center;padding:40px;color:red;'>Imeshindikana kupata arifa.</p>";
+  }
+}
   // MALIPO
   function funguaMalipo() {
     var malipo = [
