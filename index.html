@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NyumbaKwetu - Nyumba bora, maisha bora</title>
+
+ <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+
+    <!-- Home CSS -->
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="main-header">
+
+    <!-- LOGO -->
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-house-chimney"></i>
+        </div>
+
+        <div>
+            <h1>Nyumba<span>Kwetu</span></h1>
+            <p>Nyumba bora, maisha bora</p>
+        </div>
+
+    </div>
+
+
+    <!-- DESKTOP NAVIGATION -->
+
+    <nav class="desktop-nav">
+
+        <a href="#" class="active">Nyumbani</a>
+
+        <a href="#">Nyumba za Kupanga</a>
+
+        <a href="#">Nyumba za Kuuza</a>
+
+        <a href="#">Mawakala</a>
+
+        <a href="#">Kuhusu Sisi</a>
+
+        <a href="#">Wasiliana nasi</a>
+
+    </nav>
+
+
+    <!-- RIGHT -->
+
+    <div class="header-actions">
+
+        <div class="notification">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span>2</span>
+
+        </div>
+
+
+        <div class="user-account" id="headerAkaunti">
+
+            <div class="user-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <span>Ausonius</span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-text">
+
+            <h2>
+                Tafuta nyumba
+                <span>inayokufaa..</span>
+            </h2>
+
+            <p>
+                Tuna maelfu ya nyumba bora za kupanga
+                na kuuza katika maeneo mbalimbali.
+            </p>
+
+        </div>
+
+
+        <!-- HERO IMAGE -->
+
+        <div class="hero-house">
+
+            <img
+                src="images/hero-house.jpg"
+                alt="Nyumba"
+            >
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SEARCH BOX
+    ================================================== -->
+
+    <div class="search-box">
+
+
+        <!-- LOCATION -->
+
+        <div class="search-field">
+
+            <label>Location</label>
+
+            <div class="field-input">
+<input
+type="text"
+id="location"
+placeholder="Ex.Dodoma, Arusha, DSM"
+>
+                
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HOUSE TYPE -->
+
+        <div class="search-field">
+
+            <label>Aina ya Nyumba</label>
+
+           <select class="search-select" id="houseType">
+    <option value="">Chagua aina</option>
+    <option value="kupanga">Nyumba za Kupanga</option>
+    <option value="kuuza">Nyumba za Kuuza</option>
+    <option value="apartments">Apartments</option>
+    <option value="single">Single Rooms</option>
+    <option value="hostel">Hostel</option>
+    <option value="biashara">Majengo ya Biashara</option>
+    <option value="viwanja">Viwanja</option>
+</select>
+
+        </div>
+
+
+
+        <!-- PRICE -->
+
+        <div class="search-field">
+
+            <label>Bei (TZS)</label>
+
+            <select class="search-select" id="price">
+    <option value="">Min - Max</option>
+    <option value="300000">300,000</option>
+    <option value="500000">500,000</option>
+    <option value="800000">800,000</option>
+    <option value="1000000">1,000,000</option>
+    <option value="5000000">5,000,000+</option>
+</select>
+
+        </div>
+
+
+
+        <!-- ROOMS -->
+
+        <div class="search-field">
+
+            <label>Vyumba</label>
+
+            <select class="search-select" id="rooms">
+    <option value="">Chagua</option>
+    <option value="1">Chumba 1</option>
+    <option value="2">Vyumba 2</option>
+    <option value="3">Vyumba 3</option>
+    <option value="4">Vyumba 4</option>
+    <option value="5">Vyumba 5+</option>
+</select>
+
+        </div>
+
+
+
+        <!-- SEARCH BUTTON -->
+
+        <button class="search-button">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            TAFUTA
+
+        </button>
+
+    </div>
+
+
+
+    <!-- POPULAR CITIES -->
+
+    <div class="popular-cities">
+
+        <strong>Miji maarufu:</strong>
+
+        <span>Dodoma</span>
+        <span>Dar es Salaam</span>
+        <span>Arusha</span>
+        <span>Mwanza</span>
+        <span>Mbeya</span>
+        <span>Zanzibar</span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     AINA ZA NYUMBA
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <h2>AINA ZA NYUMBA</h2>
+
+        <a href="#">
+            Ona zote
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+    </div>
+
+
+    <div class="property-types">
+
+
+        <!-- 1 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-house"></i>
+            </div>
+
+            <h3>
+                Nyumba za<br>Kupanga
+            </h3>
+
+        </div>
+
+
+        <!-- 2 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-key"></i>
+            </div>
+
+            <h3>
+                Nyumba za<br>Kuuza
+            </h3>
+
+        </div>
+
+
+        <!-- 3 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <h3>
+                Apartments
+            </h3>
+
+        </div>
+
+
+        <!-- 4 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-bed"></i>
+            </div>
+
+            <h3>
+                Single<br>Rooms
+            </h3>
+
+        </div>
+
+
+        <!-- 5 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <h3>
+                Hostel
+            </h3>
+
+        </div>
+
+
+        <!-- 6 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-store"></i>
+            </div>
+
+            <h3>
+                Majengo ya<br>Biashara
+            </h3>
+
+        </div>
+
+
+        <!-- 7 -->
+
+        <div class="type-card">
+
+            <div class="type-icon">
+                <i class="fa-solid fa-seedling"></i>
+            </div>
+
+            <h3>
+                Viwanja
+            </h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     NYUMBA ZINAZOPENDWA
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <h2>NYUMBA ZINAZOPENDWA</h2>
+
+        <a href="#" id="viewAllProperties">
+            Ona zote
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+    </div>
+
+
+    <div class="property-list">
+
+
+        <!-- HOUSE 1 -->
+
+        <article class="property-card" id="1"
+data-type="kupanga"
+data-price="350000"
+data-rooms="2"
+data-location="Dodoma"
+onclick="window.location.href='property-details.html?id=1'">
+            <div class="property-image">
+
+                <img
+                    src="images/house1.jpg"
+                    alt="Nyumba ya kisasa Mlimani City"
+                >
+
+                <span class="property-tag">
+                    KUPANGA
+                </span>
+
+                <button class="favorite-btn" data-id="1">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="property-info">
+
+                <h3>
+                    Nyumba ya kisasa Mlimani City
+                </h3>
+
+                <p class="property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Dodoma
+
+                </p>
+
+                <strong class="property-price">
+                    TZS 350,000 / mwezi
+                </strong>
+
+
+                <div class="property-details">
+
+                    <span>
+                        <i class="fa-solid fa-bed"></i>
+                        2 Vyumba
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-bath"></i>
+                        1 Bafu
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-car"></i>
+                        Parking
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- HOUSE 2 -->
+
+        <article class="property-card"
+        data-type="apartments"
+data-price="600000"
+data-rooms="3"
+data-location="Dar es salaam"
+onclick="window.location.href='property-details.html?id=2'">
+            <div class="property-image">
+
+                <img
+                    src="images/house2.jpg"
+                    alt="Apartment Mbezi Beach"
+                >
+
+                <span class="property-tag">
+                    KUPANGA
+                </span>
+
+                <button class="favorite-btn" data-id="2">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="property-info">
+
+                <h3>
+                    Apartment Mbezi Beach
+                </h3>
+
+                <p class="property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Dar es Salaam
+
+                </p>
+
+                <strong class="property-price">
+                    TZS 600,000 / mwezi
+                </strong>
+
+
+                <div class="property-details">
+
+                    <span>
+                        <i class="fa-solid fa-bed"></i>
+                        3 Vyumba
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-bath"></i>
+                        2 Bafu
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-car"></i>
+                        Parking
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- HOUSE 3 -->
+
+        <article class="property-card"
+            data-type="kuuza"
+            data-price="120000000"
+            data-rooms="4"
+            data-location="Dodoma"
+            onclick="window.location.href='property-details.html?id=3'">
+            <div class="property-image">
+
+                <img
+                    src="images/house3.jpg"
+                    alt="Nyumba ya kifahari Goba"
+                >
+
+                <span class="property-tag sale">
+                    KUUZA
+                </span>
+
+                <button class="favorite-btn" data-id="3">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="property-info">
+
+                <h3>
+                    Nyumba ya kifahari Goba
+                </h3>
+
+                <p class="property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Dodoma
+
+                </p>
+
+                <strong class="property-price">
+                    TZS 120,000,000
+                </strong>
+
+
+                <div class="property-details">
+
+                    <span>
+                        <i class="fa-solid fa-bed"></i>
+                        4 Vyumba
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-bath"></i>
+                        3 Bafu
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-car"></i>
+                        Garage
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- HOUSE 4 -->
+
+        <article class="property-card"
+        data-type="kupanga"
+        data-price="450000"
+        data-rooms="3"
+        data-location="Arusha"
+        onclick="window.location.href='property-details.html?id=4'">
+            <div class="property-image">
+
+                <img
+                    src="images/house4.jpg"
+                    alt="Nyumba ya familia Njiro"
+                >
+
+                <span class="property-tag">
+                    KUPANGA
+                </span>
+
+                <button class="favorite-btn" data-id="4">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="property-info">
+
+                <h3>
+                    Nyumba ya familia Njiro
+                </h3>
+
+                <p class="property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Arusha
+
+                </p>
+
+                <strong class="property-price">
+                    TZS 450,000 / mwezi
+                </strong>
+
+
+                <div class="property-details">
+
+                    <span>
+                        <i class="fa-solid fa-bed"></i>
+                        3 Vyumba
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-bath"></i>
+                        2 Bafu
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-car"></i>
+                        Parking
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- NEXT BUTTON -->
+
+        <button class="properties-next">
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HUDUMA ZETU
+===================================================== -->
+
+<section class="section services-section">
+
+    <div class="section-heading">
+
+        <h2>HUDUMA ZETU</h2>
+
+    </div>
+
+
+    <div class="services">
+
+
+        <!-- SERVICE 1 -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+
+                <i class="fa-solid fa-house-circle-check"></i>
+
+            </div>
+
+            <h3>
+                Tafuta Nyumba
+            </h3>
+
+            <p>
+                Tafuta nyumba kulingana
+                na eneo, bei na aina.
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE 2 -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+
+                <i class="fa-solid fa-house-circle-plus"></i>
+
+            </div>
+
+            <h3>
+                Weka Nyumba Yako
+            </h3>
+
+            <p>
+                Ongeza nyumba yako na
+                fikisha maelfu ya watafutaji.
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE 3 -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+            <h3>
+                Angalia Eneo
+            </h3>
+
+            <p>
+                Tumia ramani kutafuta
+                maeneo unayopenda.
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE 4 -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+            <h3>
+                Mawakala Bora
+            </h3>
+
+            <p>
+                Pata mawakala wa kuaminika
+                katika eneo lako.
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE 5 -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+            <h3>
+                Msaada 24/7
+            </h3>
+
+            <p>
+                Tuko hapa kukusaidia
+                muda wowote.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MOBILE BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="mobile-bottom-nav">
+    <a href="index.html" class="active-">
+        <i class="fa-solid fa-house"></i>
+        <span>Nyumbani</span>
+    </a>
+    <a href="#" id="navTafuta">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Tafuta</span>
+    </a>
+    <a href="landlord-dashboard.html" class="add-button">
+        <i class="fa-solid fa-plus"></i>
+        <span>Weka Nyumba</span>
+    </a>
+    <a href="tenant-dashboard.html#zilizohifadhiwa" id="navZilizohifadhiwa">
+        <i class="fa-regular fa-heart"></i>
+        <span>Zilizohifadhiwa</span>
+    </a>
+    <a href="#" id="navAkaunti">
+        <i class="fa-regular fa-user"></i>
+        <span>Akaunti</span>
+    </a>
+</nav>
+<script src="script.js"></script>
+</body>
+</html>

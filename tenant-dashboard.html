@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - NyumbaKwetu</title>
+
+   <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+
+    <link rel="stylesheet" href="tenant-dashboard.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOP HEADER
+===================================================== -->
+
+<header class="top-header">
+
+    <!-- LOGO -->
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+            <i class="fa-solid fa-house-chimney"></i>
+        </div>
+
+        <div class="logo-text">
+            <h1>
+                Nyumba<span>Kwetu</span>
+            </h1>
+
+            <p>Nyumba bora, maisha bora</p>
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="header-search">
+
+        <input
+            type="text"
+            placeholder="Tafuta nyumba, eneo, mkoa..."
+        >
+
+        <button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+    </div>
+
+
+    <!-- HEADER RIGHT -->
+
+    <div class="header-right">
+
+        <div class="notification-icon">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span>3</span>
+
+        </div>
+
+
+        <i class="fa-regular fa-comment header-message"></i>
+
+
+        <div class="header-account">
+
+            <div class="account-image">
+                <img src="images/profile.jpg" alt="Ausonius">
+            </div>
+
+            <div class="account-info">
+
+                <strong>Ausonius Helmani</strong>
+
+                <small>Mpangaji</small>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     DASHBOARD WRAPPER
+===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- PROFILE -->
+
+        <div class="sidebar-profile">
+
+            <div class="sidebar-profile-image">
+
+                <img
+                    src="images/profile.jpg"
+                    alt="Ausonius Helmani"
+                >
+
+            </div>
+
+
+            <div class="sidebar-profile-info">
+
+                <strong>Ausonius Helmani</strong>
+
+                <span>Mpangaji</span>
+
+                <small>Mpangaji</small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <nav class="sidebar-menu">
+
+
+            <a href="#" class="active">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Dashibodi</span>
+
+            </a>
+
+
+            <a href="#" id="menuTafutaNyumba">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <span>Tafuta Nyumba</span>
+
+            </a>
+
+
+            <a href="#" id="menuZilizohifadhiwa">
+
+                <i class="fa-regular fa-heart"></i>
+
+                <span>Zilizohifadhiwa</span>
+
+            </a>
+
+
+            <a href="#">
+
+                <i class="fa-regular fa-calendar-check"></i>
+
+                <span>Maombi / Viewing</span>
+
+            </a>
+
+
+            <a href="#">
+
+                <i class="fa-regular fa-comment"></i>
+
+                <span>Ujumbe</span>
+
+                <b class="menu-number">2</b>
+
+            </a>
+
+
+            <a href="#" id="menuArifa">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span>Arifa</span>
+
+            </a>
+
+
+            <a href="#">
+
+                <i class="fa-regular fa-credit-card"></i>
+
+                <span>Malipo</span>
+
+            </a>
+
+
+            <a href="#">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>Mipangilio ya Akaunti</span>
+
+            </a>
+
+
+            <a href="#">
+
+                <i class="fa-regular fa-circle-question"></i>
+
+                <span>Msaada</span>
+
+            </a>
+
+
+            <a href="#" class="logout">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span>Toka (Logout)</span>
+
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- HELP BOX -->
+
+        <div class="sidebar-help">
+
+            <div class="help-icon">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+            <strong>Je, unahitaji msaada?</strong>
+
+            <p>Tupo hapa kukusaidia</p>
+
+            <button>Wasiliana nasi</button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- WELCOME -->
+
+        <div class="welcome-section">
+
+            <h2>
+                Karibu tena, Ausonius! 👋
+            </h2>
+
+            <p>
+                Tafuta nyumba inayokufaa haraka na kwa urahisi.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CATEGORY CARDS
+        ================================================== -->
+
+        <section class="category-section">
+
+            <div class="category-cards">
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+
+                    <strong>Nyumba za<br>Kupanga</strong>
+
+                    <span>12,458 listings</span>
+
+                </div>
+
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+
+                    <strong>Nyumba za<br>Kuuza</strong>
+
+                    <span>8,742 listings</span>
+
+                </div>
+
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <strong>Apartments</strong>
+
+                    <span>6,325 listings</span>
+
+                </div>
+
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+
+                    <strong>Single Rooms</strong>
+
+                    <span>5,102 listings</span>
+
+                </div>
+
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <strong>Hostel</strong>
+
+                    <span>2,341 listings</span>
+
+                </div>
+
+
+
+                <div class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+
+                    <strong>Majengo ya<br>Biashara</strong>
+
+                    <span>1,893 listings</span>
+
+                </div>
+
+
+
+                <button class="category-next">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NEW HOUSES
+        ================================================== -->
+
+        <section class="houses-section">
+
+
+            <div class="section-header">
+
+                <h3>
+                    Nyumba Mpya Zilizowekwa
+                </h3>
+
+                <a href="#">
+                    Ona zote
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+
+            </div>
+
+
+
+            <div class="house-cards">
+
+
+                <!-- HOUSE 1 -->
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house1.jpg"
+                            alt="Apartment Mlimani City"
+                        >
+
+                        <span class="new-label">
+                            MPYA
+                        </span>
+
+                        <button class="favorite">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="house-info">
+
+                        <h4>
+                            Apartment Mlimani City
+                        </h4>
+
+                        <p class="location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Dodoma, Mlimani City
+
+                        </p>
+
+                        <strong class="price">
+                            TZS 600,000 / mwezi
+                        </strong>
+
+
+                        <div class="house-features">
+
+                            <span>
+                                <i class="fa-solid fa-bed"></i>
+                                3 Vyumba
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-bath"></i>
+                                2 Bafu
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-car"></i>
+                                Parking
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- HOUSE 2 -->
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house2.jpg"
+                            alt="Nyumba ya kisasa Goba"
+                        >
+
+                        <span class="new-label">
+                            MPYA
+                        </span>
+
+                        <button class="favorite">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="house-info">
+
+                        <h4>
+                            Nyumba ya kisasa Goba
+                        </h4>
+
+                        <p class="location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Dodoma, Goba
+
+                        </p>
+
+                        <strong class="price">
+                            TZS 450,000 / mwezi
+                        </strong>
+
+
+                        <div class="house-features">
+
+                            <span>
+                                <i class="fa-solid fa-bed"></i>
+                                3 Vyumba
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-bath"></i>
+                                2 Bafu
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-car"></i>
+                                Parking
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- HOUSE 3 -->
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house3.jpg"
+                            alt="Apartment Nzuguini B"
+                        >
+
+                        <span class="new-label">
+                            MPYA
+                        </span>
+
+                        <button class="favorite">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="house-info">
+
+                        <h4>
+                            Apartment Nzuguni B
+                        </h4>
+
+                        <p class="location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Dodoma, Nzuguni B
+
+                        </p>
+
+                        <strong class="price">
+                            TZS 550,000 / mwezi
+                        </strong>
+
+
+                        <div class="house-features">
+
+                            <span>
+                                <i class="fa-solid fa-bed"></i>
+                                2 Vyumba
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-bath"></i>
+                                2 Bafu
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-car"></i>
+                                Parking
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- HOUSE 4 -->
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house4.jpg"
+                            alt="Nyumba ya familia Iyumbu"
+                        >
+
+                        <span class="new-label">
+                            MPYA
+                        </span>
+
+                        <button class="favorite">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="house-info">
+
+                        <h4>
+                            Nyumba ya familia Iyumbu
+                        </h4>
+
+                        <p class="location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Dodoma, Iyumbu
+
+                        </p>
+
+                        <strong class="price">
+                            TZS 580,000 / mwezi
+                        </strong>
+
+
+                        <div class="house-features">
+
+                            <span>
+                                <i class="fa-solid fa-bed"></i>
+                                2 Vyumba
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-bath"></i>
+                                1 Bafu
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-car"></i>
+                                Parking
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SEARCH CTA
+        ================================================== -->
+
+        <section class="search-cta">
+
+            <div class="cta-icon">
+
+                <i class="fa-solid fa-house-circle-check"></i>
+
+            </div>
+
+
+            <div class="cta-text">
+
+                <h3>
+                    Tafuta nyumba yako sasa
+                </h3>
+
+                <p>
+                    Tumia vichujio kupata nyumba kulingana na eneo,
+                    bei, aina na mahitaji yako.
+                </p>
+
+            </div>
+
+
+            <button>
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Tafuta Sasa
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECOMMENDED
+        ================================================== -->
+
+        <section class="houses-section recommended">
+
+            <div class="section-header">
+
+                <h3>
+                    Nyumba Zinazopendekezwa Kwako
+                </h3>
+
+                <a href="#">
+                    Ona zote
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+
+            </div>
+
+
+            <div class="house-cards">
+
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house5.jpg"
+                            alt="Nyumba"
+                        >
+
+                        <button class="favorite">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="house-info">
+
+                        <h4>
+                            Nyumba ya kisasa
+                        </h4>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Dodoma
+                        </p>
+
+                        <strong class="price">
+                            TZS 500,000 / mwezi
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house6.jpg"
+                            alt="Nyumba"
+                        >
+
+                        <button class="favorite">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="house-info">
+
+                        <h4>
+                            Apartment nzuri
+                        </h4>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Dodoma
+                        </p>
+
+                        <strong class="price">
+                            TZS 650,000 / mwezi
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house7.jpg"
+                            alt="Nyumba"
+                        >
+
+                        <button class="favorite">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="house-info">
+
+                        <h4>
+                            Nyumba ya familia
+                        </h4>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Goba
+                        </p>
+
+                        <strong class="price">
+                            TZS 450,000 / mwezi
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="house-card">
+
+                    <div class="house-image">
+
+                        <img
+                            src="images/house8.jpg"
+                            alt="Nyumba"
+                        >
+
+                        <button class="favorite">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="house-info">
+
+                        <h4>
+                            Apartment mpya
+                        </h4>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Dodoma
+                        </p>
+
+                        <strong class="price">
+                            TZS 580,000 / mwezi
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================================
+         RIGHT SIDEBAR
+    ================================================== -->
+
+    <aside class="right-sidebar">
+
+
+        <!-- SAVED -->
+
+        <section class="right-card" id="zilizohifadhiwa">
+
+            <div class="right-card-header">
+
+                <h3>
+                    Zilizohifadhiwa (3)
+                </h3>
+
+                <a href="#">
+                    Ona zote
+                </a>
+
+            </div>
+
+
+            <div class="saved-item">
+
+                <img
+                    src="images/house2.jpg"
+                    alt="Apartment"
+                >
+
+                <div>
+
+                    <h4>
+                        Apartment Mlimani City
+                    </h4>
+
+                    <p>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Dodoma, Mlimani City
+                    </p>
+
+                    <strong>
+                        TZS 600,000 / mwezi
+                    </strong>
+
+                </div>
+
+                <i class="fa-solid fa-heart saved-heart"></i>
+
+            </div>
+
+
+            <div class="saved-item">
+
+                <img
+                    src="images/house1.jpg"
+                    alt="Nyumba"
+                >
+
+                <div>
+
+                    <h4>
+                        Nyumba ya kisasa Goba
+                    </h4>
+
+                    <p>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Dodoma, Goba
+                    </p>
+
+                    <strong>
+                        TZS 450,000 / mwezi
+                    </strong>
+
+                </div>
+
+                <i class="fa-solid fa-heart saved-heart"></i>
+
+            </div>
+
+
+            <div class="saved-item">
+
+                <img
+                    src="images/house3.jpg"
+                    alt="Apartment"
+                >
+
+                <div>
+
+                    <h4>
+                        Apartment Nzuguni B
+                    </h4>
+
+                    <p>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Dodoma, Nzuguni B
+                    </p>
+
+                    <strong>
+                        TZS 550,000 / mwezi
+                    </strong>
+
+                </div>
+
+                <i class="fa-solid fa-heart saved-heart"></i>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- VIEWING -->
+
+        <section class="right-card viewing-card">
+
+            <div class="right-card-header">
+
+                <h3>
+                    Maombi ya Viewing
+                    <span id="viewingCount"> (0) </span>
+                </h3>
+
+                <a href="#">
+                    Ona zote
+                </a>
+
+            </div>
+
+
+            <div class="viewing-item">
+
+                <div class="viewing-icon">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+                        Nyumba ya kisasa Goba
+                    </h4>
+
+                    <p>
+                        <i class="fa-regular fa-calendar"></i>
+                        20 Mei, 2025 - 09:00 AM
+                    </p>
+
+                </div>
+
+                <span class="status pending">
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div class="viewing-item">
+
+                <div class="viewing-icon">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+                        Apartment Mlimani City
+                    </h4>
+
+                    <p>
+                        <i class="fa-regular fa-calendar"></i>
+                        22 Mei, 2025 - 02:00 PM
+                    </p>
+
+                </div>
+
+                <span class="status confirmed">
+                    Ime thibitishwa
+                </span>
+
+            </div>
+
+
+            <div class="viewing-item">
+
+                <div class="viewing-icon">
+
+                    <i class="fa-solid fa-key"></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+                        Nyumba ya familia Iyumbu
+                    </h4>
+
+                    <p>
+                        <i class="fa-regular fa-calendar"></i>
+                        25 Mei, 2025 - 10:00 AM
+                    </p>
+
+                </div>
+
+                <span class="status cancelled">
+                    Ime kataliwa
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LANDLORD CTA -->
+
+        <section class="landlord-card">
+
+            <div>
+
+                <h3>
+                    Una nyumba ya
+                    kupangisha au kuuza?
+                </h3>
+
+                <p>
+                    Weka tangazo lako sasa na
+                    fikisha kwa maelfu ya watu.
+                </p>
+
+            </div>
+
+
+            <div class="landlord-image">
+
+                <i class="fa-solid fa-house-chimney"></i>
+
+            </div>
+
+
+            <button>
+
+                Weka Nyumba Sasa
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+            </button>
+
+        </section>
+
+    </aside>
+
+</div>
+
+
+
+<!-- =====================================================
+     MOBILE BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a href="#" class="bottom-active">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>Nyumbani</span>
+
+    </a>
+
+
+    <a href="#">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <span>Tafuta</span>
+
+    </a>
+
+
+    <a href="#" class="add-house">
+
+        <i class="fa-solid fa-plus"></i>
+
+        <span>Weka Nyumba</span>
+
+    </a>
+
+
+    <a href="#">
+
+        <i class="fa-regular fa-heart"></i>
+
+        <span>Zilizohifadhiwa</span>
+
+    </a>
+
+
+    <a href="#">
+
+        <i class="fa-regular fa-user"></i>
+
+        <span>Akaunti</span>
+
+    </a>
+
+
+</nav>
+<script src="data.js"></script>
+<script src="tenant-dashboard.js"></script>
+
+</body>
+</html>

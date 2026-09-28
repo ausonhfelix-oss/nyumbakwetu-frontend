@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Property Details - NyumbaKwetu</title>
+
+     <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="property-details.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="details-header">
+
+        <a href="index.html" class="back-button">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <h2>Maelezo ya Nyumba</h2>
+
+        <button class="details-favorite">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+
+    </header>
+
+
+    <!-- PROPERTY IMAGE -->
+    <section class="property-image-section">
+
+        <img src="images/house1.jpg" alt="Nyumba">
+
+        <span class="property-tag">
+            KUPANGA
+        </span>
+
+    </section>
+
+
+    <!-- PROPERTY INFORMATION -->
+    <section class="property-details">
+
+        <h1>Nyumba ya kisasa Mlimani City</h1>
+
+        <p class="property-location">
+            <i class="fa-solid fa-location-dot"></i>
+            Dodoma
+        </p>
+
+        <h2 class="property-price">
+            TZS 350,000 / mwezi
+        </h2>
+
+        <div class="property-features">
+
+            <div>
+                <i class="fa-solid fa-bed"></i>
+                <span>2 Vyumba</span>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-bath"></i>
+                <span>2 Bafu</span>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-house"></i>
+                <span>Nyumba</span>
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="description">
+
+            <h2>Maelezo ya Nyumba</h2>
+
+            <p>
+                Nyumba hii ina mazingira mazuri na inafaa kwa
+                familia. Ipo katika eneo lenye huduma muhimu
+                zinazopatikana kwa urahisi.
+            </p>
+
+        </div>
+
+
+       <!-- BUTTON -->
+        <button class="view-house-button" id="requestViewingBtn">
+    <i class="fa-solid fa-calendar-check"></i>
+    Omba Kuiona Nyumba
+</button>
+
+<div class="viewing-form" id="viewingForm">
+
+    <h2>Omba Kuiona Nyumba</h2>
+
+    <div class="form-group">
+        <label>Jina lako</label>
+        <input type="text" id="viewerName" placeholder="Andika jina lako">
+    </div>
+
+    <div class="form-group">
+        <label>Namba ya simu</label>
+        <input type="tel" id="viewerPhone" placeholder="Mfano 0712345678">
+    </div>
+
+    <div class="form-group">
+        <label>Tarehe</label>
+        <input type="date" id="viewingDate">
+    </div>
+
+    <div class="form-group">
+        <label>Muda</label>
+        <input type="time" id="viewingTime">
+    </div>
+
+    <button class="submit-viewing" id="submitViewing">
+        <i class="fa-solid fa-paper-plane"></i>
+        Tuma Ombi
+    </button>
+
+</div> 
+    </section>
+    <script src="property-details.js"></script>
+</body>
+
+</html>

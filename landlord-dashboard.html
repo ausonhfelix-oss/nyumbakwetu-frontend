@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weka Nyumba Mpya - NyumbaKwetu</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <link rel="stylesheet" href="landlord-dashboard.css">
+</head>
+<body>
+
+<!-- TOP HEADER -->
+<header class="top-header">
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="logo-area">
+        <i class="fa-solid fa-house-chimney logo-icon"></i>
+        <div>
+            <h1>Nyumba<span>Kwetu</span></h1>
+            <small>Nyumba bora, maisha bora</small>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" placeholder="Tafuta nyumba, eneo au neno...">
+        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <div class="header-right">
+        <div class="notification">
+            <i class="fa-regular fa-bell"></i>
+            <span>2</span>
+        </div>
+        <i class="fa-regular fa-comment header-icon"></i>
+        <div class="account-top">
+            <div class="profile-circle"><i class="fa-solid fa-user"></i></div>
+            <div>
+                <strong>Ausonius</strong>
+                <small>Mpangishaji</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </div>
+</header>
+
+
+<!-- MAIN CONTAINER -->
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-profile">
+            <div class="big-profile"><i class="fa-solid fa-user"></i></div>
+            <div>
+                <strong>Ausonius</strong>
+                <p>Mpangishaji <i class="fa-solid fa-circle-check"></i></p>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="#"><i class="fa-solid fa-grip"></i><span>Dashibodi</span></a>
+            <a href="#" id="menuNyumbaZangu"><i class="fa-solid fa-house"></i><span>Nyumba Zangu</span></a>
+            <a href="#" class="active"><i class="fa-solid fa-plus"></i><span>Weka Nyumba Mpya</span></a>
+            <a href="#" id="menuMaombi"><i class="fa-regular fa-clipboard"></i><span>Maombi/Requests</span></a>
+            <a href="#" id="menuUjumbe"><i class="fa-regular fa-comment"></i><span>Ujumbe</span></a>
+            <a href="#" id="menuZilizohifadhiwa"><i class="fa-regular fa-heart"></i><span>Nyumba Zilizohifadhiwa</span></a>
+            <a href="#" id="menuArifa"><i class="fa-regular fa-bell"></i><span>Arifa</span></a>
+            <a href="#" id="menuPayouts"><i class="fa-regular fa-credit-card"></i><span>Payouts</span></a>
+            <a href="#" id="menuMipangilio"><i class="fa-solid fa-gear"></i><span>Mipangilio</span></a>
+            <a href="#" id="menuMsaada"><i class="fa-regular fa-circle-question"></i><span>Msaada na Usaidizi</span></a>
+            <a href="#" class="logout" id="logoutDesktop"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Toka (Logout)</span></a>
+        </nav>
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="page-title">
+            <h2>Weka Nyumba Mpya</h2>
+            <div class="breadcrumb">
+                <span>Dashibodi</span>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span>Weka Nyumba Mpya</span>
+            </div>
+            <p>Jaza taarifa zote kwa usahihi ili kuongeza nafasi ya watu kukipata nyumba yako.</p>
+        </div>
+
+
+        <!-- IMAGE SECTION -->
+        <section class="card photo-section">
+            <div class="section-title">
+                <i class="fa-regular fa-image"></i>
+                <h3>1. Picha za Nyumba</h3>
+            </div>
+
+            <p class="section-description">
+                Pakia picha bora na wazi za ndani na nje ya nyumba yako (angalau 3)
+            </p>
+
+            <div class="photo-grid">
+                <div class="house-photo">
+                    <img src="images/house1.jpg" alt="Nyumba">
+                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="house-photo">
+                    <img src="images/house2.jpg" alt="Nyumba">
+                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="house-photo">
+                    <img src="images/house3.jpg" alt="Nyumba">
+                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="house-photo">
+                    <img src="images/house4.jpg" alt="Nyumba">
+                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <label class="upload-photo">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <strong>Ongeza Picha</strong>
+                    <small>PNG, JPG (Max 5MB)</small>
+                    <input type="file" id="propertyImageUpload" accept="image/*" multiple>
+                </label>
+            </div>
+        </section>
+
+
+        <!-- INFORMATION ROW -->
+        <div class="form-row">
+
+            <section class="card form-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-house"></i>
+                    <h3>2. Aina ya Nyumba</h3>
+                </div>
+
+                <label>Aina ya Nyumba</label>
+                <select id="propertyType">
+                    <option value="">Chagua aina</option>
+                    <option value="Apartment (Nyumba ya Ghorofa)">Apartment</option>
+                    <option value="Nyumba ya kawaida">Nyumba ya kawaida</option>
+                    <option value="Hosteli">Hosteli</option>
+                    <option value="Single Room">Single Room</option>
+                    <option value="Commercial">Commercial</option>
+                </select>
+
+                <label>Lengo</label>
+                <select id="propertyPurpose">
+                    <option value="">Chagua lengo</option>
+                    <option value="Kupanga (Kwa Mwezi)">Kupanga (Kwa Mwezi)</option>
+                    <option value="Kuuza">Kuuza</option>
+                </select>
+
+                <label>Aina ya Matumizi</label>
+                <select id="propertyUsage">
+                    <option value="">Chagua matumizi</option>
+                    <option value="Makazi">Makazi</option>
+                    <option value="Biashara">Biashara</option>
+                </select>
+            </section>
+
+
+            <section class="card form-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <h3>3. Eneo (Location)</h3>
+                </div>
+
+                <label>Mkoa</label>
+                <select id="propertyRegion">
+                    <option value="">Chagua mkoa</option>
+                    <option value="Dodoma">Dodoma</option>
+                    <option value="Dar es Salaam">Dar es Salaam</option>
+                    <option value="Mwanza">Mwanza</option>
+                    <option value="Kagera">Kagera</option>
+                </select>
+
+                <label>Wilaya</label>
+                <select id="propertyDistrict">
+                    <option value="">Chagua wilaya</option>
+                    <option value="Dodoma Urban">Dodoma Urban</option>
+                </select>
+
+                <label>Eneo / Mtaa</label>
+                <input id="propertyArea" type="text" placeholder="Nzugu B">
+
+                <label>Namba ya Nyumba (hiari)</label>
+                <input id="propertyHouseNumber" type="text" placeholder="Plot 45, Block C">
+            </section>
+
+
+            <section class="card form-card">
+                <div class="section-title">
+                    <i class="fa-regular fa-money-bill-1"></i>
+                    <h3>4. Bei</h3>
+                </div>
+
+                <label>Bei kwa Mwezi (TZS)</label>
+                <input id="propertyPrice" type="text" value="600000">
+
+                <label>Ada ya Service (TZS) (hiari)</label>
+                <input id="propertyServiceFee" type="text" value="50000">
+
+                <label>Bei ya Amana (TZS)</label>
+                <input id="propertyDeposit" type="text" value="600000">
+
+                <label class="checkbox-label">
+                    <input type="checkbox">
+                    <span>Bei inaweza kujadilwa</span>
+                </label>
+            </section>
+
+        </div>
+
+
+        <!-- FEATURES -->
+        <section class="card features-section">
+            <div class="section-title">
+                <i class="fa-solid fa-circle-info"></i>
+                <h3>5. Maelezo na Sifa za Nyumba</h3>
+            </div>
+
+            <div class="features-grid">
+                <div>
+                    <label>Vyumba vya kulala</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-bed"></i>
+                        <input id="propertyBedrooms" type="number" value="3">
+                    </div>
+                </div>
+                <div>
+                    <label>Sebule</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-couch"></i>
+                        <input id="propertyLivingRoom" type="number" value="1">
+                    </div>
+                </div>
+                <div>
+                    <label>Bafu</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-bath"></i>
+                        <input id="propertyBaths" type="number" value="2">
+                    </div>
+                </div>
+                <div>
+                    <label>Jikoni</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-kitchen-set"></i>
+                        <input id="propertyKitchen" type="number" value="1">
+                    </div>
+                </div>
+                <div>
+                    <label>Balcony</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-building"></i>
+                        <input id="propertyBalcony" type="number" value="2">
+                    </div>
+                </div>
+                <div>
+                    <label>Parking</label>
+                    <select id="propertyParking">
+                        <option value="Ndio">Ndio</option>
+                        <option value="Hapana">Hapana</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Security</label>
+                    <select id="propertySecurity">
+                        <option value="Ndio">Ndio</option>
+                        <option value="Hapana">Hapana</option>
+                    </select>
+                </div>
+            </div>
+
+            <label>Maelezo ya Ziada</label>
+            <textarea id="propertyDescription" rows="3">Apartment nzuri yenye vyumba 3, sebule kubwa, jikoni ya kisasa, bafu 2, balcony, maji 24hrs, security, parking ya kutosha.</textarea>
+        </section>
+
+
+        <!-- CONTACT + MAP -->
+        <div class="bottom-form-row">
+
+            <section class="card contact-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-phone"></i>
+                    <h3>6. Mawasiliano</h3>
+                </div>
+
+                <div class="two-inputs">
+                    <div>
+                        <label>Jina Kamili</label>
+                        <input id="ownerName" type="text" value="Ausonius Helmani">
+                    </div>
+                    <div>
+                        <label>Namba ya Simu</label>
+                        <input id="ownerPhone" type="text" value="0754 123 456">
+                    </div>
+                </div>
+
+                <div class="two-inputs">
+                    <div>
+                        <label>WhatsApp</label>
+                        <input id="ownerWhatsApp" type="text" value="0754 123 456">
+                    </div>
+                    <div>
+                        <label>Barua pepe</label>
+                        <input id="ownerEmail" type="email" value="ausonius@example.com">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="card map-card">
+                <div class="section-title">
+                    <i class="fa-regular fa-map"></i>
+                    <h3>7. Mahali kwenye Ramani</h3>
+                </div>
+
+                <p>Tafuta eneo au weka pin kwenye ramani</p>
+
+                <div class="map-search">
+                    <input id="mapSearchInput" type="text" value="Nzoguni B, Dodoma Urban, Dodoma">
+                    <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+
+                <div class="map-box">
+                    <i class="fa-solid fa-location-dot map-pin"></i>
+                    <div class="zoom-buttons">
+                        <button>+</button>
+                        <button>−</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <!-- SECURITY -->
+        <div class="security-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span><strong>Usalama Kwanza:</strong> Taarifa yako inalindwa na haitashirikishwa na mtu asiyehusika.</span>
+        </div>
+
+        <!-- MOBILE SUBMIT -->
+        <div class="mobile-submit-section">
+            <button class="submit-button" id="submitBtnMobile">
+                <i class="fa-solid fa-paper-plane"></i> Tuma kwa Admin
+            </button>
+            <button class="draft-button" id="draftBtnMobile">
+                <i class="fa-regular fa-floppy-disk"></i> Hifadhi kama DRAFT
+            </button>
+        </div>
+
+    </main>
+
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+
+        <section class="publish-card">
+            <div class="publish-title">
+                <i class="fa-solid fa-circle-info"></i>
+                <h3>Hatua za Kuchapisha</h3>
+            </div>
+
+            <div class="steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div>
+                        <strong>Weka Taarifa</strong>
+                        <p>Jaza taarifa zote za nyumba yako</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <strong>Tuma kwa Admin</strong>
+                        <p>Unapotuma, taarifa itaenda kwa admin</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <strong>Inasubiri Uthibitisho</strong>
+                        <p>Admin atakagua na kuthibitisha</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <strong>Inaonekana Live</strong>
+                        <p>Nyumba itaonekana kwa watumiaji</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-card">
+            <div class="tips-title">
+                <i class="fa-regular fa-lightbulb"></i>
+                <h3>Vidokezo Muhimu</h3>
+            </div>
+
+            <ul>
+                <li>Pakia picha halisi na wazi</li>
+                <li>Jaza taarifa zote kwa usahihi</li>
+                <li>Weka bei halisi ya nyumba</li>
+                <li>Hakikisha namba yako ni sahihi</li>
+                <li>Utapokea taarifa kupitia arifa</li>
+            </ul>
+        </section>
+
+        <button class="submit-button">
+            <i class="fa-solid fa-paper-plane"></i> Tuma kwa Admin
+        </button>
+
+        <button class="draft-button">
+            <i class="fa-regular fa-floppy-disk"></i> Hifadhi kama DRAFT
+        </button>
+
+    </aside>
+
+</div>
+
+
+<!-- BOTTOM NAVIGATION (MOBILE) -->
+<nav class="bottom-nav">
+    <a href="index.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Nyumbani</span>
+    </a>
+    <a href="index.html#searchBox">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Tafuta</span>
+    </a>
+    <a href="landlord-dashboard.html" class="bottom-active">
+        <i class="fa-solid fa-plus"></i>
+        <span>Weka Nyumba</span>
+    </a>
+    <a href="tenant-dashboard.html#zilizohifadhiwa">
+        <i class="fa-regular fa-heart"></i>
+        <span>Zilizohifadhiwa</span>
+    </a>
+    <a href="#" id="navAkaunti">
+        <i class="fa-regular fa-user"></i>
+        <span>Akaunti</span>
+    </a>
+</nav>
+
+
+<!-- DRAWER MENU -->
+<div class="drawer" id="drawerMenu">
+    <div class="drawer-header">
+        <strong>NyumbaKwetu</strong>
+        <button class="drawer-close" id="drawerClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <nav class="drawer-menu">
+        <a href="#"><i class="fa-solid fa-grip"></i><span>Dashibodi</span></a>
+        <a href="#" id="menuNyumbaZanguMobile"><i class="fa-solid fa-house"></i><span>Nyumba Zangu</span></a>
+        <a href="#" class="active"><i class="fa-solid fa-plus"></i><span>Weka Nyumba Mpya</span></a>
+        <a href="#" id="menuMaombiMobile"><i class="fa-regular fa-clipboard"></i><span>Maombi/Requests</span></a>
+        <a href="#" id="menuUjumbeMobile"><i class="fa-regular fa-comment"></i><span>Ujumbe</span></a>
+        <a href="#" id="menuZilizohifadhiwaMobile"><i class="fa-regular fa-heart"></i><span>Zilizohifadhiwa</span></a>
+        <a href="#" id="menuArifaMobile"><i class="fa-regular fa-bell"></i><span>Arifa</span></a>
+        <a href="#" id="menuPayoutsMobile"><i class="fa-regular fa-credit-card"></i><span>Payouts</span></a>
+        <a href="#" id="menuMipangilioMobile"><i class="fa-solid fa-gear"></i><span>Mipangilio</span></a>
+        <a href="#" id="menuMsaadaMobile"><i class="fa-regular fa-circle-question"></i><span>Msaada</span></a>
+        <a href="#" class="logout" id="logoutMobile">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Toka (Logout)</span>
+        </a>
+    </nav>
+</div>
+
+<!-- OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+
+<script src="landlord-dashboard.js"></script>
+
+</body>
+</html>
