@@ -1,6 +1,6 @@
 // property-details.js — NyumbaKwetu (Dynamic kutoka API)
 
-const API_URL = "http://127.0.0.1:5000/api";
+const API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
 document.addEventListener("DOMContentLoaded", function () {
   var params = new URLSearchParams(window.location.search);

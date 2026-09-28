@@ -1,5 +1,5 @@
 // script.js - NyumbaKwetu
-var API_URL = "http://127.0.0.1:5000/api";
+var API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
 var locationInput = document.getElementById("location");
 var houseTypeSelect = document.getElementById("houseType");

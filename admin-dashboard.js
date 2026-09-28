@@ -1,6 +1,6 @@
 // admin-dashboard.js — NyumbaKwetu Admin
 
-var API_URL = "http://127.0.0.1:5000/api";
+var API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
 var nyumbaZote = [];
 var filterYaSasa = "all";

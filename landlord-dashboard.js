@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Inatuma kwa API...", nyumbaData);
 
-    var response = await fetch("http://127.0.0.1:5000/api/properties", {
+    var response = await fetch("https://nyumbakwetu-backend.vercel.app/api/properties", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -316,7 +316,7 @@ async function chukuaNyumbaZangu() {
   // 1. Chukua kutoka API (kama token ipo)
   if (token) {
     try {
-      var response = await fetch("http://127.0.0.1:5000/api/properties/zangu/mimi", {
+      var response = await fetch("https://nyumbakwetu-backend.vercel.app/api/properties/zangu/mimi", {
         headers: {
           "Authorization": "Bearer " + token
         }
@@ -1170,7 +1170,7 @@ async function chukuaMaombi() {
   }
 
   try {
-    var response = await fetch("http://127.0.0.1:5000/api/viewings/nilizopokea", {
+    var response = await fetch("https://nyumbakwetu-backend.vercel.app/api/viewings/nilizopokea", {
       headers: {
         "Authorization": "Bearer " + token
       }
