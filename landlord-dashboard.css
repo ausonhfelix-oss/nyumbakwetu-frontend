@@ -1389,3 +1389,42 @@ textarea:focus {
   }
 }
 
+/* ==========================================
+   PHOTO PREVIEW
+========================================== */
+.house-photo {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 140px;
+    background: #f5f5f5;
+}
+
+.house-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.house-photo .remove-photo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.house-photo .remove-photo:hover {
+    background: #dc2626;
+}

@@ -100,29 +100,13 @@
                 Pakia picha bora na wazi za ndani na nje ya nyumba yako (angalau 3)
             </p>
 
-            <div class="photo-grid">
-                <div class="house-photo">
-                    <img src="Images/house1.jpg" alt="Nyumba">
-                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="house-photo">
-                    <img src="Images/house2.jpg" alt="Nyumba">
-                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="house-photo">
-                    <img src="Images/house3.jpg" alt="Nyumba">
-                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="house-photo">
-                    <img src="Images/house4.jpg" alt="Nyumba">
-                    <button class="remove-photo"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-
-                <label class="upload-photo">
+            <div class="photo-grid" id="photoGrid">
+                <!---picha zitaingizwa hapa na javascript-->
+                <label class="upload-photo" for="propertyImageUpload">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <strong>Ongeza Picha</strong>
                     <small>PNG, JPG (Max 5MB)</small>
-                    <input type="file" id="propertyImageUpload" accept="image/*" multiple>
+                    <input type="file" id="propertyImageUpload" accept="image/*" multiple style="display: none;">
                 </label>
             </div>
         </section>

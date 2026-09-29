@@ -93,58 +93,111 @@ document.addEventListener("DOMContentLoaded", function () {
   // 6. TUMA NYUMBA KWA API
   // ==========================================
   async function hifadhiNyumba(data, hali) {
-    var token = localStorage.getItem("token");
+  var token = localStorage.getItem("token");
 
-    if (!token) {
-      alert("Tafadhali ingia kwanza!");
-      window.location.href = "login.html";
-      return null;
-    }
-
-    var ainaSafi = safishaAina(data.aina);
-
-    var nyumbaData = {
-      jina: ainaSafi + " - " + data.eneo,
-      maelezo: data.maelezo || "Nyumba nzuri",
-      aina: ainaSafi,
-      lengo: data.lengo && data.lengo.indexOf("Kupanga") !== -1 ? "kupanga" : "kuuza",
-      bei: safishaNamba(data.bei),
-      adaService: safishaNamba(data.adaService),
-      amana: safishaNamba(data.amana),
-      mkoa: data.mkoa,
-      wilaya: data.wilaya,
-      eneo: data.eneo,
-      nambaNyumba: data.nambaNyumba || "",
-      vyumba: parseInt(data.vyumba) || 1,
-      sebule: parseInt(data.sebule) || 1,
-      bafu: parseInt(data.bafu) || 1,
-      jikoni: parseInt(data.jikoni) || 1,
-      balcony: parseInt(data.balcony) || 0,
-      parking: data.parking || "Hapana",
-      security: data.security || "Hapana",
-      eneoRamani: data.eneoRamani || ""
-    };
-
-    console.log("Inatuma kwa API...", nyumbaData);
-
-    var response = await fetch("https://nyumbakwetu-backend.vercel.app/api/properties", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-      body: JSON.stringify(nyumbaData)
-    });
-
-    var result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.maelezo || result.kosa || "Imeshindikana kutuma nyumba");
-    }
-
-    console.log("Nyumba imetumwa:", result);
-    return result.nyumba;
+  if (!token) {
+    alert("Tafadhali ingia kwanza!");
+    window.location.href = "login.html";
+    return null;
   }
+
+  // ==========================================
+  // 1. PAKIA PICHA KWANZA (kama zipo)
+  // ==========================================
+  var pichaUrls = [];
+
+  if (typeof uploadedPhotos !== "undefined" && uploadedPhotos.length > 0) {
+    console.log("Inapakia picha " + uploadedPhotos.length + "...");
+
+    // Tuma kila picha kwa backend
+    for (var i = 0; i < uploadedPhotos.length; i++) {
+      try {
+        var photo = uploadedPhotos[i];
+
+        // Convert dataUrl kuwa Blob
+        var blob = await fetch(photo.dataUrl).then(function(r) { return r.blob(); });
+
+        // Tengeneza FormData
+        var formData = new FormData();
+        formData.append("image", blob, photo.name);
+
+        // Tuma kwa API
+        var uploadResponse = await fetch("https://nyumbakwetu-backend.vercel.app/api/upload", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token
+          },
+          body: formData
+        });
+
+        var uploadResult = await uploadResponse.json();
+
+        if (uploadResponse.ok && uploadResult.picha) {
+          pichaUrls.push(uploadResult.picha.url);
+          console.log("Picha " + (i+1) + " imepakiwa:", uploadResult.picha.url);
+        } else {
+          console.error("Picha " + (i+1) + " imeshindikana:", uploadResult.kosa);
+        }
+
+      } catch (err) {
+        console.error("Error pakia picha:", err.message);
+      }
+    }
+
+    console.log("Picha zilizopakiwa:", pichaUrls.length);
+  }
+
+  // ==========================================
+  // 2. TENGA DATA YA NYUMBA
+  // ==========================================
+  var ainaSafi = safishaAina(data.aina);
+
+  var nyumbaData = {
+    jina: ainaSafi + " - " + data.eneo,
+    maelezo: data.maelezo || "Nyumba nzuri",
+    aina: ainaSafi,
+    lengo: data.lengo && data.lengo.indexOf("Kupanga") !== -1 ? "kupanga" : "kuuza",
+    bei: safishaNamba(data.bei),
+    adaService: safishaNamba(data.adaService),
+    amana: safishaNamba(data.amana),
+    mkoa: data.mkoa,
+    wilaya: data.wilaya,
+    eneo: data.eneo,
+    nambaNyumba: data.nambaNyumba || "",
+    vyumba: parseInt(data.vyumba) || 1,
+    sebule: parseInt(data.sebule) || 1,
+    bafu: parseInt(data.bafu) || 1,
+    jikoni: parseInt(data.jikoni) || 1,
+    balcony: parseInt(data.balcony) || 0,
+    parking: data.parking || "Hapana",
+    security: data.security || "Hapana",
+    eneoRamani: data.eneoRamani || "",
+    picha: pichaUrls   // ⬅️ Picha URLs hapa!
+  };
+
+  console.log("Inatuma nyumba kwa API...", nyumbaData);
+
+  // ==========================================
+  // 3. TUMA NYUMBA
+  // ==========================================
+  var response = await fetch("https://nyumbakwetu-backend.vercel.app/api/properties", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify(nyumbaData)
+  });
+
+  var result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.maelezo || result.kosa || "Imeshindikana kutuma nyumba");
+  }
+
+  console.log("Nyumba imetumwa:", result);
+  return result.nyumba;
+}
 
   // ==========================================
   // 7. BUTTON: TUMA KWA ADMIN
@@ -1473,6 +1526,100 @@ if (menuUjumbeMobile) {
 
     onyeshaModalUjumbe();
   });
+}
+
+// ==========================================
+// PHOTO UPLOAD + PREVIEW
+// ==========================================
+var photoGrid = document.getElementById("photoGrid");
+var photoInput = document.getElementById("propertyImageUpload");
+var uploadedPhotos = []; // Hifadhi picha zote
+
+// 1. Mtu akibonyeza "Ongeza Picha"
+if (photoInput) {
+  photoInput.addEventListener("change", function (e) {
+    var files = e.target.files;
+
+    // Kwa kila picha iliyochaguliwa
+    Array.from(files).forEach(function (file) {
+      // Hakiki: picha?
+      if (!file.type.startsWith("image/")) {
+        alert("Faili " + file.name + " si picha!");
+        return;
+      }
+
+      // Hakiki: ukubwa (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Picha " + file.name + " ni kubwa sana (max 5MB)!");
+        return;
+      }
+
+      // Tengeneza URL ya kuonyesha
+      var reader = new FileReader();
+
+      reader.onload = function (event) {
+        var photoData = {
+          id: Date.now() + Math.random(),
+          name: file.name,
+          size: file.size,
+          dataUrl: event.target.result
+        };
+
+        uploadedPhotos.push(photoData);
+        onyeshaPicha(photoData);
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    // Safisha input ili aweze kuongeza tena
+    photoInput.value = "";
+  });
+}
+
+// 2. Onyesha picha kwenye grid
+function onyeshaPicha(photo) {
+  var housePhoto = document.createElement("div");
+  housePhoto.className = "house-photo";
+  housePhoto.setAttribute("data-photo-id", photo.id);
+
+  housePhoto.innerHTML =
+    '<img src="' + photo.dataUrl + '" alt="' + photo.name + '">' +
+    '<button class="remove-photo" onclick="ondoaPicha(' + photo.id + ', this)">' +
+      '<i class="fa-solid fa-xmark"></i>' +
+    '</button>';
+
+  // Ingiza kabla ya kitufe cha "Ongeza Picha"
+  var uploadLabel = photoGrid.querySelector(".upload-photo");
+  photoGrid.insertBefore(housePhoto, uploadLabel);
+}
+
+// 3. Ondoa picha
+window.ondoaPicha = function (photoId, btn) {
+  // Ondoa kutoka array
+  uploadedPhotos = uploadedPhotos.filter(function (p) {
+    return p.id !== photoId;
+  });
+
+  // Ondoa kutoka HTML
+  var housePhoto = btn.closest(".house-photo");
+  if (housePhoto) {
+    housePhoto.style.opacity = "0";
+    housePhoto.style.transform = "scale(0.8)";
+    housePhoto.style.transition = "all 0.2s";
+
+    setTimeout(function () {
+      housePhoto.remove();
+    }, 200);
+  }
+
+  console.log("Picha zilizobaki:", uploadedPhotos.length);
+};
+
+// 4. Onyesha idadi ya picha
+function sasishaIdadiPicha() {
+  // Unaweza kuonyesha idadi kwenye UI baadaye
+  console.log("Jumla ya picha:", uploadedPhotos.length);
 }
   console.log("landlord-dashboard.js imepakiwa!");
 });
