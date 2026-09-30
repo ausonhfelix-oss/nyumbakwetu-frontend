@@ -621,13 +621,13 @@ async function funguaArifa() {
     var html =
       '<div style="background:#e8f5e9;padding:16px;border-radius:12px;margin-bottom:20px;">' +
       '<h3 style="margin:0 0 12px 0;color:#299d38;font-size:16px;">Wasiliana Nasi</h3>' +
-      '<div style="margin-bottom:8px;"><i class="fa-solid fa-phone" style="color:#299d38;"></i> +255 754 123 456</div>' +
-      '<div style="margin-bottom:8px;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> +255 754 123 456</div>' +
-      '<div><i class="fa-solid fa-envelope" style="color:#299d38;"></i> msaada@nyumbakwetu.co.tz</div></div>' +
+      '<div style="margin-bottom:8px;"><i class="fa-solid fa-phone" style="color:#299d38;"></i> +255 710 768 825</div>' +
+      '<div style="margin-bottom:8px;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> +255 710 786 825</div>' +
+      '<div><i class="fa-solid fa-envelope" style="color:#299d38;"></i> ausonhfelix@gmail.com</div></div>' +
       '<h3 style="color:#299d38;font-size:15px;margin-bottom:12px;">Maswali</h3>' +
       '<div style="border-bottom:1px solid #eee;padding:12px 0;"><strong>Jinsi ya kuomba viewing?</strong><p style="margin:6px 0 0 0;color:#666;font-size:13px;">Fungua nyumba — bonyeza Omba Kuiona Nyumba.</p></div>' +
       '<div style="border-bottom:1px solid #eee;padding:12px 0;"><strong>Kuna malipo?</strong><p style="margin:6px 0 0 0;color:#666;font-size:13px;">Kuomba viewing ni bure.</p></div>' +
-      '<a href="https://wa.me/255754123456" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;margin-top:20px;font-weight:600;">' +
+      '<a href="https://wa.me/255710786825" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;margin-top:20px;font-weight:600;">' +
       '<i class="fa-brands fa-whatsapp"></i> Wasiliana WhatsApp</a>';
     tengenezaModal("msaadaModal", "Msaada", html);
   }
