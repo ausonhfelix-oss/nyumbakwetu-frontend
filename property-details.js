@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("ID ya nyumba:", id);
 
   if (!id) {
-    document.body.innerHTML
+    document.body.innerHTML =
       "<div style='padding:40px;text-align:center;'>" +
       "<h1>Hakuna nyumba iliyochaguliwa</h1>" +
       "<a href='index.html'>Rudi Nyumbani</a></div>";
@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+// ==========================================
+// 1. CHUKUA NYUMBA KUTOKA API
+// ==========================================
 async function chukuaNyumba(id) {
   try {
     console.log("Inachukua nyumba...");
@@ -48,19 +51,51 @@ async function chukuaNyumba(id) {
 }
 
 
+// ==========================================
+// 2. ONYESHA NYUMBA (NA SLIDESHOW)
+// ==========================================
 function onyeshaNyumba(n) {
-  // 1. Picha
-  var img = document.querySelector(".property-image-section img");
-  if (img) {
-    var picha = "Images/house1.jpg";
-    if (n.picha && n.picha.length > 0 && n.picha[0]) {
-      picha = n.picha[0];
-    }
-    img.src = picha;
-    img.alt = n.jina;
+  // ==========================================
+  // 1. PICHA - SLIDESHOW
+  // ==========================================
+  var imageSection = document.querySelector(".property-image-section");
+
+  if (imageSection) {
+    // Chukua picha zote
+    var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
+
+    // Futa picha ya zamani (static)
+    var oldImg = imageSection.querySelector("img");
+    if (oldImg) oldImg.remove();
+
+    // Futa slideshow ya zamani (kama ipo)
+    var oldSlideshow = imageSection.querySelector(".slideshow");
+    if (oldSlideshow) oldSlideshow.remove();
+
+    // Tengeneza slideshow mpya
+    var slideshowHtml =
+      '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
+        '<img src="' + pichaZote[0] + '" class="slide-main" alt="' + n.jina + '">' +
+        '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
+        (pichaZote.length > 1 ?
+          '<button class="slide-prev" onclick="badilishaPicha(this, -1)">&#9668;</button>' +
+          '<button class="slide-next" onclick="badilishaPicha(this, 1)">&#9658;</button>'
+          : '') +
+        '<div class="slide-dots">' +
+          pichaZote.map(function(p, i) {
+            return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
+                   'onclick="nendaPicha(this, ' + i + ')"></span>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+
+    // Ingiza slideshow mwanzo wa section
+    imageSection.insertAdjacentHTML("afterbegin", slideshowHtml);
   }
 
-  // 2. Tag
+  // ==========================================
+  // 2. TAG
+  // ==========================================
   var tag = document.querySelector(".property-image-section .property-tag");
   if (tag) {
     var tagText = "KUPANGA";
@@ -71,17 +106,23 @@ function onyeshaNyumba(n) {
     tag.textContent = tagText;
   }
 
-  // 3. Jina
+  // ==========================================
+  // 3. JINA
+  // ==========================================
   var jina = document.querySelector(".property-details h1");
   if (jina) jina.textContent = n.jina;
 
-  // 4. Eneo
+  // ==========================================
+  // 4. ENEO
+  // ==========================================
   var eneo = document.querySelector(".property-location");
   if (eneo) {
     eneo.innerHTML = '<i class="fa-solid fa-location-dot"></i> ' + n.eneo + ", " + n.mkoa;
   }
 
-  // 5. Bei
+  // ==========================================
+  // 5. BEI
+  // ==========================================
   var bei = document.querySelector(".property-price");
   if (bei) {
     var beiText = "TZS " + n.bei.toLocaleString();
@@ -91,7 +132,9 @@ function onyeshaNyumba(n) {
     bei.textContent = beiText;
   }
 
-  // 6. Features
+  // ==========================================
+  // 6. FEATURES
+  // ==========================================
   var features = document.querySelectorAll(".property-features > div");
   if (features.length >= 3) {
     features[0].querySelector("span").textContent = n.vyumba + " Vyumba";
@@ -99,13 +142,17 @@ function onyeshaNyumba(n) {
     features[2].querySelector("span").textContent = n.aina || "Nyumba";
   }
 
-  // 7. Maelezo
+  // ==========================================
+  // 7. MAELEZO
+  // ==========================================
   var maelezo = document.querySelector(".description p");
   if (maelezo) {
     maelezo.textContent = n.maelezo || "Nyumba hii ina mazingira mazuri.";
   }
 
-  // 8. Title
+  // ==========================================
+  // 8. TITLE
+  // ==========================================
   document.title = n.jina + " - NyumbaKwetu";
 
   console.log("Property details zimepakiwa!");
@@ -113,7 +160,44 @@ function onyeshaNyumba(n) {
 
 
 // ==========================================
-// VIEWING FORM
+// 3. SLIDESHOW FUNCTIONS
+// ==========================================
+window.badilishaPicha = function(btn, direction) {
+  var slideshow = btn.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+  var current = parseInt(slideshow.dataset.current) || 0;
+
+  var next = current + direction;
+  if (next < 0) next = images.length - 1;
+  if (next >= images.length) next = 0;
+
+  slideshow.dataset.current = next;
+  slideshow.querySelector(".slide-main").src = images[next];
+  slideshow.querySelector(".slide-counter").textContent = (next + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(dot, i) {
+    dot.classList.toggle("active", i === next);
+  });
+};
+
+window.nendaPicha = function(dot, index) {
+  var slideshow = dot.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+
+  slideshow.dataset.current = index;
+  slideshow.querySelector(".slide-main").src = images[index];
+  slideshow.querySelector(".slide-counter").textContent = (index + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(d, i) {
+    d.classList.toggle("active", i === index);
+  });
+};
+
+
+// ==========================================
+// 4. VIEWING FORM
 // ==========================================
 function anzishaViewingForm(nyumba) {
   var requestBtn = document.getElementById("requestViewingBtn");
