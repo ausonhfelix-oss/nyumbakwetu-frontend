@@ -116,10 +116,33 @@ function onyeshaNyumba() {
 
   nyumbaKuonyesha.forEach(function (n) {
     var id = n["_id"];
-    var picha = "Images/house1.jpg";
-    if (n.picha && n.picha.length > 0 && n.picha[0]) {
-      picha = n.picha[0];
-    }
+    // Chukua picha zote
+var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
+
+html += '<div class="property-admin-card">' +
+  '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
+    // Picha kuu
+    '<img src="' + pichaZote[0] + '" class="slide-main" alt="Nyumba">' +
+    
+    // Counter
+    '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
+    
+    // Vitufe ◄ ►
+    (pichaZote.length > 1 ? 
+      '<button class="slide-prev" onclick="badilishaPicha(this, -1)">◄</button>' +
+      '<button class="slide-next" onclick="badilishaPicha(this, 1)">►</button>'
+      : '') +
+    
+    // Dots
+    '<div class="slide-dots">' +
+      pichaZote.map(function(p, i) {
+        return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
+               'onclick="nendaPicha(this, ' + i + ')"></span>';
+      }).join('') +
+    '</div>' +
+  '</div>' +
+  {}
+   //---
 
     var haliClass = n.hali === "Live" ? "badge-live" : "badge-pending";
     var haliText = n.hali === "Live" ? "Live" : "Inasubiri";
@@ -232,4 +255,53 @@ if (logoutBtnMobile) {
   });
 }
 
+
+// ==========================================
+// SLIDESHOW FUNCTIONS
+// ==========================================
+
+/**
+ * Badilisha picha (◄ au ►)
+ */
+window.badilishaPicha = function(btn, direction) {
+  var slideshow = btn.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+  var current = parseInt(slideshow.dataset.current) || 0;
+  
+  // Hesabu picha inayofuata
+  var next = current + direction;
+  if (next < 0) next = images.length - 1;
+  if (next >= images.length) next = 0;
+  
+  // Sasisha
+  slideshow.dataset.current = next;
+  slideshow.querySelector(".slide-main").src = images[next];
+  slideshow.querySelector(".slide-counter").textContent = (next + 1) + " / " + images.length;
+  
+  // Sasisha dots
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(dot, i) {
+    dot.classList.toggle("active", i === next);
+  });
+};
+
+
+/**
+ * Nenda kwenye picha maalum (dot)
+ */
+window.nendaPicha = function(dot, index) {
+  var slideshow = dot.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+  
+  // Sasisha
+  slideshow.dataset.current = index;
+  slideshow.querySelector(".slide-main").src = images[index];
+  slideshow.querySelector(".slide-counter").textContent = (index + 1) + " / " + images.length;
+  
+  // Sasisha dots
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(d, i) {
+    d.classList.toggle("active", i === index);
+  });
+};
 console.log("admin-dashboard.js imepakiwa!");
