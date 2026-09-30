@@ -8,6 +8,10 @@ var roomsSelect = document.getElementById("rooms");
 var searchButton = document.querySelector(".search-button");
 var propertyList = document.querySelector(".property-list");
 
+
+// ==========================================
+// 1. ONYESHA NYUMBA (NA SLIDESHOW)
+// ==========================================
 function onyeshaNyumba(nyumba) {
   if (!propertyList) return;
 
@@ -24,10 +28,9 @@ function onyeshaNyumba(nyumba) {
   for (var j = 0; j < nyumba.length; j++) {
     var n = nyumba[j];
     var id = n["_id"];
-    var picha = "Images/house1.jpg";
-    if (n.picha && n.picha.length > 0 && n.picha[0]) {
-      picha = n.picha[0];
-    }
+
+    // Chukua picha zote
+    var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
 
     var tag = "KUPANGA";
     var tagClass = "property-tag";
@@ -59,11 +62,28 @@ function onyeshaNyumba(nyumba) {
       };
     })(id);
 
+    // SLIDESHOW HTML
+    var slideshowHtml =
+      '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
+        '<img src="' + pichaZote[0] + '" class="slide-main" alt="' + n.jina + '">' +
+        '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
+        (pichaZote.length > 1 ?
+          '<button class="slide-prev" onclick="event.stopPropagation(); badilishaPicha(this, -1)">&#9668;</button>' +
+          '<button class="slide-next" onclick="event.stopPropagation(); badilishaPicha(this, 1)">&#9658;</button>'
+          : '') +
+        '<div class="slide-dots">' +
+          pichaZote.map(function(p, i) {
+            return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
+                   'onclick="event.stopPropagation(); nendaPicha(this, ' + i + ')"></span>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+
     var html = '';
     html = html + '<div class="property-image">';
-    html = html + '<img src="' + picha + '" alt="' + n.jina + '">';
+    html = html + slideshowHtml;
     html = html + '<span class="' + tagClass + '">' + tag + '</span>';
-    html = html + '<button class="favorite-btn" data-id="' + id + '">';
+    html = html + '<button class="favorite-btn" data-id="' + id + '" onclick="event.stopPropagation();">';
     html = html + '<i class="fa-regular fa-heart"></i>';
     html = html + '</button>';
     html = html + '</div>';
@@ -87,23 +107,36 @@ function onyeshaNyumba(nyumba) {
   anzishaFavorites();
 }
 
-function chukuaNyumba() {
-  fetch(API_URL + "/properties")
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      console.log("Nyumba zimepakiwa:", data.nyumba.length);
-      onyeshaNyumba(data.nyumba);
-    })
-    .catch(function(error) {
-      console.error("Error:", error);
+
+// ==========================================
+// 2. CHUKUA NYUMBA KUTOKA API
+// ==========================================
+async function chukuaNyumba() {
+  try {
+    var response = await fetch(API_URL + "/properties");
+    var data = await response.json();
+
+    if (!data.nyumba || data.nyumba.length === 0) {
       if (propertyList) {
-        propertyList.innerHTML = '<p style="color:red;padding:40px;">Imeshindikana kupata nyumba.</p>';
+        propertyList.innerHTML = '<p style="text-align:center;padding:40px;color:#888;">Hakuna nyumba bado. Weka nyumba yako!</p>';
       }
-    });
+      return;
+    }
+
+    console.log("Nyumba zimepakiwa:", data.nyumba.length);
+    onyeshaNyumba(data.nyumba);
+  } catch (error) {
+    console.error("Error:", error);
+    if (propertyList) {
+      propertyList.innerHTML = '<p style="color:red;padding:40px;">Imeshindikana kupata nyumba.</p>';
+    }
+  }
 }
 
+
+// ==========================================
+// 3. FILTER PROPERTIES
+// ==========================================
 function filterProperties() {
   var location = (locationInput ? locationInput.value : "").toLowerCase().trim();
   var houseType = houseTypeSelect ? houseTypeSelect.value : "";
@@ -147,6 +180,10 @@ function filterProperties() {
   }
 }
 
+
+// ==========================================
+// 4. FAVORITES
+// ==========================================
 function pataFavorites() {
   var saved = localStorage.getItem("nyumbaFavorites");
   return saved ? JSON.parse(saved) : [];
@@ -202,51 +239,56 @@ function anzishaFavorites() {
   }
 }
 
+
+// ==========================================
+// 5. SLIDESHOW FUNCTIONS
+// ==========================================
+window.badilishaPicha = function(btn, direction) {
+  var slideshow = btn.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+  var current = parseInt(slideshow.dataset.current) || 0;
+
+  var next = current + direction;
+  if (next < 0) next = images.length - 1;
+  if (next >= images.length) next = 0;
+
+  slideshow.dataset.current = next;
+  slideshow.querySelector(".slide-main").src = images[next];
+  slideshow.querySelector(".slide-counter").textContent = (next + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(dot, i) {
+    dot.classList.toggle("active", i === next);
+  });
+};
+
+window.nendaPicha = function(dot, index) {
+  var slideshow = dot.closest(".slideshow");
+  var images = JSON.parse(slideshow.dataset.images);
+
+  slideshow.dataset.current = index;
+  slideshow.querySelector(".slide-main").src = images[index];
+  slideshow.querySelector(".slide-counter").textContent = (index + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  dots.forEach(function(d, i) {
+    d.classList.toggle("active", i === index);
+  });
+};
+
+
+// ==========================================
+// 6. NAVIGATION
+// ==========================================
 if (searchButton) searchButton.addEventListener("click", filterProperties);
 if (locationInput) locationInput.addEventListener("input", filterProperties);
 if (houseTypeSelect) houseTypeSelect.addEventListener("change", filterProperties);
 if (priceSelect) priceSelect.addEventListener("change", filterProperties);
 if (roomsSelect) roomsSelect.addEventListener("change", filterProperties);
 
-document.addEventListener("DOMContentLoaded", function() {
-  chukuaNyumba();
-});
-
 
 // ==========================================
-// NAVIGATION: AKAUNTI (inategemea aina)
-// ==========================================
-document.addEventListener("DOMContentLoaded", function () {
-  var navAkaunti = document.getElementById("navAkaunti");
-
-  if (navAkaunti) {
-    navAkaunti.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      var mtumiajiStr = localStorage.getItem("mtumiaji");
-
-      // Kama hajaingia — nenda login
-      if (!mtumiajiStr) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      var mtumiaji = JSON.parse(mtumiajiStr);
-
-      // Peleka kwenye dashboard sahihi
-      if (mtumiaji.aina === "admin") {
-        window.location.href = "admin-dashboard.html";
-      } else if (mtumiaji.aina === "landlord") {
-        window.location.href = "landlord-dashboard.html";
-      } else {
-        window.location.href = "tenant-dashboard.html";
-      }
-    });
-  }
-});
-
-// ==========================================
-// NAVIGATION: Akaunti (Header)
+// 7. NAVIGATION: Akaunti (Header)
 // ==========================================
 document.addEventListener("DOMContentLoaded", function () {
   var headerAkaunti = document.getElementById("headerAkaunti");
@@ -254,71 +296,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (headerAkaunti) {
     headerAkaunti.addEventListener("click", function () {
       var mtumiajiStr = localStorage.getItem("mtumiaji");
-
       if (!mtumiajiStr) {
         window.location.href = "login.html";
         return;
       }
-
       var mtumiaji = JSON.parse(mtumiajiStr);
-
-      if (mtumiaji.aina === "admin") {
-        window.location.href = "admin-dashboard.html";
-      } else if (mtumiaji.aina === "landlord") {
-        window.location.href = "landlord-dashboard.html";
-      } else {
-        window.location.href = "tenant-dashboard.html";
-      }
-    });
-  }
-});
-
-// ==========================================
-// NAVIGATION: Zilizohifadhiwa
-// ==========================================
-var navZilizohifadhiwa = document.querySelector('.mobile-bottom-nav a:nth-child(4)');
-
-if (navZilizohifadhiwa) {
-  navZilizohifadhiwa.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    var mtumiajiStr = localStorage.getItem("mtumiaji");
-
-    if (!mtumiajiStr) {
-      alert("Tafadhali ingia kwanza kuona favourites!");
-      window.location.href = "login.html";
-      return;
-    }
-
-    window.location.href = "tenant-dashboard.html#zilizohifadhiwa";
-  });
-}
-
-// ==========================================
-// NAVIGATION: Akaunti (Mobile Bottom Nav)
-// ==========================================
-document.addEventListener("DOMContentLoaded", function () {
-  // Tafuta kitufe cha Akaunti kwenye mobile-bottom-nav
-  var mobileNavLinks = document.querySelectorAll(".mobile-bottom-nav a");
-
-  // Kitufe cha 5 (mwisho) ni Akaunti
-  if (mobileNavLinks.length >= 5) {
-    var akauntiBtn = mobileNavLinks[4]; // Index 4 = kitufe cha 5
-
-    akauntiBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      var mtumiajiStr = localStorage.getItem("mtumiaji");
-
-      // Kama hajaingia - nenda login
-      if (!mtumiajiStr) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      var mtumiaji = JSON.parse(mtumiajiStr);
-
-      // Peleka kwenye dashboard sahihi
       if (mtumiaji.aina === "admin") {
         window.location.href = "admin-dashboard.html";
       } else if (mtumiaji.aina === "landlord") {
@@ -332,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ==========================================
-// NAVIGATION: Tafuta (scroll to search)
+// 8. NAVIGATION: Tafuta
 // ==========================================
 var navTafuta = document.getElementById("navTafuta");
 if (navTafuta) {
@@ -349,43 +331,36 @@ if (navTafuta) {
 
 
 // ==========================================
-// NAVIGATION: Zilizohifadhiwa
+// 9. NAVIGATION: Zilizohifadhiwa
 // ==========================================
 var navZilizohifadhiwa = document.getElementById("navZilizohifadhiwa");
 if (navZilizohifadhiwa) {
   navZilizohifadhiwa.addEventListener("click", function (e) {
     e.preventDefault();
-
     var mtumiajiStr = localStorage.getItem("mtumiaji");
-
     if (!mtumiajiStr) {
       alert("Tafadhali ingia kwanza kuona favourites!");
       window.location.href = "login.html";
       return;
     }
-
     window.location.href = "tenant-dashboard.html#zilizohifadhiwa";
   });
 }
 
 
 // ==========================================
-// NAVIGATION: Akaunti (inategemea aina)
+// 10. NAVIGATION: Akaunti (Mobile)
 // ==========================================
 var navAkaunti = document.getElementById("navAkaunti");
 if (navAkaunti) {
   navAkaunti.addEventListener("click", function (e) {
     e.preventDefault();
-
     var mtumiajiStr = localStorage.getItem("mtumiaji");
-
     if (!mtumiajiStr) {
       window.location.href = "login.html";
       return;
     }
-
     var mtumiaji = JSON.parse(mtumiajiStr);
-
     if (mtumiaji.aina === "admin") {
       window.location.href = "admin-dashboard.html";
     } else if (mtumiaji.aina === "landlord") {
@@ -398,49 +373,33 @@ if (navAkaunti) {
 
 
 // ==========================================
-// NAVIGATION: Weka Nyumba (check login)
+// 11. NAVIGATION: Weka Nyumba
 // ==========================================
 var navWekaNyumba = document.querySelector(".mobile-bottom-nav .add-button");
 if (navWekaNyumba) {
   navWekaNyumba.addEventListener("click", function (e) {
     var mtumiajiStr = localStorage.getItem("mtumiaji");
-
     if (!mtumiajiStr) {
       e.preventDefault();
       alert("Tafadhali ingia kwanza kuweka nyumba!");
       window.location.href = "login.html";
       return;
     }
-
     var mtumiaji = JSON.parse(mtumiajiStr);
-
-    // Kama ni tenant - hawezi kuweka nyumba
     if (mtumiaji.aina === "tenant") {
       e.preventDefault();
-      alert("Wewe ni Mpangaji. Huna ruhusa kuweka nyumba.\n\nKama unataka kuwa Mpangishaji, wasiliana nasi.");
+      alert("Wewe ni Mpangaji. Huna ruhusa kuweka nyumba.");
       return;
     }
-
-    // Landlord au Admin - endelea
-    // Link inapeleka landlord-dashboard.html
   });
 }
 
-async function chukuaNyumba() {
-  try {
-    var response = await fetch(API_URL + "/properties");
-    var data = await response.json();
-    
-    if (data.nyumba.length === 0) {
-      // Hakuna nyumba
-      document.getElementById("orodhaYaNyumba").innerHTML = 
-        "<p>Hakuna nyumba bado. Weka nyumba yako!</p>";
-      return;
-    }
-    
-    onyeshaNyumba(data.nyumba);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+
+// ==========================================
+// 12. ANZISHA
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+  chukuaNyumba();
+});
+
 console.log("script.js imepakiwa!");
