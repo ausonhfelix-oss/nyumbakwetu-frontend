@@ -425,4 +425,22 @@ if (navWekaNyumba) {
     // Link inapeleka landlord-dashboard.html
   });
 }
+
+async function chukuaNyumba() {
+  try {
+    var response = await fetch(API_URL + "/properties");
+    var data = await response.json();
+    
+    if (data.nyumba.length === 0) {
+      // Hakuna nyumba
+      document.getElementById("orodhaYaNyumba").innerHTML = 
+        "<p>Hakuna nyumba bado. Weka nyumba yako!</p>";
+      return;
+    }
+    
+    onyeshaNyumba(data.nyumba);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 console.log("script.js imepakiwa!");
