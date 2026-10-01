@@ -87,6 +87,7 @@ body {
 
 .property-tag {
     position: absolute;
+    z-index: 10;
 
     left: 15px;
     bottom: 15px;
