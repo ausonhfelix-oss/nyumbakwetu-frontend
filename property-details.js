@@ -218,22 +218,56 @@ window.nendaPicha = function(dot, index) {
 
 
 // ==========================================
-// 4. VIEWING FORM
+// 4. VIEWING FORM (Inahitaji Login)
 // ==========================================
 function anzishaViewingForm(nyumba) {
   var requestBtn = document.getElementById("requestViewingBtn");
   var viewingForm = document.getElementById("viewingForm");
   var submitBtn = document.getElementById("submitViewing");
 
-  // 1. Bonyeza button → onyesha/ficha form
+  // 1. Bonyeza button → angalia login kwanza
   if (requestBtn && viewingForm) {
     requestBtn.addEventListener("click", function () {
+      // ==========================================
+      // ANGALIA KAMA MTUMIAJI AMEINGIA
+      // ==========================================
+      var mtumiajiStr = localStorage.getItem("mtumiaji");
+
+      if (!mtumiajiStr) {
+        // Hajaingia — mwambie aingie
+        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba.\n\nItakuchukua sekunde 30 tu!");
+        window.location.href = "login.html";
+        return;
+      }
+
+      var mtumiaji = JSON.parse(mtumiajiStr);
+
+      // Kama ni landlord — hawezi kuomba viewing yake mwenyewe
+      if (mtumiaji.aina === "landlord" || mtumiaji.aina === "admin") {
+        alert("Wewe ni Mpangishaji. Huna uwezo wa kuomba viewing.\n\nTafuta nyumba kama Mpangaji.");
+        return;
+      }
+
+      // ==========================================
+      // AMEINGIA — fungua form
+      // ==========================================
       if (viewingForm.style.display === "block") {
         viewingForm.style.display = "none";
         requestBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Omba Kuiona Nyumba';
       } else {
         viewingForm.style.display = "block";
         requestBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Funga Fomu';
+
+        // Jaza jina na simu kama zipo
+        var jina = document.getElementById("viewerName");
+        var simu = document.getElementById("viewerPhone");
+
+        if (jina && !jina.value && mtumiaji.jina) {
+          jina.value = mtumiaji.jina;
+        }
+        if (simu && !simu.value && mtumiaji.simu) {
+          simu.value = mtumiaji.simu;
+        }
       }
     });
   }
@@ -242,6 +276,15 @@ function anzishaViewingForm(nyumba) {
   if (submitBtn) {
     submitBtn.addEventListener("click", function (e) {
       e.preventDefault();
+
+      var mtumiajiStr = localStorage.getItem("mtumiaji");
+      if (!mtumiajiStr) {
+        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba. \n\nItakuchukua sekunde 30 tu!");
+        window.location.href = "login.html";
+        return;
+      }
+
+      var mtumiaji = JSON.parse(mtumiajiStr);
 
       var jina = document.getElementById("viewerName").value.trim();
       var simu = document.getElementById("viewerPhone").value.trim();
@@ -257,6 +300,8 @@ function anzishaViewingForm(nyumba) {
         id: Date.now(),
         nyumbaId: nyumba["_id"],
         nyumbaJina: nyumba.jina,
+        mtumiajiId: mtumiaji.id,           // ⬅️ Muhimu!
+        mtumiajiEmail: mtumiaji.email,     // ⬅️ Muhimu!
         jina: jina,
         simu: simu,
         tarehe: tarehe,
@@ -282,5 +327,4 @@ function anzishaViewingForm(nyumba) {
     });
   }
 }
-
 console.log("property-details.js imepakiwa!");

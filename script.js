@@ -339,7 +339,7 @@ if (navZilizohifadhiwa) {
     e.preventDefault();
     var mtumiajiStr = localStorage.getItem("mtumiaji");
     if (!mtumiajiStr) {
-      alert("Tafadhali ingia kwanza kuona favourites!");
+      
       window.location.href = "login.html";
       return;
     }
