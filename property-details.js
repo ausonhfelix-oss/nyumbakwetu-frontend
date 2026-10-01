@@ -55,43 +55,64 @@ async function chukuaNyumba(id) {
 // 2. ONYESHA NYUMBA (NA SLIDESHOW)
 // ==========================================
 function onyeshaNyumba(n) {
+  console.log("=== ONYESHA NYUMBA ===");
+  console.log("Jina la nyumba:", n.jina);
+  console.log("Picha zilizopokelewa:", n.picha);
+  
   // ==========================================
   // 1. PICHA - SLIDESHOW
   // ==========================================
   var imageSection = document.querySelector(".property-image-section");
-
-  if (imageSection) {
-    // Chukua picha zote
-    var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
-
-    // Futa picha ya zamani (static)
-    var oldImg = imageSection.querySelector("img");
-    if (oldImg) oldImg.remove();
-
-    // Futa slideshow ya zamani (kama ipo)
-    var oldSlideshow = imageSection.querySelector(".slideshow");
-    if (oldSlideshow) oldSlideshow.remove();
-
-    // Tengeneza slideshow mpya
-    var slideshowHtml =
-      '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
-        '<img src="' + pichaZote[0] + '" class="slide-main" alt="' + n.jina + '">' +
-        '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
-        (pichaZote.length > 1 ?
-          '<button class="slide-prev" onclick="badilishaPicha(this, -1)">&#9668;</button>' +
-          '<button class="slide-next" onclick="badilishaPicha(this, 1)">&#9658;</button>'
-          : '') +
-        '<div class="slide-dots">' +
-          pichaZote.map(function(p, i) {
-            return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
-                   'onclick="nendaPicha(this, ' + i + ')"></span>';
-          }).join('') +
-        '</div>' +
-      '</div>';
-
-    // Ingiza slideshow mwanzo wa section
-    imageSection.insertAdjacentHTML("afterbegin", slideshowHtml);
+  
+  console.log("Image section ipo?", imageSection ? "NDIO" : "HAPANA");
+  
+  if (!imageSection) {
+    console.error("KOSA: .property-image-section haipatikani!");
+    return;
   }
+
+  // Chukua picha zote
+  var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
+  console.log("Picha zote:", pichaZote);
+
+  // Futa picha ya zamani (static)
+  var oldImg = imageSection.querySelector("img");
+  if (oldImg) {
+    console.log("Picha ya zamani imepatikana - inafutwa");
+    oldImg.remove();
+  }
+
+  // Futa slideshow ya zamani (kama ipo)
+  var oldSlideshow = imageSection.querySelector(".slideshow");
+  if (oldSlideshow) {
+    console.log("Slideshow ya zamani imepatikana - inafutwa");
+    oldSlideshow.remove();
+  }
+
+  // Tengeneza slideshow mpya
+  var slideshowHtml =
+    '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
+      '<img src="' + pichaZote[0] + '" class="slide-main" alt="' + n.jina + '">' +
+      '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
+      (pichaZote.length > 1 ?
+        '<button class="slide-prev" onclick="badilishaPicha(this, -1)">&#9668;</button>' +
+        '<button class="slide-next" onclick="badilishaPicha(this, 1)">&#9658;</button>'
+        : '') +
+      '<div class="slide-dots">' +
+        pichaZote.map(function(p, i) {
+          return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
+                 'onclick="nendaPicha(this, ' + i + ')"></span>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+
+  // Ingiza slideshow mwanzo wa section
+  imageSection.insertAdjacentHTML("afterbegin", slideshowHtml);
+  
+  // Angalia kama imeingizwa
+  var newSlideshow = imageSection.querySelector(".slideshow");
+  console.log("Slideshow imeingizwa?", newSlideshow ? "NDIO" : "HAPANA");
+  console.log("=== MWISHO ONYESHA NYUMBA ===");
 
   // ==========================================
   // 2. TAG
