@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     headerAkaunti.addEventListener("click", function () {
       var mtumiajiStr = localStorage.getItem("mtumiaji");
       if (!mtumiajiStr) {
-        window.location.href = "login.html";
+      //  window.location.href = "login.html";
         return;
       }
       var mtumiaji = JSON.parse(mtumiajiStr);
