@@ -388,7 +388,7 @@ if (navWekaNyumba) {
     var mtumiaji = JSON.parse(mtumiajiStr);
     if (mtumiaji.aina === "tenant") {
       e.preventDefault();
-      alert("Wewe ni Mpangaji. Huna ruhusa kuweka nyumba.");
+      alert("Wewe ni Mpangaji. Tafadhali jisajili kama mpangishaji(landlord).");
       return;
     }
   });
