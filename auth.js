@@ -59,7 +59,7 @@ if (signupForm) {
 } else if (data.mtumiaji.aina === "landlord") {
   window.location.href = "landlord-dashboard.html";
 } else {
-  window.location.href = "tenant-dashboard.html";
+ // window.location.href = "tenant-dashboard.html";
 }
       }, 1500);
 
