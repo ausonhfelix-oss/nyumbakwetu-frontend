@@ -128,6 +128,18 @@ if (loginForm) {
   });
 }
 
+
+
+
+// Baada ya localStorage.setItem("mtumiaji", JSON.stringify(data.mtumiaji));
+var params = new URLSearchParams(window.location.search);
+var redirectUrl = params.get("redirect");
+if (redirectUrl) {
+  window.location.href = redirectUrl;
+  return;
+}
+// endelea na code yako ya kawaida ya kupeleka dashboard
+
 // ============================================
 // KAZI YA KUONYESHA MESSAGE
 // ============================================
