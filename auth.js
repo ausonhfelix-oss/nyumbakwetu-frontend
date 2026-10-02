@@ -5,6 +5,30 @@
 // ============================================
 const API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
+
+// ============================================
+// ⭐ FUNCTION MPYA: RUDI ALIKOTOKA AU DASHBOARD
+// ============================================
+function endaBaadaYaAuth(mtumiaji) {
+    // 1) Kama alikuwa ameomba kuona nyumba kabla ya login → mrudishe hapo
+    const baadaYaLogin = localStorage.getItem("baadaYaLogin");
+    if (baadaYaLogin) {
+        localStorage.removeItem("baadaYaLogin");
+        window.location.href = baadaYaLogin;
+        return;
+    }
+
+    // 2) Kama hapakuwa na redirect → nenda dashboard
+    if (mtumiaji.aina === "admin") {
+        window.location.href = "admin-dashboard.html";
+    } else if (mtumiaji.aina === "landlord") {
+        window.location.href = "landlord-dashboard.html";
+    } else {
+        window.location.href = "tenant-dashboard.html";
+    }
+}
+
+
 // ============================================
 // SIGNUP FORM
 // ============================================
@@ -52,15 +76,9 @@ if (signupForm) {
 
       onyeshaMessage("Usajili umefanikiwa! Tunakupeleka...", "success");
 
-      // Nenda dashboard
+      // ⭐ BADILIKO: Tumia function mpya badala ya if/else ya awali
       setTimeout(() => {
-       if (data.mtumiaji.aina === "admin") {
-  window.location.href = "admin-dashboard.html";
-} else if (data.mtumiaji.aina === "landlord") {
- window.location.href = "landlord-dashboard.html";
-} else {
-  window.location.href = "tenant-dashboard.html";
-}
+        endaBaadaYaAuth(data.mtumiaji);
       }, 1500);
 
     } catch (error) {
@@ -70,6 +88,7 @@ if (signupForm) {
     }
   });
 }
+
 
 // ============================================
 // LOGIN FORM
@@ -109,15 +128,9 @@ if (loginForm) {
 
       onyeshaMessage("Kuingia kumefanikiwa! Tunakupeleka...", "success");
 
-      // Nenda dashboard
+      // ⭐ BADILIKO: Tumia function mpya badala ya if/else ya awali
       setTimeout(() => {
-       if (data.mtumiaji.aina === "admin") {
-  window.location.href = "admin-dashboard.html";
-} else if (data.mtumiaji.aina === "landlord") {
-  window.location.href = "landlord-dashboard.html";
-} else {
-  window.location.href = "tenant-dashboard.html";
-}
+        endaBaadaYaAuth(data.mtumiaji);
       }, 1500);
 
     } catch (error) {
@@ -127,6 +140,7 @@ if (loginForm) {
     }
   });
 }
+
 
 // ============================================
 // KAZI YA KUONYESHA MESSAGE
