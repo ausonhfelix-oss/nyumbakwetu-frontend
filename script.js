@@ -287,7 +287,7 @@ if (priceSelect) priceSelect.addEventListener("change", filterProperties);
 if (roomsSelect) roomsSelect.addEventListener("change", filterProperties);
 
 
- // ==========================================
+// ==========================================
 // 7. NAVIGATION: Akaunti (Header)
 // ==========================================
 document.addEventListener("DOMContentLoaded", function () {
@@ -297,8 +297,6 @@ document.addEventListener("DOMContentLoaded", function () {
     headerAkaunti.addEventListener("click", function () {
       var mtumiajiStr = localStorage.getItem("mtumiaji");
       if (!mtumiajiStr) {
-        // ⭐ KIPYA: kumbuka alikotoka
-        localStorage.setItem("baadaYaLogin", window.location.href);
         window.location.href = "login.html";
         return;
       }
@@ -313,6 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
 
 // ==========================================
 // 8. NAVIGATION: Tafuta
@@ -330,7 +329,8 @@ if (navTafuta) {
   });
 }
 
- // ==========================================
+
+// ==========================================
 // 9. NAVIGATION: Zilizohifadhiwa
 // ==========================================
 var navZilizohifadhiwa = document.getElementById("navZilizohifadhiwa");
@@ -339,22 +339,13 @@ if (navZilizohifadhiwa) {
     e.preventDefault();
     var mtumiajiStr = localStorage.getItem("mtumiaji");
     if (!mtumiajiStr) {
-      // ⭐ KIPYA: Guest anaona zilizohifadhiwa kwa localStorage
-      window.location.href = "zilizohifadhiwa.html";
+      
+      window.location.href = "login.html";
       return;
     }
-    var mtumiaji = JSON.parse(mtumiajiStr);
-    if (mtumiaji.aina === "tenant") {
-      window.location.href = "tenant-dashboard.html#zilizohifadhiwa";
-    } else if (mtumiaji.aina === "landlord") {
-      window.location.href = "landlord-dashboard.html";
-    } else {
-      window.location.href = "admin-dashboard.html";
-    }
+    window.location.href = "tenant-dashboard.html#zilizohifadhiwa";
   });
 }
-
-
 
 
 // ==========================================
@@ -390,20 +381,19 @@ if (navWekaNyumba) {
     var mtumiajiStr = localStorage.getItem("mtumiaji");
     if (!mtumiajiStr) {
       e.preventDefault();
-      alert("Tafadhali ingia kama Mpangishaji kuweka nyumba!");
-      // ⭐ KIPYA: kumbuka anataka kwenda landlord
-      localStorage.setItem("baadaYaLogin", "landlord-dashboard.html");
+      alert("Tafadhali ingia kwanza kuweka nyumba!");
       window.location.href = "login.html";
       return;
     }
     var mtumiaji = JSON.parse(mtumiajiStr);
     if (mtumiaji.aina === "tenant") {
       e.preventDefault();
-      alert("Wewe ni Mpangaji. Weka nyumba inahitaji akaunti ya Mpangishaji.");
+      alert("Wewe ni Mpangaji. Huna ruhusa kuweka nyumba.");
       return;
     }
   });
 }
+
 
 // ==========================================
 // 12. ANZISHA
@@ -411,33 +401,5 @@ if (navWekaNyumba) {
 document.addEventListener("DOMContentLoaded", function() {
   chukuaNyumba();
 });
-
-// ==========================================
-// 13. SASISHA HEADER (onyesha jina la mtumiaji)
-// ==========================================
-function sasishaHeader() {
-  var mtumiajiStr = localStorage.getItem("mtumiaji");
-  var jinaSpan = document.getElementById("jinaLaMtumiaji");
-  var chevron = document.getElementById("chevronAkaunti");
-  var avatarIcon = document.querySelector("#headerAkaunti .user-avatar i");
-
-  if (mtumiajiStr) {
-    try {
-      var m = JSON.parse(mtumiajiStr);
-      if (jinaSpan) jinaSpan.textContent = m.jina || "Mtumiaji";
-      if (chevron) chevron.style.display = "";
-      if (avatarIcon) {
-        if (m.aina === "landlord") avatarIcon.className = "fa-solid fa-user-tie";
-        else if (m.aina === "admin") avatarIcon.className = "fa-solid fa-user-shield";
-        else avatarIcon.className = "fa-solid fa-user";
-      }
-    } catch (e) {}
-  } else {
-    if (jinaSpan) jinaSpan.textContent = "Ingia";
-    if (chevron) chevron.style.display = "none";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", sasishaHeader);
 
 console.log("script.js imepakiwa!");
