@@ -61,41 +61,65 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function onyeshaNyumba(nyumba) {
-    var container = document.getElementById("orodhaYaNyumba");
-    if (!container) return;
+  var container = document.getElementById("orodhaYaNyumba");
+  if (!container) return;
 
-    if (nyumba.length === 0) {
-      container.innerHTML = "<p style='padding:20px; color:#888;'>Hakuna nyumba.</p>";
-      return;
-    }
-
-    var html = "";
-    nyumba.slice(0, 4).forEach(function (n) {
-      var picha = (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg";
-      var bei = "TZS " + (n.bei || 0).toLocaleString() + " / mwezi";
-
-      html +=
-        '<article class="house-card" onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'" style="cursor:pointer;">' +
-          '<div class="house-image">' +
-            '<img src="' + picha + '" alt="' + n.jina + '">' +
-            '<span class="new-label">MPYA</span>' +
-            '<button class="favorite" onclick="event.stopPropagation(); toggleFavorite(\'' + n["_id"] + '\', this)">' +
-              '<i class="fa-regular fa-heart"></i>' +
-            '</button>' +
-          '</div>' +
-          '<div class="house-info">' +
-            '<h4>' + n.jina + '</h4>' +
-            '<p class="location"><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
-            '<strong class="price">' + bei + '</strong>' +
-            '<div class="house-features">' +
-              '<span><i class="fa-solid fa-bed"></i> ' + (n.vyumba || 0) + ' Vyumba</span>' +
-              '<span><i class="fa-solid fa-bath"></i> ' + (n.bafu || 0) + ' Bafu</span>' +
-            '</div>' +
-          '</div>' +
-        '</article>';
-    });
-    container.innerHTML = html;
+  if (nyumba.length === 0) {
+    container.innerHTML = "<p style='padding:20px; color:#888;'>Hakuna nyumba.</p>";
+    return;
   }
+
+  var html = "";
+  nyumba.slice(0, 4).forEach(function (n) {
+    // ⭐ CHUKUA PICHA ZOTE (sio moja tu)
+    var pichaZote = (n.picha && n.picha.length > 0)
+      ? n.picha
+      : ["Images/house1.jpg"];
+
+    var bei = "TZS " + (n.bei || 0).toLocaleString() + " / mwezi";
+
+    // ⭐ TENGENEZA SLIDESHOW HTML
+    var slideshowHtml =
+      '<div class="slideshow" data-current="0" data-images=\'' +
+        JSON.stringify(pichaZote) + '\'>' +
+        '<img src="' + pichaZote[0] + '" class="slide-main" alt="' + n.jina + '">' +
+        '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
+        (pichaZote.length > 1
+          ? '<button class="slide-prev" onclick="event.stopPropagation(); badilishaPicha(this, -1)">&#9668;</button>' +
+            '<button class="slide-next" onclick="event.stopPropagation(); badilishaPicha(this, 1)">&#9658;</button>'
+          : '') +
+        (pichaZote.length > 1
+          ? '<div class="slide-dots">' +
+              pichaZote.map(function (p, i) {
+                return '<span class="dot' + (i === 0 ? ' active' : '') +
+                  '" onclick="event.stopPropagation(); nendaPicha(this, ' + i + ')"></span>';
+              }).join('') +
+            '</div>'
+          : '') +
+      '</div>';
+
+    html +=
+      '<article class="house-card" onclick="window.location.href=\'property-details.html?id=' + n["_id"] + '\'" style="cursor:pointer;">' +
+        '<div class="house-image">' +
+          slideshowHtml +   // ← slideshow badala ya picha moja
+          '<span class="new-label">MPYA</span>' +
+          '<button class="favorite" onclick="event.stopPropagation(); toggleFavorite(\'' + n["_id"] + '\', this)">' +
+            '<i class="fa-regular fa-heart"></i>' +
+          '</button>' +
+        '</div>' +
+        '<div class="house-info">' +
+          '<h4>' + n.jina + '</h4>' +
+          '<p class="location"><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
+          '<strong class="price">' + bei + '</strong>' +
+          '<div class="house-features">' +
+            '<span><i class="fa-solid fa-bed"></i> ' + (n.vyumba || 0) + ' Vyumba</span>' +
+            '<span><i class="fa-solid fa-bath"></i> ' + (n.bafu || 0) + ' Bafu</span>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  });
+  container.innerHTML = html;
+}
 
   // FAVORITES
   window.toggleFavorite = function (id, btn) {
@@ -695,5 +719,47 @@ async function funguaArifa() {
   sasishaSaved();
   sasishaViewings();
 
+
+  // ==========================================
+// SLIDESHOW FUNCTIONS
+// ==========================================
+window.badilishaPicha = function (btn, direction) {
+  var slideshow = btn.closest(".slideshow");
+  if (!slideshow) return;
+
+  var images = JSON.parse(slideshow.dataset.images);
+  var current = parseInt(slideshow.dataset.current) || 0;
+
+  var next = current + direction;
+  if (next < 0) next = images.length - 1;
+  if (next >= images.length) next = 0;
+
+  slideshow.dataset.current = next;
+  slideshow.querySelector(".slide-main").src = images[next];
+  slideshow.querySelector(".slide-counter").textContent =
+    (next + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle("active", i === next);
+  }
+};
+
+window.nendaPicha = function (dot, index) {
+  var slideshow = dot.closest(".slideshow");
+  if (!slideshow) return;
+
+  var images = JSON.parse(slideshow.dataset.images);
+
+  slideshow.dataset.current = index;
+  slideshow.querySelector(".slide-main").src = images[index];
+  slideshow.querySelector(".slide-counter").textContent =
+    (index + 1) + " / " + images.length;
+
+  var dots = slideshow.querySelectorAll(".dot");
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle("active", i === index);
+  }
+};
   console.log("tenant-dashboard.js imepakiwa!");
 });
