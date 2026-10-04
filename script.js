@@ -340,7 +340,7 @@ if (navZilizohifadhiwa) {
     var mtumiajiStr = localStorage.getItem("mtumiaji");
     if (!mtumiajiStr) {
       
-     // window.location.href = "login.html";
+      window.location.href = "login.html";
       return;
     }
     window.location.href = "tenant-dashboard.html#zilizohifadhiwa";
@@ -357,7 +357,7 @@ if (navAkaunti) {
     e.preventDefault();
     var mtumiajiStr = localStorage.getItem("mtumiaji");
     if (!mtumiajiStr) {
-     // window.location.href = "login.html";
+      window.location.href = "login.html";
       return;
     }
     var mtumiaji = JSON.parse(mtumiajiStr);
@@ -382,7 +382,7 @@ if (navWekaNyumba) {
     if (!mtumiajiStr) {
       e.preventDefault();
       alert("Tafadhali ingia kwanza kuweka nyumba!");
-     // window.location.href = "login.html";
+      window.location.href = "login.html";
       return;
     }
     var mtumiaji = JSON.parse(mtumiajiStr);
