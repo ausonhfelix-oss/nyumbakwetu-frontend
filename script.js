@@ -389,6 +389,7 @@ if (navWekaNyumba) {
     if (mtumiaji.aina === "tenant") {
       e.preventDefault();
       alert("Wewe ni Mpangaji. samahani jisajili kama mpangishaji.");
+      window.location.href = "login.html";
       return;
     }
   });
