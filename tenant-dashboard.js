@@ -311,25 +311,157 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // MAOMBI/VIEWING
-  function funguaMaombi() {
-    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-    if (maombi.length === 0) {
-      tengenezaModal("maombiModal", "Maombi ya Viewing",
-        "<p style='text-align:center;padding:40px;color:#888;'>Hakuna maombi bado.</p>");
+  // ==========================================
+// MODAL: MAOMBI (Kutoka Backend)
+// ==========================================
+async function funguaMaombi() {
+  var existing = document.getElementById("maombiModal");
+  if (existing) existing.remove();
+
+  var modal = document.createElement("div");
+  modal.id = "maombiModal";
+  modal.style.cssText =
+    "position:fixed;top:0;left:0;width:100%;height:100%;" +
+    "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
+    "align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;";
+
+  modal.innerHTML =
+    '<div style="background:white;border-radius:16px;max-width:650px;' +
+    'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+        '<h2 style="margin:0;color:#299d38;">Maombi Yangu ya Viewing</h2>' +
+        '<button onclick="document.getElementById(\'maombiModal\').remove()" ' +
+        'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
+      '</div>' +
+      '<div id="maombiOrodha">' +
+        '<p style="text-align:center;padding:40px;color:#888;">Inapakia maombi...</p>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  // ==========================================
+  // CHUKUA MAOMBI KUTOKA BACKEND
+  // ==========================================
+  try {
+    var token = localStorage.getItem("token");
+
+    if (!token) {
+      document.getElementById("maombiOrodha").innerHTML =
+        '<p style="text-align:center;padding:40px;color:red;">Tafadhali ingia kwanza.</p>';
       return;
     }
 
-    var html = "";
-    maombi.slice().reverse().forEach(function (ombi) {
-      html +=
-        '<div style="padding:14px;margin-bottom:10px;background:#f9f9f9;border-radius:12px;border-left:4px solid #f59e0b;">' +
-        '<h4 style="margin:0 0 6px 0;color:#299d38;">' + (ombi.nyumbaJina || "Nyumba") + '</h4>' +
-        '<p style="margin:3px 0;color:#666;font-size:13px;"><i class="fa-solid fa-user"></i> ' + (ombi.jina || "") + '</p>' +
-        '<p style="margin:3px 0;color:#666;font-size:13px;"><i class="fa-regular fa-calendar"></i> ' + (ombi.tarehe || "") + ' - ' + (ombi.muda || "") + '</p>' +
-        '</div>';
+    var response = await fetch(API_URL + "/viewings/zangu", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
     });
-    tengenezaModal("maombiModal", "Maombi ya Viewing", html);
+
+    var data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.kosa || "Imeshindikana kupata maombi");
+    }
+
+    onyeshaMaombiOrodha(data.maombi || []);
+
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById("maombiOrodha").innerHTML =
+      '<p style="text-align:center;padding:40px;color:red;">' +
+      'Imeshindikana kupata maombi: ' + error.message + '</p>';
   }
+}
+
+
+// ==========================================
+// ONYESHA ORODHA YA MAOMBI
+// ==========================================
+function onyeshaMaombiOrodha(maombi) {
+  var container = document.getElementById("maombiOrodha");
+  if (!container) return;
+
+  if (maombi.length === 0) {
+    container.innerHTML =
+      '<div style="text-align:center;padding:40px;">' +
+        '<i class="fa-regular fa-calendar" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i>' +
+        '<h3 style="margin:0 0 8px 0;color:#666;">Hakuna maombi bado</h3>' +
+        '<p style="margin:0;color:#999;font-size:14px;">' +
+          'Maombi yako ya viewing yataonekana hapa.' +
+        '</p>' +
+      '</div>';
+    return;
+  }
+
+  var html = "";
+
+  maombi.forEach(function (ombi) {
+    var haliRangi = "#f59e0b";
+    var haliJina = "Inasubiri";
+    var haliIcon = "fa-clock";
+
+    if (ombi.hali === "Confirmed" || ombi.hali === "Imethibitishwa") {
+      haliRangi = "#16a34a";
+      haliJina = "Imethibitishwa";
+      haliIcon = "fa-check-circle";
+    } else if (ombi.hali === "Cancelled" || ombi.hali === "Imekataliwa") {
+      haliRangi = "#dc2626";
+      haliJina = "Imekataliwa";
+      haliIcon = "fa-times-circle";
+    }
+
+    var nyumbaJina = (ombi.nyumba && ombi.nyumba.jina)
+      ? ombi.nyumba.jina
+      : (ombi.nyumbaJina || "Nyumba");
+
+    var nyumbaEneo = (ombi.nyumba && ombi.nyumba.eneo)
+      ? ombi.nyumba.eneo
+      : "";
+
+    html +=
+      '<div style="background:#f9f9f9;border-radius:12px;padding:16px;' +
+      'margin-bottom:12px;border-left:4px solid ' + haliRangi + ';">' +
+
+      '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">' +
+        '<h4 style="margin:0;color:#299d38;font-size:15px;flex:1;">' +
+          '<i class="fa-solid fa-house"></i> ' + nyumbaJina +
+        '</h4>' +
+        '<span style="padding:4px 10px;border-radius:20px;color:white;' +
+        'font-size:11px;font-weight:600;background:' + haliRangi + ';white-space:nowrap;">' +
+          '<i class="fa-solid ' + haliIcon + '"></i> ' + haliJina +
+        '</span>' +
+      '</div>' +
+
+      (nyumbaEneo ?
+        '<p style="margin:0 0 8px 0;color:#666;font-size:13px;">' +
+          '<i class="fa-solid fa-location-dot"></i> ' + nyumbaEneo +
+        '</p>' : '') +
+
+      '<div style="font-size:13px;color:#666;line-height:1.7;">' +
+        '<div><i class="fa-regular fa-calendar"></i> ' +
+          '<strong>Tarehe:</strong> ' + (ombi.tarehe || "") +
+        '</div>' +
+        '<div><i class="fa-regular fa-clock"></i> ' +
+          '<strong>Muda:</strong> ' + (ombi.muda || "") +
+        '</div>' +
+      '</div>' +
+
+      (ombi.ujumbeWaMmiliki ?
+        '<div style="background:white;padding:10px;border-radius:8px;' +
+        'margin-top:10px;border-left:3px solid ' + haliRangi + ';">' +
+          '<p style="margin:0;color:#333;font-size:13px;font-style:italic;">' +
+            '<i class="fa-solid fa-comment-dots" style="color:' + haliRangi + ';"></i> ' +
+            ombi.ujumbeWaMmiliki +
+          '</p>' +
+        '</div>' : '') +
+
+      '</div>';
+  });
+
+  container.innerHTML = html;
+}
 
   // ==========================================
 // MODAL: UJUMBE (Majibu ya Maombi ya Tenant)
