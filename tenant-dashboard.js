@@ -463,10 +463,10 @@ function onyeshaMaombiOrodha(maombi) {
   container.innerHTML = html;
 }
 
-  // ==========================================
+ // ==========================================
 // MODAL: UJUMBE (Majibu ya Maombi ya Tenant)
 // ==========================================
-function funguaUjumbe() {
+async function funguaUjumbe() {
   var existing = document.getElementById("ujumbeModal");
   if (existing) existing.remove();
 
@@ -477,108 +477,165 @@ function funguaUjumbe() {
     "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
     "align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;";
 
-  // Chukua maombi ya viewing ya tenant
-  var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-
-  var ujumbeHtml = "";
-
-  if (maombi.length === 0) {
-    ujumbeHtml =
-      '<div style="text-align:center;padding:40px;">' +
-      '<i class="fa-regular fa-comment" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i>' +
-      '<h3 style="margin:0 0 8px 0;color:#666;">Hakuna ujumbe bado</h3>' +
-      '<p style="margin:0 0 16px 0;color:#999;font-size:14px;">' +
-        'Maombi yako ya viewing yataonekana hapa' +
-      '</p>' +
-      '<a href="index.html" style="display:inline-block;padding:10px 20px;' +
-      'background:#299d38;color:white;text-decoration:none;' +
-      'border-radius:8px;font-size:14px;">' +
-        '<i class="fa-solid fa-search"></i> Tafuta Nyumba' +
-      '</a>' +
-      '</div>';
-  } else {
-    ujumbeHtml =
-      '<div style="background:#eff6ff;padding:12px;border-radius:10px;' +
-      'margin-bottom:16px;border-left:4px solid #3b82f6;">' +
-        '<p style="margin:0;color:#1e40af;font-size:13px;">' +
-          '<i class="fa-solid fa-info-circle"></i> ' +
-          '<strong>Hizi ni taarifa za maombi yako:</strong> ' +
-          'Subiri majibu kutoka kwa wamiliki.' +
-        '</p>' +
-      '</div>';
-
-    maombi.slice().reverse().forEach(function (ombi) {
-      // Hali ya ombi
-      var haliRangi = "#f59e0b";
-      var haliJina = "Inasubiri";
-      var haliIcon = "fa-clock";
-
-      if (ombi.hali === "Confirmed" || ombi.hali === "Ime thibitishwa") {
-        haliRangi = "#16a34a";
-        haliJina = "Imethibitishwa";
-        haliIcon = "fa-check-circle";
-      } else if (ombi.hali === "Cancelled" || ombi.hali === "Ime kataliwa") {
-        haliRangi = "#dc2626";
-        haliJina = "Imekataliwa";
-        haliIcon = "fa-times-circle";
-      }
-
-      // Ujumbe wa landlord (kama upo)
-      var ujumbeWaKawaida = "Ombi lako limeshapokelewa. Mmiliki atawasiliana nawe kupitia simu.";
-      if (ombi.ujumbeWaMmiliki) {
-        ujumbeWaKawaida = ombi.ujumbeWaMmiliki;
-      }
-
-      ujumbeHtml +=
-        '<div style="background:#f9f9f9;border-radius:12px;padding:16px;' +
-        'margin-bottom:12px;border-left:4px solid ' + haliRangi + ';">' +
-
-        '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">' +
-          '<h3 style="margin:0;color:#299d38;font-size:15px;flex:1;">' +
-            '<i class="fa-solid fa-house"></i> ' + (ombi.nyumbaJina || "Nyumba") +
-          '</h3>' +
-          '<span style="padding:4px 10px;border-radius:20px;color:white;' +
-          'font-size:11px;font-weight:600;background:' + haliRangi + ';white-space:nowrap;">' +
-            '<i class="fa-solid ' + haliIcon + '"></i> ' + haliJina +
-          '</span>' +
-        '</div>' +
-
-        '<div style="font-size:13px;color:#666;line-height:1.8;margin-bottom:10px;">' +
-          '<div><i class="fa-regular fa-calendar" style="width:16px;"></i> ' +
-            'Tarehe ya Ombi: ' + (ombi.tareheYaOmbi || "Leo") +
-          '</div>' +
-          '<div><i class="fa-regular fa-clock" style="width:16px;"></i> ' +
-            'Muda wa Viewing: ' + (ombi.tarehe || "") + ' - ' + (ombi.muda || "") +
-          '</div>' +
-        '</div>' +
-
-        '<div style="background:white;padding:12px;border-radius:8px;' +
-        'border-left:3px solid ' + haliRangi + ';">' +
-          '<p style="margin:0;color:#333;font-size:13px;font-style:italic;">' +
-            '<i class="fa-solid fa-comment-dots" style="color:' + haliRangi + ';"></i> ' +
-            ujumbeWaKawaida +
-          '</p>' +
-        '</div>' +
-
-        '</div>';
-    });
-  }
-
   modal.innerHTML =
     '<div style="background:white;border-radius:16px;max-width:650px;' +
     'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
-
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
-      '<h2 style="margin:0;color:#299d38;">Ujumbe Wangu</h2>' +
-      '<button onclick="document.getElementById(\'ujumbeModal\').remove()" ' +
-      'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
-    '</div>' +
-
-    '<div>' + ujumbeHtml + '</div>' +
-
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+        '<h2 style="margin:0;color:#299d38;">Ujumbe Wangu</h2>' +
+        '<button onclick="document.getElementById(\'ujumbeModal\').remove()" ' +
+        'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
+      '</div>' +
+      '<div id="ujumbeOrodha">' +
+        '<p style="text-align:center;padding:40px;color:#888;">Inapakia ujumbe...</p>' +
+      '</div>' +
     '</div>';
 
   document.body.appendChild(modal);
+
+  // ==========================================
+  // CHUKUA MAOMBI KUTOKA BACKEND
+  // ==========================================
+  try {
+    var token = localStorage.getItem("token");
+
+    if (!token) {
+      document.getElementById("ujumbeOrodha").innerHTML =
+        '<p style="text-align:center;padding:40px;color:red;">Tafadhali ingia kwanza.</p>';
+      return;
+    }
+
+    var response = await fetch(API_URL + "/viewings/zangu", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    var data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.kosa || "Imeshindikana kupata ujumbe");
+    }
+
+    onyeshaUjumbeOrodha(data.maombi || []);
+
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById("ujumbeOrodha").innerHTML =
+      '<p style="text-align:center;padding:40px;color:red;">' +
+      'Imeshindikana kupata ujumbe: ' + error.message + '</p>';
+  }
+}
+
+
+// ==========================================
+// ONYESHA ORODHA YA UJUMBE
+// ==========================================
+function onyeshaUjumbeOrodha(maombi) {
+  var container = document.getElementById("ujumbeOrodha");
+  if (!container) return;
+
+  if (maombi.length === 0) {
+    container.innerHTML =
+      '<div style="text-align:center;padding:40px;">' +
+        '<i class="fa-regular fa-comment" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i>' +
+        '<h3 style="margin:0 0 8px 0;color:#666;">Hakuna ujumbe bado</h3>' +
+        '<p style="margin:0 0 16px 0;color:#999;font-size:14px;">' +
+          'Maombi yako ya viewing yataonekana hapa.' +
+        '</p>' +
+        '<a href="index.html" style="display:inline-block;padding:10px 20px;' +
+        'background:#299d38;color:white;text-decoration:none;' +
+        'border-radius:8px;font-size:14px;">' +
+          '<i class="fa-solid fa-search"></i> Tafuta Nyumba' +
+        '</a>' +
+      '</div>';
+    return;
+  }
+
+  // Header ya kumbusho
+  var ujumbeHtml =
+    '<div style="background:#eff6ff;padding:12px;border-radius:10px;' +
+    'margin-bottom:16px;border-left:4px solid #3b82f6;">' +
+      '<p style="margin:0;color:#1e40af;font-size:13px;">' +
+        '<i class="fa-solid fa-info-circle"></i> ' +
+        '<strong>Hizi ni taarifa za maombi yako:</strong> ' +
+        'Subiri majibu kutoka kwa wamiliki.' +
+      '</p>' +
+    '</div>';
+
+  maombi.forEach(function (ombi) {
+    // Hali ya ombi — inakubali English na Kiswahili
+    var haliRangi = "#f59e0b";
+    var haliJina = "Inasubiri";
+    var haliIcon = "fa-clock";
+
+    if (ombi.hali === "Confirmed" || ombi.hali === "Imethibitishwa") {
+      haliRangi = "#16a34a";
+      haliJina = "Imethibitishwa";
+      haliIcon = "fa-check-circle";
+    } else if (ombi.hali === "Cancelled" || ombi.hali === "Imekataliwa") {
+      haliRangi = "#dc2626";
+      haliJina = "Imekataliwa";
+      haliIcon = "fa-times-circle";
+    }
+
+    // Jina la nyumba — kutoka populated field au fallback
+    var nyumbaJina = (ombi.nyumba && ombi.nyumba.jina)
+      ? ombi.nyumba.jina
+      : (ombi.nyumbaJina || "Nyumba");
+
+    var nyumbaEneo = (ombi.nyumba && ombi.nyumba.eneo)
+      ? ombi.nyumba.eneo
+      : "";
+
+    // Ujumbe wa landlord
+    var ujumbeWaKawaida = ombi.ujumbeWaMmiliki ||
+      "Ombi lako limeshapokelewa. Mmiliki atawasiliana nawe kupitia simu.";
+
+    ujumbeHtml +=
+      '<div style="background:#f9f9f9;border-radius:12px;padding:16px;' +
+      'margin-bottom:12px;border-left:4px solid ' + haliRangi + ';">' +
+
+      // Header — jina la nyumba + hali
+      '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">' +
+        '<h3 style="margin:0;color:#299d38;font-size:15px;flex:1;">' +
+          '<i class="fa-solid fa-house"></i> ' + nyumbaJina +
+        '</h3>' +
+        '<span style="padding:4px 10px;border-radius:20px;color:white;' +
+        'font-size:11px;font-weight:600;background:' + haliRangi + ';white-space:nowrap;">' +
+          '<i class="fa-solid ' + haliIcon + '"></i> ' + haliJina +
+        '</span>' +
+      '</div>' +
+
+      // Eneo (kama lipo)
+      (nyumbaEneo ?
+        '<p style="margin:0 0 8px 0;color:#666;font-size:13px;">' +
+          '<i class="fa-solid fa-location-dot"></i> ' + nyumbaEneo +
+        '</p>' : '') +
+
+      // Tarehe na muda
+      '<div style="font-size:13px;color:#666;line-height:1.8;margin-bottom:10px;">' +
+        '<div><i class="fa-regular fa-calendar" style="width:16px;"></i> ' +
+          'Tarehe ya Viewing: ' + (ombi.tarehe || "—") +
+        '</div>' +
+        '<div><i class="fa-regular fa-clock" style="width:16px;"></i> ' +
+          'Muda: ' + (ombi.muda || "—") +
+        '</div>' +
+      '</div>' +
+
+      // Ujumbe wa mmiliki
+      '<div style="background:white;padding:12px;border-radius:8px;' +
+      'border-left:3px solid ' + haliRangi + ';">' +
+        '<p style="margin:0;color:#333;font-size:13px;font-style:italic;">' +
+          '<i class="fa-solid fa-comment-dots" style="color:' + haliRangi + ';"></i> ' +
+          ujumbeWaKawaida +
+        '</p>' +
+      '</div>' +
+
+      '</div>';
+  });
+
+  container.innerHTML = ujumbeHtml;
 }
 
   // ==========================================
