@@ -296,24 +296,42 @@ function anzishaViewingForm(nyumba) {
         return;
       }
 
-      var ombi = {
-        id: Date.now(),
-        nyumbaId: nyumba["_id"],
-        nyumbaJina: nyumba.jina,
-        mtumiajiId: mtumiaji.id,           // ⬅️ Muhimu!
-        mtumiajiEmail: mtumiaji.email,     // ⬅️ Muhimu!
-        jina: jina,
-        simu: simu,
-        tarehe: tarehe,
-        muda: muda,
-        hali: "Pending",
-        tareheYaOmbi: new Date().toLocaleDateString("sw-TZ")
-      };
+     // ⭐ PATA landlordId KUTOKA NYUMBA
+var landlordId = nyumba.mmilikiId || nyumba.landlordId || nyumba.mtumiajiId || nyumba.mwenyewe || null;
+console.log("Landlord ID:", landlordId);
 
-      var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-      maombi.push(ombi);
-      localStorage.setItem("maombiYaViewing", JSON.stringify(maombi));
+var ombi = {
+  id: Date.now(),
+  nyumbaId: nyumba["_id"],
+  nyumbaJina: nyumba.jina,
+  mtumiajiId: mtumiaji.id || mtumiaji._id,
+  mtumiajiEmail: mtumiaji.email,
+  jina: jina,
+  simu: simu,
+  tarehe: tarehe,
+  muda: muda,
+  hali: "Pending",
+  tareheYaOmbi: new Date().toLocaleDateString("sw-TZ"),
 
+  // ⭐ ONGEZA HIZI — MUHIMU!
+  landlordId: landlordId,
+  tenantJina: jina,
+  tenantSimu: simu,
+  tenantEmail: mtumiaji.email,
+  createdAt: new Date().toISOString()
+};
+
+// Hifadhi kwa tenant
+var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
+maombi.push(ombi);
+localStorage.setItem("maombiYaViewing", JSON.stringify(maombi));
+
+// ⭐ HIFADHI PIA KWA LANDLORD KUONA
+var viewingsZote = JSON.parse(localStorage.getItem("viewingsZote") || "[]");
+viewingsZote.push(ombi);
+localStorage.setItem("viewingsZote", JSON.stringify(viewingsZote));
+
+console.log("Ombi limehifadhiwa:", ombi);
       console.log("Ombi limetumwa:", ombi);
       alert("Ombi lako limetumwa! Tutawasiliana nawe hivi karibuni.");
 

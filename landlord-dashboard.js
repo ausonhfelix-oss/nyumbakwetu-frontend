@@ -1376,125 +1376,198 @@ if (menuMaombiMobile) {
 }
 
 // ==========================================
-// MODAL: UJUMBE (MESSAGING)
+// MODAL: UJUMBE (Wateja Halisi)
 // ==========================================
 function onyeshaModalUjumbe() {
   var modal = document.getElementById("ujumbeModal");
+  if (modal) modal.remove();
 
-  if (!modal) {
-    modal = document.createElement("div");
-    modal.id = "ujumbeModal";
-    modal.style.cssText =
-      "position:fixed;top:0;left:0;width:100%;height:100%;" +
-      "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
-      "align-items:center;justify-content:center;padding:20px;";
+  modal = document.createElement("div");
+  modal.id = "ujumbeModal";
+  modal.style.cssText =
+    "position:fixed;top:0;left:0;width:100%;height:100%;" +
+    "background:rgba(0,0,0,0.6);z-index:9999;display:flex;" +
+    "align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;";
 
-    // DATA YA MFANO
-    var ujumbe = [
-      {
-        jina: "Juma Mwangi",
-        picha: "J",
-        ujumbeWaMwisho: "Habari, naomba kuona nyumba yako kesho?",
-        muda: "10:30",
-        isiyosomwa: 2,
-        rangi: "#1a5c2e"
-      },
-      {
-        jina: "Asha Kileo",
-        picha: "A",
-        ujumbeWaMwisho: "Asante kwa kunijibu! Nitaipenda nyumba.",
-        muda: "Jana",
-        isiyosomwa: 0,
-        rangi: "#3b82f6"
-      },
-      {
-        jina: "Hassan Ally",
-        picha: "H",
-        ujumbeWaMwisho: "Kodi inaweza kupunguzwa kidogo?",
-        muda: "Jumanne",
-        isiyosomwa: 1,
-        rangi: "#8b5cf6"
-      },
-      {
-        jina: "Grace Mushi",
-        picha: "G",
-        ujumbeWaMwisho: "Nyumba ipo tayari?",
-        muda: "Jumatatu",
-        isiyosomwa: 0,
-        rangi: "#f59e0b"
+  // ⭐ PATA LANDLORD ALIYEINGIA
+  var landlordStr = localStorage.getItem("mtumiaji");
+  var landlordId = null;
+
+  if (landlordStr) {
+    try {
+      var landlord = JSON.parse(landlordStr);
+      landlordId = landlord.id || landlord._id;
+    } catch (e) {}
+  }
+
+  // ⭐ PATA MAOMBI HALISI
+  var viewingsZote = JSON.parse(localStorage.getItem("viewingsZote") || "[]");
+
+  // Chuja — ya landlord huyu pekee
+  var maombiYangu = viewingsZote.filter(function (m) {
+    // Kama landlordId haipo kwenye ombi, onyesha (fallback)
+    if (!m.landlordId) return true;
+    return String(m.landlordId) === String(landlordId);
+  });
+
+  // ⭐ TENGENEZA HTML
+  var ujumbeHtml = "";
+
+  if (maombiYangu.length === 0) {
+    ujumbeHtml =
+      '<div style="text-align:center;padding:40px;">' +
+        '<i class="fa-regular fa-comment" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i>' +
+        '<h3 style="margin:0 0 8px 0;color:#666;">Hakuna ujumbe bado</h3>' +
+        '<p style="margin:0;color:#999;font-size:14px;">' +
+          'Ujumbe wa wateja utaonekana hapa wakati waombapo kuona nyumba zako.' +
+        '</p>' +
+      '</div>';
+  } else {
+    maombiYangu.slice().reverse().forEach(function (ombi) {
+      var haliRangi = "#f59e0b";
+      var haliJina = "Inasubiri";
+      var haliIcon = "fa-clock";
+
+      if (ombi.hali === "Confirmed" || ombi.hali === "Imethibitishwa") {
+        haliRangi = "#16a34a";
+        haliJina = "Imethibitishwa";
+        haliIcon = "fa-check-circle";
+      } else if (ombi.hali === "Cancelled" || ombi.hali === "Imekataliwa") {
+        haliRangi = "#dc2626";
+        haliJina = "Imekataliwa";
+        haliIcon = "fa-times-circle";
       }
-    ];
 
-    var ujumbeHtml = "";
+      var jinaMteja = ombi.tenantJina || ombi.jina || "Mteja";
+      var simuMteja = ombi.tenantSimu || ombi.simu || "";
+      var herufi = jinaMteja.charAt(0).toUpperCase();
 
-    ujumbe.forEach(function (u) {
       ujumbeHtml +=
-        '<div onclick="funguaChat(\'' + u.jina + '\')" ' +
-        'style="display:flex;gap:14px;padding:14px;margin-bottom:8px;' +
-        'background:#f9f9f9;border-radius:12px;cursor:pointer;transition:background 0.2s;" ' +
-        'onmouseover="this.style.background=\'#f0f0f0\'" ' +
-        'onmouseout="this.style.background=\'#f9f9f9\'">' +
+        '<div style="background:#f9f9f9;border-radius:12px;padding:16px;' +
+        'margin-bottom:12px;border-left:4px solid ' + haliRangi + ';">' +
 
-        '<div style="width:48px;height:48px;border-radius:50%;background:' + u.rangi + ';' +
-        'display:flex;align-items:center;justify-content:center;' +
-        'color:white;font-weight:700;font-size:18px;flex-shrink:0;">' +
-          u.picha +
+        // Header
+        '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">' +
+          '<div style="display:flex;align-items:center;gap:12px;flex:1;">' +
+            '<div style="width:44px;height:44px;border-radius:50%;' +
+            'background:' + haliRangi + ';display:flex;align-items:center;' +
+            'justify-content:center;color:white;font-weight:700;font-size:18px;flex-shrink:0;">' +
+              herufi +
+            '</div>' +
+            '<div style="flex:1;min-width:0;">' +
+              '<h4 style="margin:0 0 4px 0;color:#1a5c2e;font-size:15px;">' +
+                jinaMteja +
+              '</h4>' +
+              (simuMteja ?
+                '<a href="tel:' + simuMteja + '" ' +
+                'style="color:#666;font-size:13px;text-decoration:none;display:block;">' +
+                  '<i class="fa-solid fa-phone"></i> ' + simuMteja +
+                '</a>' : '') +
+            '</div>' +
+          '</div>' +
+          '<span style="padding:4px 10px;border-radius:20px;color:white;' +
+          'font-size:10px;font-weight:600;background:' + haliRangi + ';white-space:nowrap;">' +
+            '<i class="fa-solid ' + haliIcon + '"></i> ' + haliJina +
+          '</span>' +
         '</div>' +
 
-        '<div style="flex:1;min-width:0;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-            '<h4 style="margin:0;color:#1a5c2e;font-size:15px;">' + u.jina + '</h4>' +
-            '<small style="color:#999;font-size:12px;">' + u.muda + '</small>' +
-          '</div>' +
-          '<p style="margin:0;color:#666;font-size:13px;' +
-          'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-            u.ujumbeWaMwisho +
+        // Nyumba
+        '<div style="background:white;padding:10px;border-radius:8px;margin-bottom:10px;">' +
+          '<p style="margin:0;color:#1a5c2e;font-size:13px;font-weight:600;">' +
+            '<i class="fa-solid fa-house"></i> ' + (ombi.nyumbaJina || "Nyumba") +
           '</p>' +
         '</div>' +
 
-        (u.isiyosomwa > 0 ?
-          '<div style="width:22px;height:22px;border-radius:50%;background:#1a5c2e;' +
-          'color:white;display:flex;align-items:center;justify-content:center;' +
-          'font-size:11px;font-weight:700;flex-shrink:0;">' +
-            u.isiyosomwa +
-          '</div>' : '') +
+        // Tarehe & Muda
+        '<div style="font-size:13px;color:#666;line-height:1.7;">' +
+          '<div><i class="fa-regular fa-calendar"></i> ' +
+            '<strong>Tarehe:</strong> ' + (ombi.tarehe || "") +
+          '</div>' +
+          '<div><i class="fa-regular fa-clock"></i> ' +
+            '<strong>Muda:</strong> ' + (ombi.muda || "") +
+          '</div>' +
+          '<div><i class="fa-regular fa-paper-plane"></i> ' +
+            '<strong>Lilitumwa:</strong> ' + (ombi.tareheYaOmbi || "") +
+          '</div>' +
+        '</div>' +
+
+        // Buttons
+        '<div style="display:flex;gap:8px;margin-top:12px;">' +
+          (ombi.hali === "Pending" ?
+            '<button onclick="thibitishaOmbiLandlord(' + ombi.id + ')" ' +
+            'style="flex:1;padding:10px;background:#16a34a;color:white;border:none;' +
+            'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;">' +
+              '<i class="fa-solid fa-check"></i> Thibitisha' +
+            '</button>' : '') +
+          (simuMteja ?
+            '<a href="tel:' + simuMteja + '" ' +
+            'style="flex:1;padding:10px;background:#3b82f6;color:white;' +
+            'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;' +
+            'text-decoration:none;text-align:center;">' +
+              '<i class="fa-solid fa-phone"></i> Piga Simu' +
+            '</a>' : '') +
+          (simuMteja ?
+            '<a href="https://wa.me/255' + simuMteja.replace(/^0/, '').replace(/\s/g, '') + '" ' +
+            'target="_blank" ' +
+            'style="flex:1;padding:10px;background:#25D366;color:white;' +
+            'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;' +
+            'text-decoration:none;text-align:center;">' +
+              '<i class="fa-brands fa-whatsapp"></i> WhatsApp' +
+            '</a>' : '') +
+        '</div>' +
 
         '</div>';
     });
+  }
 
-    modal.innerHTML =
-      '<div style="background:white;border-radius:16px;max-width:600px;' +
-      'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
-
+  modal.innerHTML =
+    '<div style="background:white;border-radius:16px;max-width:650px;' +
+    'width:100%;max-height:85vh;overflow-y:auto;padding:24px;">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
-        '<h2 style="margin:0;color:#1a5c2e;">Ujumbe</h2>' +
+        '<h2 style="margin:0;color:#1a5c2e;">Ujumbe (' + maombiYangu.length + ')</h2>' +
         '<button onclick="document.getElementById(\'ujumbeModal\').remove()" ' +
         'style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">✕</button>' +
       '</div>' +
-
       '<div style="background:#eff6ff;padding:12px;border-radius:10px;' +
       'margin-bottom:16px;border-left:4px solid #3b82f6;">' +
         '<p style="margin:0;color:#1e40af;font-size:13px;">' +
           '<i class="fa-solid fa-info-circle"></i> ' +
-          '<strong>Kumbuka:</strong> Ujumbe wa wateja utaonekana hapa.' +
+          'Hawa ni wateja waliomba kuona nyumba zako.' +
         '</p>' +
       '</div>' +
+      ujumbeHtml +
+    '</div>';
 
-      '<div>' + ujumbeHtml + '</div>' +
-
-      '<div style="text-align:center;margin-top:20px;padding:20px;' +
-      'background:#f9f9f9;border-radius:10px;">' +
-        '<p style="margin:0;color:#888;font-size:13px;">' +
-          '<i class="fa-solid fa-clock"></i> ' +
-          'Chat kamili inakuja hivi karibuni!' +
-        '</p>' +
-      '</div>' +
-
-      '</div>';
-
-    document.body.appendChild(modal);
-  }
+  document.body.appendChild(modal);
 }
+
+
+// ==========================================
+// THIBITISHA OMBI (Landlord)
+// ==========================================
+window.thibitishaOmbiLandlord = function (ombiId) {
+  var viewings = JSON.parse(localStorage.getItem("viewingsZote") || "[]");
+  var index = viewings.findIndex(function (m) { return m.id === ombiId; });
+
+  if (index !== -1) {
+    viewings[index].hali = "Imethibitishwa";
+    viewings[index].ujumbeWaMmiliki =
+      "Ombi lako limethibitishwa. Tutaunganisha nawe kwa simu hivi punde.";
+    localStorage.setItem("viewingsZote", JSON.stringify(viewings));
+
+    // Sasisha pia kwa tenant
+    var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
+    var idx = maombi.findIndex(function (m) { return m.id === ombiId; });
+    if (idx !== -1) {
+      maombi[idx].hali = "Imethibitishwa";
+      maombi[idx].ujumbeWaMmiliki = viewings[index].ujumbeWaMmiliki;
+      localStorage.setItem("maombiYaViewing", JSON.stringify(maombi));
+    }
+
+    alert("✅ Ombi limethibitishwa! Mteja atajulishwa.");
+    onyeshaModalUjumbe();
+  }
+};
 
 // ==========================================
 // FUNGUA CHAT (baadaye)
