@@ -228,13 +228,9 @@ function anzishaViewingForm(nyumba) {
   // 1. Bonyeza button → angalia login kwanza
   if (requestBtn && viewingForm) {
     requestBtn.addEventListener("click", function () {
-      // ==========================================
-      // ANGALIA KAMA MTUMIAJI AMEINGIA
-      // ==========================================
       var mtumiajiStr = localStorage.getItem("mtumiaji");
 
       if (!mtumiajiStr) {
-        // Hajaingia — mwambie aingie
         alert("Tafadhali ingia kwanza ili kuomba kuona nyumba.\n\nItakuchukua sekunde 30 tu!");
         window.location.href = "login.html";
         return;
@@ -242,15 +238,11 @@ function anzishaViewingForm(nyumba) {
 
       var mtumiaji = JSON.parse(mtumiajiStr);
 
-      // Kama ni landlord — hawezi kuomba viewing yake mwenyewe
       if (mtumiaji.aina === "landlord" || mtumiaji.aina === "admin") {
         alert("Wewe ni Mpangishaji. Huna uwezo wa kuomba viewing.\n\nTafuta nyumba kama Mpangaji.");
         return;
       }
 
-      // ==========================================
-      // AMEINGIA — fungua form
-      // ==========================================
       if (viewingForm.style.display === "block") {
         viewingForm.style.display = "none";
         requestBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Omba Kuiona Nyumba';
@@ -258,7 +250,6 @@ function anzishaViewingForm(nyumba) {
         viewingForm.style.display = "block";
         requestBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Funga Fomu';
 
-        // Jaza jina na simu kama zipo
         var jina = document.getElementById("viewerName");
         var simu = document.getElementById("viewerPhone");
 
@@ -272,14 +263,15 @@ function anzishaViewingForm(nyumba) {
     });
   }
 
-  // 2. Tuma ombi
+  // 2. Tuma ombi — ⭐ HAPA NDIPO "async" INAHITAJIKA
   if (submitBtn) {
-    submitBtn.addEventListener("click", function (e) {
+    submitBtn.addEventListener("click", async function (e) {
+    //                                   ↑ ASYNC INAHITAJIKA HAPA!
       e.preventDefault();
 
       var mtumiajiStr = localStorage.getItem("mtumiaji");
       if (!mtumiajiStr) {
-        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba. \n\nItakuchukua sekunde 30 tu!");
+        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba.\n\nItakuchukua sekunde 30 tu!");
         window.location.href = "login.html";
         return;
       }
@@ -296,53 +288,52 @@ function anzishaViewingForm(nyumba) {
         return;
       }
 
-     // ⭐ PATA landlordId KUTOKA NYUMBA
-var landlordId = nyumba.mmilikiId || nyumba.landlordId || nyumba.mtumiajiId || nyumba.mwenyewe || null;
-console.log("Landlord ID:", landlordId);
+      // TUMA KWA BACKEND
+      try {
+        var token = localStorage.getItem("token");
 
-var ombi = {
-  id: Date.now(),
-  nyumbaId: nyumba["_id"],
-  nyumbaJina: nyumba.jina,
-  mtumiajiId: mtumiaji.id || mtumiaji._id,
-  mtumiajiEmail: mtumiaji.email,
-  jina: jina,
-  simu: simu,
-  tarehe: tarehe,
-  muda: muda,
-  hali: "Pending",
-  tareheYaOmbi: new Date().toLocaleDateString("sw-TZ"),
+        if (!token) {
+          alert("Tafadhali ingia kwanza!");
+          window.location.href = "login.html";
+          return;
+        }
 
-  // ⭐ ONGEZA HIZI — MUHIMU!
-  landlordId: landlordId,
-  tenantJina: jina,
-  tenantSimu: simu,
-  tenantEmail: mtumiaji.email,
-  createdAt: new Date().toISOString()
-};
+        var response = await fetch(API_URL + "/viewings", {
+        //              ↑ HAPA inafanya kazi kwa sababu kuna "async" juu
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({
+            nyumbaId: nyumba["_id"],
+            jina: jina,
+            simu: simu,
+            tarehe: tarehe,
+            muda: muda
+          })
+        });
 
-// Hifadhi kwa tenant
-var maombi = JSON.parse(localStorage.getItem("maombiYaViewing") || "[]");
-maombi.push(ombi);
-localStorage.setItem("maombiYaViewing", JSON.stringify(maombi));
+        var data = await response.json();
 
-// ⭐ HIFADHI PIA KWA LANDLORD KUONA
-var viewingsZote = JSON.parse(localStorage.getItem("viewingsZote") || "[]");
-viewingsZote.push(ombi);
-localStorage.setItem("viewingsZote", JSON.stringify(viewingsZote));
+        if (!response.ok) {
+          throw new Error(data.kosa || "Imeshindikana kutuma ombi");
+        }
 
-console.log("Ombi limehifadhiwa:", ombi);
-      console.log("Ombi limetumwa:", ombi);
-      alert("Ombi lako limetumwa! Tutawasiliana nawe hivi karibuni.");
+        alert("✅ Ombi lako limetumwa! Mmiliki atawasiliana nawe hivi punde.");
 
-      document.getElementById("viewerName").value = "";
-      document.getElementById("viewerPhone").value = "";
-      document.getElementById("viewingDate").value = "";
-      document.getElementById("viewingTime").value = "";
+        document.getElementById("viewerName").value = "";
+        document.getElementById("viewerPhone").value = "";
+        document.getElementById("viewingDate").value = "";
+        document.getElementById("viewingTime").value = "";
 
-      viewingForm.style.display = "none";
-      requestBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Omba Kuiona Nyumba';
+        viewingForm.style.display = "none";
+        requestBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Omba Kuiona Nyumba';
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("❌ " + error.message);
+      }
     });
   }
 }
-console.log("property-details.js imepakiwa!");
