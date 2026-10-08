@@ -1022,13 +1022,13 @@ document.addEventListener("DOMContentLoaded", function () {
         var haliJina = "Inasubiri";
         var haliIcon = "fa-clock";
 
-        if (ombi.hali === "Imethibitishwa") {
+        if (ombi.hali === "Confirmed" || ombi.hali === "Confirmed") {
           haliRangi = "#16a34a";
-          haliJina = "Imethibitishwa";
+          haliJina = "Confirmed";
           haliIcon = "fa-check-circle";
-        } else if (ombi.hali === "Imekataliwa") {
+        } else if (ombi.hali === "Cancelled" || ombi.hali === "Cancelled") {
           haliRangi = "#dc2626";
-          haliJina = "Imekataliwa";
+          haliJina = "Cancelled";
           haliIcon = "fa-times-circle";
         }
 
@@ -1186,13 +1186,13 @@ document.addEventListener("DOMContentLoaded", function () {
       var haliJina = "Inasubiri";
       var haliIcon = "fa-clock";
 
-      if (ombi.hali === "Imethibitishwa") {
+      if (ombi.hali === "Confirmed") {
         haliRangi = "#16a34a";
-        haliJina = "Imethibitishwa";
+        haliJina = "Confirmed";
         haliIcon = "fa-check-circle";
-      } else if (ombi.hali === "Imekataliwa") {
+      } else if (ombi.hali === "Cancelled") {
         haliRangi = "#dc2626";
-        haliJina = "Imekataliwa";
+        haliJina = "Cancelled";
         haliIcon = "fa-times-circle";
       }
 
@@ -1255,13 +1255,13 @@ document.addEventListener("DOMContentLoaded", function () {
         '</div>' +
 
         '<div style="display:flex;gap:8px;margin-top:12px;">' +
-          (ombi.hali === "Pending" ?
+          (ombi.hali === "Pending" || ombi.hali === "Inasubiri" ?
             '<button onclick="thibitishaOmbi(\'' + ombi._id + '\')" ' +
             'style="flex:1;padding:10px;background:#16a34a;color:white;border:none;' +
             'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;">' +
               '<i class="fa-solid fa-check"></i> Thibitisha' +
             '</button>' : '') +
-          (ombi.hali === "Pending" ?
+          (ombi.hali === "Pending" || ombi.hali === "Inasubiri" ?
             '<button onclick="kataaOmbi(\'' + ombi._id + '\')" ' +
             'style="flex:1;padding:10px;background:#dc2626;color:white;border:none;' +
             'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;">' +
@@ -1297,7 +1297,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + token
         },
-        body: JSON.stringify({ hali: "Imethibitishwa" })
+        body: JSON.stringify({ hali: "Confirmed" })
       });
 
       var data = await response.json();
@@ -1306,7 +1306,7 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(data.kosa || "Imeshindikana");
       }
 
-      alert("✅ Ombi limethibitishwa!");
+      alert("✅ Ombi lConfirmed!");
       onyeshaModalUjumbe();
 
     } catch (error) {
@@ -1329,7 +1329,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + token
         },
-        body: JSON.stringify({ hali: "Imekataliwa" })
+        body: JSON.stringify({ hali: "Cancelled" })
       });
 
       var data = await response.json();
@@ -1338,7 +1338,7 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(data.kosa || "Imeshindikana");
       }
 
-      alert("Ombi limekataliwa.");
+      alert("Ombi lCancelled.");
       onyeshaModalUjumbe();
 
     } catch (error) {
