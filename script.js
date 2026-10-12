@@ -403,4 +403,19 @@ document.addEventListener("DOMContentLoaded", function() {
   chukuaNyumba();
 });
 
+// ==========================================
+// APPLICATION CACHE
+// ==========================================
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(function(reg) {
+        console.log("✅ Service Worker imesajiliwa");
+      })
+      .catch(function(err) {
+        console.log("❌ Service Worker:", err);
+      });
+  });
+}
+
 console.log("script.js imepakiwa!");

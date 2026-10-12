@@ -1,0 +1,22 @@
+{
+  "name": "NyumbaKwetu - Nyumba bora, maisha bora",
+  "short_name": "NyumbaKwetu",
+  "description": "Tafuta nyumba za kupanga na kuuza Tanzania",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1a5c2e",
+  "theme_color": "#1a5c2e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "Images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
