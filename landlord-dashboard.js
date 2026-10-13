@@ -1,6 +1,8 @@
 // landlord-dashboard.js — Weka Nyumba Mpya
+var API_URL = "https://nyumbakwetu-backend.vercel.app/api";
 
 document.addEventListener("DOMContentLoaded", function () {
+  
 
   // ==========================================
   // 1. CHECK LOGIN NA AINA YA MTUMIAJI
