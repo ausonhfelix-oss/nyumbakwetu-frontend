@@ -91,17 +91,75 @@
             </div>
         </div>
 
-        <div class="tab-filters">
-            <button class="tab-filter active" data-filter="all">Zote</button>
-            <button class="tab-filter" data-filter="Pending">Zinasubiri</button>
-            <button class="tab-filter" data-filter="Live">Live</button>
-        </div>
+       <!-- ============================================
+     TABS KUU: Nyumba | Watumiaji
+     ============================================ -->
+<div class="main-tabs" style="display:flex;gap:10px;margin-bottom:20px;border-bottom:2px solid #eee;">
+    <button class="main-tab active" data-main="nyumba" 
+            style="padding:12px 20px;background:none;border:none;font-size:15px;
+                   font-weight:600;color:#1a5c2e;cursor:pointer;border-bottom:3px solid #1a5c2e;
+                   margin-bottom:-2px;">
+        <i class="fa-solid fa-house"></i> Nyumba
+    </button>
+    <button class="main-tab" data-main="watumiaji"
+            style="padding:12px 20px;background:none;border:none;font-size:15px;
+                   font-weight:600;color:#999;cursor:pointer;border-bottom:3px solid transparent;
+                   margin-bottom:-2px;">
+        <i class="fa-solid fa-users"></i> Watumiaji
+    </button>
+</div>
 
-        <div id="orodhaYaNyumbaAdmin">
-            <p style="text-align: center; padding: 40px; color: #888;">
-                Inapakia nyumba...
-            </p>
+<!-- ============================================
+     SEHEMU YA NYUMBA
+     ============================================ -->
+<div id="sehemuYaNyumba">
+    <div class="tab-filters">
+        <button class="tab-filter active" data-filter="all">Zote</button>
+        <button class="tab-filter" data-filter="Pending">Zinasubiri</button>
+        <button class="tab-filter" data-filter="Live">Live</button>
+    </div>
+
+    <div id="orodhaYaNyumbaAdmin">
+        <p style="text-align:center;padding:40px;color:#888;">Inapakia nyumba...</p>
+    </div>
+</div>
+
+<!-- ============================================
+     SEHEMU YA WATUMIAJI
+     ============================================ -->
+<div id="sehemuYaWatumiaji" style="display:none;">
+
+    <!-- Stats za Watumiaji -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+        <div style="background:#e8f5e9;padding:16px;border-radius:12px;text-align:center;">
+            <i class="fa-solid fa-users" style="color:#1a5c2e;font-size:22px;"></i>
+            <h3 id="statWatumiajiWote" style="margin:8px 0 2px 0;color:#1a5c2e;">0</h3>
+            <p style="margin:0;color:#666;font-size:12px;">Wote</p>
         </div>
+        <div style="background:#dbeafe;padding:16px;border-radius:12px;text-align:center;">
+            <i class="fa-solid fa-user" style="color:#3b82f6;font-size:22px;"></i>
+            <h3 id="statWapangaji" style="margin:8px 0 2px 0;color:#3b82f6;">0</h3>
+            <p style="margin:0;color:#666;font-size:12px;">Wapangaji</p>
+        </div>
+        <div style="background:#dcfce7;padding:16px;border-radius:12px;text-align:center;">
+            <i class="fa-solid fa-user-tie" style="color:#16a34a;font-size:22px;"></i>
+            <h3 id="statWamiliki" style="margin:8px 0 2px 0;color:#16a34a;">0</h3>
+            <p style="margin:0;color:#666;font-size:12px;">Wamiliki</p>
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="tab-filters" style="margin-bottom:16px;">
+        <button class="tab-filter active" data-aina="all">Wote</button>
+        <button class="tab-filter" data-aina="tenant">Wapangaji</button>
+        <button class="tab-filter" data-aina="landlord">Wamiliki</button>
+    </div>
+
+    <!-- Orodha -->
+    <div id="orodhaYaWatumiaji">
+        <p style="text-align:center;padding:40px;color:#888;">Inapakia watumiaji...</p>
+    </div>
+</div>
 
     </main>
 </div>

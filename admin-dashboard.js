@@ -1,13 +1,11 @@
-// ==========================================
-// admin-dashboard.js — NyumbaKwetu Admin (Sahihi)
-// ==========================================
+// admin-dashboard.js — NyumbaKwetu Admin
 
 var API_URL = "https://nyumbakwetu-backend.vercel.app/api";
+
 var nyumbaZote = [];
 var watumiajiWote = [];
 var filterYaSasa = "all";
 var filterAina = "all";
-var tabKu = "nyumba";
 
 document.addEventListener("DOMContentLoaded", function () {
   var mtumiajiStr = localStorage.getItem("mtumiaji");
@@ -27,14 +25,22 @@ document.addEventListener("DOMContentLoaded", function () {
   var adminJina = document.getElementById("adminJina");
   if (adminJina) adminJina.textContent = mtumiaji.jina;
 
+  // ==========================================
   // TABS KUU (Nyumba / Watumiaji)
-  var mainTabs = document.querySelectorAll("[data-main]");
+  // ==========================================
+  var mainTabs = document.querySelectorAll(".main-tab");
   mainTabs.forEach(function (tab) {
     tab.addEventListener("click", function () {
-      mainTabs.forEach(function (t) { t.classList.remove("active"); });
+      mainTabs.forEach(function (t) {
+        t.classList.remove("active");
+        t.style.color = "#999";
+        t.style.borderBottomColor = "transparent";
+      });
       tab.classList.add("active");
-      tabKu = tab.getAttribute("data-main");
+      tab.style.color = "#1a5c2e";
+      tab.style.borderBottomColor = "#1a5c2e";
 
+      var tabKu = tab.getAttribute("data-main");
       document.getElementById("sehemuYaNyumba").style.display =
         tabKu === "nyumba" ? "block" : "none";
       document.getElementById("sehemuYaWatumiaji").style.display =
@@ -46,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // TABS ZA NYUMBA
+  // ==========================================
+  // FILTER YA NYUMBA
+  // ==========================================
   var tabFilters = document.querySelectorAll("#sehemuYaNyumba [data-filter]");
   tabFilters.forEach(function (tab) {
     tab.addEventListener("click", function () {
@@ -57,7 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // TABS ZA WATUMIAJI
+  // ==========================================
+  // FILTER YA WATUMIAJI
+  // ==========================================
   var tabAina = document.querySelectorAll("#sehemuYaWatumiaji [data-aina]");
   tabAina.forEach(function (tab) {
     tab.addEventListener("click", function () {
@@ -68,7 +78,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // ==========================================
   // LOGOUT
+  // ==========================================
   var logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function (e) {
@@ -96,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ==========================================
-// CHUKUA NYUMBA
+// CHUKUA NYUMBA ZOTE
 // ==========================================
 async function chukuaNyumbaZote() {
   var token = localStorage.getItem("token");
@@ -110,6 +122,7 @@ async function chukuaNyumbaZote() {
     sasishaStats();
     onyeshaNyumba();
   } catch (error) {
+    console.error("Error:", error);
     document.getElementById("orodhaYaNyumbaAdmin").innerHTML =
       "<p style='text-align:center;padding:40px;color:red;'>" +
       "Imeshindikana kupata nyumba: " + error.message + "</p>";
@@ -118,19 +131,34 @@ async function chukuaNyumbaZote() {
 
 
 // ==========================================
-// CHUKUA WATUMIAJI
+// CHUKUA WATUMIAJI WOTE
 // ==========================================
 async function chukuaWatumiaji() {
   var token = localStorage.getItem("token");
+
+  console.log("Inachukua watumiaji...");
+  console.log("Token:", token ? "Ipo" : "Haipo");
+
   try {
     var response = await fetch(API_URL + "/admin/users", {
       headers: { "Authorization": "Bearer " + token }
     });
-    if (!response.ok) throw new Error("Status " + response.status);
+
+    console.log("Response status:", response.status);
+
+    if (!response.ok) {
+      var errData = await response.json();
+      throw new Error(errData.kosa || "Status " + response.status);
+    }
+
     var data = await response.json();
+    console.log("Watumiaji wamepakiwa:", data.watumiaji.length);
+
     watumiajiWote = data.watumiaji || [];
+    sasishaStatsWatumiaji();
     onyeshaWatumiaji();
   } catch (error) {
+    console.error("Error:", error);
     document.getElementById("orodhaYaWatumiaji").innerHTML =
       "<p style='text-align:center;padding:40px;color:red;'>" +
       "Imeshindikana kupata watumiaji: " + error.message + "</p>";
@@ -139,7 +167,7 @@ async function chukuaWatumiaji() {
 
 
 // ==========================================
-// STATS
+// STATS ZA NYUMBA
 // ==========================================
 function sasishaStats() {
   var pending = 0, live = 0;
@@ -150,6 +178,20 @@ function sasishaStats() {
   document.getElementById("statPending").textContent = pending;
   document.getElementById("statLive").textContent = live;
   document.getElementById("statTotal").textContent = nyumbaZote.length;
+}
+
+
+// ==========================================
+// STATS ZA WATUMIAJI
+// ==========================================
+function sasishaStatsWatumiaji() {
+  var jumla = watumiajiWote.length;
+  var wapangaji = watumiajiWote.filter(function (w) { return w.aina === "tenant"; }).length;
+  var wamiliki = watumiajiWote.filter(function (w) { return w.aina === "landlord"; }).length;
+
+  document.getElementById("statWatumiajiWote").textContent = jumla;
+  document.getElementById("statWapangaji").textContent = wapangaji;
+  document.getElementById("statWamiliki").textContent = wamiliki;
 }
 
 
@@ -182,7 +224,6 @@ function onyeshaNyumba() {
     var mmilikiJina = n.mmiliki ? n.mmiliki.jina : "Haijulikani";
     var mmilikiSimu = n.mmiliki ? (n.mmiliki.simu || "Hakuna") : "-";
 
-    // Hali ya nyumba (Inapatikana / Imepangishwa)
     var haliNyumba = n.haliNyumba || "Inapatikana";
     var haliNyumbaColor = haliNyumba === "Imepangishwa" ? "#16a34a" : "#f59e0b";
     var haliNyumbaIcon = haliNyumba === "Imepangishwa" ? "fa-check-circle" : "fa-home";
@@ -215,12 +256,10 @@ function onyeshaNyumba() {
         '<p><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
         '<p><i class="fa-solid fa-money-bill"></i> TZS ' + (n.bei || 0).toLocaleString() + '</p>' +
         '<p><i class="fa-solid fa-user"></i> ' + mmilikiJina + ' — ' + mmilikiSimu + '</p>' +
-
         '<p style="background:' + haliNyumbaColor + '22;color:' + haliNyumbaColor +
         ';padding:6px 10px;border-radius:6px;font-weight:600;font-size:13px;display:inline-block;margin-top:6px;">' +
           '<i class="fa-solid ' + haliNyumbaIcon + '"></i> ' + haliNyumba +
         '</p>' +
-
         '<span class="badge-hali ' + haliClass + '">' + haliText + '</span>' +
       '</div>' +
       '<div class="property-admin-actions">' +
@@ -271,19 +310,25 @@ function onyeshaWatumiaji() {
       ainaIcon = "fa-user-shield";
     }
 
+    var herufi = (w.jina || "?").charAt(0).toUpperCase();
+    var tarehe = w.createdAt ? new Date(w.createdAt).toLocaleDateString("sw-TZ") : "-";
+
     html +=
       '<div style="background:#f9f9f9;border-radius:12px;padding:16px;border-left:4px solid ' + ainaRangi + ';">' +
 
         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
           '<div style="width:48px;height:48px;border-radius:50%;background:' + ainaRangi + ';' +
-          'display:flex;align-items:center;justify-content:center;color:white;flex-shrink:0;">' +
-            '<i class="fa-solid ' + ainaIcon + '"></i>' +
+          'display:flex;align-items:center;justify-content:center;color:white;font-weight:700;' +
+          'font-size:18px;flex-shrink:0;">' +
+            herufi +
           '</div>' +
           '<div style="flex:1;min-width:0;">' +
             '<h4 style="margin:0 0 4px 0;color:#1a5c2e;font-size:15px;overflow:hidden;' +
-            'text-overflow:ellipsis;white-space:nowrap;">' + w.jina + '</h4>' +
+            'text-overflow:ellipsis;white-space:nowrap;">' + (w.jina || "Bila jina") + '</h4>' +
             '<span style="padding:2px 8px;border-radius:12px;background:' + ainaRangi + '22;' +
-            'color:' + ainaRangi + ';font-size:11px;font-weight:600;">' + ainaJina + '</span>' +
+            'color:' + ainaRangi + ';font-size:11px;font-weight:600;">' +
+              '<i class="fa-solid ' + ainaIcon + '"></i> ' + ainaJina +
+            '</span>' +
           '</div>' +
         '</div>' +
 
@@ -291,16 +336,19 @@ function onyeshaWatumiaji() {
           '<div><i class="fa-solid fa-envelope" style="width:16px;"></i> ' + (w.email || "-") + '</div>' +
           '<div><i class="fa-solid fa-phone" style="width:16px;"></i> ' + (w.simu || "-") + '</div>' +
           '<div><i class="fa-regular fa-calendar" style="width:16px;"></i> ' +
-            'Alijisajili: ' + (w.createdAt ? new Date(w.createdAt).toLocaleDateString("sw-TZ") : "-") + '</div>' +
+            'Alijisajili: ' + tarehe + '</div>' +
         '</div>' +
 
         (w.aina !== "admin" ?
-          '<button onclick="futaMtumiaji(\'' + w._id + '\', \'' + w.jina.replace(/'/g, "\\'") + '\')" ' +
+          '<button onclick="futaMtumiaji(\'' + w._id + '\', \'' +
+            (w.jina || "").replace(/'/g, "\\'") + '\')" ' +
           'style="width:100%;padding:10px;background:#dc2626;color:white;border:none;' +
           'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;">' +
             '<i class="fa-solid fa-trash"></i> Futa Mtumiaji' +
           '</button>' :
-          '<p style="margin:0;color:#999;font-size:12px;text-align:center;">Admin hawezi kufutwa</p>'
+          '<p style="margin:0;color:#999;font-size:12px;text-align:center;padding:10px;">' +
+            'Admin hawezi kufutwa' +
+          '</p>'
         ) +
 
       '</div>';
@@ -382,7 +430,7 @@ async function futaNyumba(id) {
 
 
 // ==========================================
-// EXPORT FUNCTIONS
+// EXPORT
 // ==========================================
 window.thibitishaNyumba = thibitishaNyumba;
 window.futaNyumba = futaNyumba;
