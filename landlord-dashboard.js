@@ -465,8 +465,18 @@ document.addEventListener("DOMContentLoaded", function () {
           'style="display:inline-block;padding:6px 14px;background:#1a5c2e;color:white;' +
           'text-decoration:none;border-radius:6px;font-size:12px;">' +
             '<i class="fa-solid fa-eye"></i> Ona' +
-          '</a>' : '') +
-        '</div>';
+          '</a>' +
+
+           // ⭐ KITUFE KIPYA
+    '<button onclick="badilishaHaliNyumba(\'' + n.id + '\', \'' + (n.haliNyumba || 'Inapatikana') + '\')" ' +
+    'style="padding:6px 14px;background:' +
+    (n.haliNyumba === 'Imepangishwa' ? '#16a34a' : '#f59e0b') + ';color:white;' +
+    'border:none;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;">' +
+      '<i class="fa-solid fa-' +
+      (n.haliNyumba === 'Imepangishwa' ? 'check-circle' : 'home') + '"></i> ' +
+      (n.haliNyumba === 'Imepangishwa' ? 'Imepangishwa' : 'Weka Imepangishwa') +
+    '</button>' +
+  '</div>' : '')
     });
 
     container.innerHTML = html;
@@ -1455,6 +1465,39 @@ document.addEventListener("DOMContentLoaded", function () {
   function sasishaIdadiPicha() {
     console.log("Jumla ya picha:", uploadedPhotos.length);
   }
+
+  // ==========================================
+// BADILISHA HALI YA NYUMBA (Imepangishwa / Inapatikana)
+// ==========================================
+window.badilishaHaliNyumba = async function (nyumbaId, haliYaSasa) {
+  var haliMpya = haliYaSasa === "Imepangishwa" ? "Inapatikana" : "Imepangishwa";
+  var ujumbe = haliMpya === "Imepangishwa"
+    ? "Nyumba imepangishwa? Itaondolewa kwenye orodha ya nyumba zinazopatikana."
+    : "Kurudisha nyumba kama inapatikana?";
+
+  if (!confirm(ujumbe)) return;
+
+  var token = localStorage.getItem("token");
+  try {
+    var response = await fetch(API_URL + "/properties/" + nyumbaId + "/hali-nyumba", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ haliNyumba: haliMpya })
+    });
+
+    var data = await response.json();
+    if (!response.ok) throw new Error(data.kosa || "Imeshindikana");
+
+    alert("✅ Hali imebadilishwa kuwa: " + haliMpya);
+    chukuaNyumbaZangu();
+
+  } catch (error) {
+    alert("❌ " + error.message);
+  }
+};
 
   console.log("landlord-dashboard.js imepakiwa!");
 });

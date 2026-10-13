@@ -36,6 +36,19 @@ async function chukuaNyumba(id) {
     var nyumba = data.nyumba;
 
     console.log("Nyumba imepatikana:", nyumba.jina);
+    // Onyesha alama ya "Imepangishwa"
+var imageSection = document.querySelector(".property-image-section");
+if (imageSection && n.haliNyumba === "Imepangishwa") {
+  var existingBadge = imageSection.querySelector(".badge-imepangishwa");
+  if (existingBadge) existingBadge.remove();
+
+  imageSection.insertAdjacentHTML("beforeend",
+    '<div class="badge-imepangishwa" style="position:absolute;top:15px;left:15px;' +
+    'background:#16a34a;color:white;padding:8px 16px;border-radius:20px;' +
+    'font-weight:700;font-size:13px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.2);">' +
+      '<i class="fa-solid fa-check-circle"></i> IMEPANGISHWA' +
+    '</div>');
+}
 
     onyeshaNyumba(nyumba);
     anzishaViewingForm(nyumba);
@@ -54,6 +67,19 @@ async function chukuaNyumba(id) {
 // ==========================================
 // 2. ONYESHA NYUMBA (NA SLIDESHOW)
 // ==========================================
+// Onyesha alama ya "Imepangishwa"
+var imageSection = document.querySelector(".property-image-section");
+if (imageSection && n.haliNyumba === "Imepangishwa") {
+  var existingBadge = imageSection.querySelector(".badge-imepangishwa");
+  if (existingBadge) existingBadge.remove();
+
+  imageSection.insertAdjacentHTML("beforeend",
+    '<div class="badge-imepangishwa" style="position:absolute;top:15px;left:15px;' +
+    'background:#16a34a;color:white;padding:8px 16px;border-radius:20px;' +
+    'font-weight:700;font-size:13px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.2);">' +
+      '<i class="fa-solid fa-check-circle"></i> IMEPANGISHWA' +
+    '</div>');
+}
 function onyeshaNyumba(n) {
   console.log("=== ONYESHA NYUMBA ===");
   console.log("Jina la nyumba:", n.jina);
