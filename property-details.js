@@ -36,19 +36,8 @@ async function chukuaNyumba(id) {
     var nyumba = data.nyumba;
 
     console.log("Nyumba imepatikana:", nyumba.jina);
-    // Onyesha alama ya "Imepangishwa"
-var imageSection = document.querySelector(".property-image-section");
-if (imageSection && n.haliNyumba === "Imepangishwa") {
-  var existingBadge = imageSection.querySelector(".badge-imepangishwa");
-  if (existingBadge) existingBadge.remove();
 
-  imageSection.insertAdjacentHTML("beforeend",
-    '<div class="badge-imepangishwa" style="position:absolute;top:15px;left:15px;' +
-    'background:#16a34a;color:white;padding:8px 16px;border-radius:20px;' +
-    'font-weight:700;font-size:13px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.2);">' +
-      '<i class="fa-solid fa-check-circle"></i> IMEPANGISHWA' +
-    '</div>');
-}
+    // ⭐ HAKUNA code ya badge hapa — tunaiacha kwa onyeshaNyumba()
 
     onyeshaNyumba(nyumba);
     anzishaViewingForm(nyumba);
@@ -67,34 +56,34 @@ if (imageSection && n.haliNyumba === "Imepangishwa") {
 // ==========================================
 // 2. ONYESHA NYUMBA (NA SLIDESHOW)
 // ==========================================
-// Onyesha alama ya "Imepangishwa"
-var imageSection = document.querySelector(".property-image-section");
-if (imageSection && n.haliNyumba === "Imepangishwa") {
-  var existingBadge = imageSection.querySelector(".badge-imepangishwa");
-  if (existingBadge) existingBadge.remove();
-
-  imageSection.insertAdjacentHTML("beforeend",
-    '<div class="badge-imepangishwa" style="position:absolute;top:15px;left:15px;' +
-    'background:#16a34a;color:white;padding:8px 16px;border-radius:20px;' +
-    'font-weight:700;font-size:13px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.2);">' +
-      '<i class="fa-solid fa-check-circle"></i> IMEPANGISHWA' +
-    '</div>');
-}
 function onyeshaNyumba(n) {
   console.log("=== ONYESHA NYUMBA ===");
   console.log("Jina la nyumba:", n.jina);
   console.log("Picha zilizopokelewa:", n.picha);
-  
+
   // ==========================================
   // 1. PICHA - SLIDESHOW
   // ==========================================
   var imageSection = document.querySelector(".property-image-section");
-  
+
   console.log("Image section ipo?", imageSection ? "NDIO" : "HAPANA");
-  
+
   if (!imageSection) {
     console.error("KOSA: .property-image-section haipatikani!");
     return;
+  }
+
+  // ⭐ BADGE YA IMEPANGISHWA — IWE HAPA (ndani ya function, n ipo)
+  if (n.haliNyumba === "Imepangishwa") {
+    var existingBadge = imageSection.querySelector(".badge-imepangishwa");
+    if (existingBadge) existingBadge.remove();
+
+    imageSection.insertAdjacentHTML("beforeend",
+      '<div class="badge-imepangishwa" style="position:absolute;top:15px;left:15px;' +
+      'background:#16a34a;color:white;padding:8px 16px;border-radius:20px;' +
+      'font-weight:700;font-size:13px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.2);">' +
+        '<i class="fa-solid fa-check-circle"></i> IMEPANGISHWA' +
+      '</div>');
   }
 
   // Chukua picha zote
@@ -134,7 +123,7 @@ function onyeshaNyumba(n) {
 
   // Ingiza slideshow mwanzo wa section
   imageSection.insertAdjacentHTML("afterbegin", slideshowHtml);
-  
+
   // Angalia kama imeingizwa
   var newSlideshow = imageSection.querySelector(".slideshow");
   console.log("Slideshow imeingizwa?", newSlideshow ? "NDIO" : "HAPANA");
@@ -289,10 +278,9 @@ function anzishaViewingForm(nyumba) {
     });
   }
 
-  // 2. Tuma ombi — ⭐ HAPA NDIPO "async" INAHITAJIKA
+  // 2. Tuma ombi
   if (submitBtn) {
     submitBtn.addEventListener("click", async function (e) {
-    //                                   ↑ ASYNC INAHITAJIKA HAPA!
       e.preventDefault();
 
       var mtumiajiStr = localStorage.getItem("mtumiaji");
@@ -314,7 +302,6 @@ function anzishaViewingForm(nyumba) {
         return;
       }
 
-      // TUMA KWA BACKEND
       try {
         var token = localStorage.getItem("token");
 
@@ -325,7 +312,6 @@ function anzishaViewingForm(nyumba) {
         }
 
         var response = await fetch(API_URL + "/viewings", {
-        //              ↑ HAPA inafanya kazi kwa sababu kuna "async" juu
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -363,3 +349,5 @@ function anzishaViewingForm(nyumba) {
     });
   }
 }
+
+console.log("property-details.js imepakiwa!");
