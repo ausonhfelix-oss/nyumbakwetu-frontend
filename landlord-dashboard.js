@@ -599,7 +599,7 @@ document.addEventListener("DOMContentLoaded", function () {
           '</div>' +
           '<div style="display:flex;align-items:center;gap:12px;">' +
             '<i class="fa-solid fa-envelope" style="color:#1a5c2e;font-size:18px;"></i>' +
-            '<span style="color:#333;">ausonhfeli@gmail.com</span>' +
+            '<span style="color:#333;">ausonhfelix@gmail.com</span>' +
           '</div>' +
         '</div>' +
         '<h3 style="color:#1a5c2e;font-size:16px;margin-bottom:12px;">Maswali Yanayoulizwa Sana</h3>' +
