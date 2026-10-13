@@ -587,15 +587,19 @@ document.addEventListener("DOMContentLoaded", function () {
           '<h3 style="margin:0 0 12px 0;color:#1a5c2e;font-size:16px;">Wasiliana Nasi</h3>' +
           '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
             '<i class="fa-solid fa-phone" style="color:#1a5c2e;font-size:18px;"></i>' +
-            '<span style="color:#333;">+255 754 123 456</span>' +
+            '<span style="color:#333;">+255 710 786 825</span>' +
           '</div>' +
           '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
             '<i class="fa-brands fa-whatsapp" style="color:#25D366;font-size:18px;"></i>' +
-            '<span style="color:#333;">+255 754 123 456</span>' +
+            '<span style="color:#333;">+255 710 786 825</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
+            '<i class="fa-brands fa-whatsapp" style="color:#25D366;font-size:18px;"></i>' +
+            '<span style="color:#333;">+255 710 786 825</span>' +
           '</div>' +
           '<div style="display:flex;align-items:center;gap:12px;">' +
             '<i class="fa-solid fa-envelope" style="color:#1a5c2e;font-size:18px;"></i>' +
-            '<span style="color:#333;">msaada@nyumbakwetu.co.tz</span>' +
+            '<span style="color:#333;">ausonhfeli@gmail.com</span>' +
           '</div>' +
         '</div>' +
         '<h3 style="color:#1a5c2e;font-size:16px;margin-bottom:12px;">Maswali Yanayoulizwa Sana</h3>' +
@@ -615,7 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
           '<strong style="color:#333;">Kuna malipo yoyote?</strong>' +
           '<p style="margin:6px 0 0 0;color:#666;font-size:14px;">Kuweka nyumba ni bure. Tunachukua 5% kama nyumba ikipangishwa.</p>' +
         '</div>' +
-        '<a href="https://wa.me/255754123456" target="_blank" ' +
+        '<a href="https://wa.me/255710786825" target="_blank" ' +
         'style="display:block;background:#25D366;color:white;text-align:center;' +
         'padding:14px;border-radius:10px;text-decoration:none;margin-top:20px;font-weight:600;">' +
           '<i class="fa-brands fa-whatsapp"></i> Wasiliana kwa WhatsApp' +
