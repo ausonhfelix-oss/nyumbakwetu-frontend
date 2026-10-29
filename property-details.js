@@ -191,6 +191,21 @@ function onyeshaNyumba(n) {
   // ==========================================
   document.title = n.jina + " - NyumbaKwetu";
 
+  //============================================
+  //SEO BADILISHA TITLE NA DISCRIPTION KWA KILA NYUMBA
+  //==============================================
+
+  document.title = n.jina + "_" + (n.eneo || "") + " | NyumbaKwetu";
+  
+  //BADILISHA META DISCRIPTION 
+
+  var metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) {
+    metaDesc.setAttribute("content",
+      "Tafuta " + n.jina + " iliyopo " + n.eneo + "," + n.mkoa +
+      " Bei ni TZS " + n.bei.toLocaleString() + ".Nyumba bora, maisha bora."
+    );
+  }
   console.log("Property details zimepakiwa!");
 }
 
