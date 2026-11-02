@@ -49,6 +49,12 @@ function onyeshaNyumba(nyumba) {
       parking = '<span><i class="fa-solid fa-car"></i> Parking</span>';
     }
 
+    var badgeDalali = (n.mmilikiAina === "dalali") 
+  ? '<span style="background:#f59e0b; color:#fff; padding:4px 8px; border-radius:4px; font-size:11px; margin-left:5px;">DALALI</span>' 
+  : '';
+
+html += '<h3>' + n.jina + badgeDalali + '</h3>';
+
     var card = document.createElement("article");
     card.className = "property-card";
     card.id = id;

@@ -56,7 +56,7 @@ if (signupForm) {
       setTimeout(() => {
        if (data.mtumiaji.aina === "admin") {
   window.location.href = "admin-dashboard.html";
-} else if (data.mtumiaji.aina === "landlord") {
+} else if (data.mtumiaji.aina === "landlord" || data.mtumiaji.jina === "dalali") {
   window.location.href = "landlord-dashboard.html";
 } else {
   window.location.href = "tenant-dashboard.html";
