@@ -1,4 +1,4 @@
-// auth.js
+// auth.js (Frontend)
 
 // ============================================
 // API URL
@@ -54,13 +54,14 @@ if (signupForm) {
 
       // Nenda dashboard
       setTimeout(() => {
-       if (data.mtumiaji.aina === "admin") {
-  window.location.href = "admin-dashboard.html";
-} else if (data.mtumiaji.aina === "landlord" || data.mtumiaji.jina === "dalali") {
-  window.location.href = "landlord-dashboard.html";
-} else {
-  window.location.href = "tenant-dashboard.html";
-}
+        if (data.mtumiaji.aina === "admin") {
+          window.location.href = "admin-dashboard.html";
+        } else if (data.mtumiaji.aina === "landlord" || data.mtumiaji.aina === "dalali") {
+          // ⭐ NIMEREKEBISHA HAPA: aina === "dalali"
+          window.location.href = "landlord-dashboard.html";
+        } else {
+          window.location.href = "tenant-dashboard.html";
+        }
       }, 1500);
 
     } catch (error) {
@@ -111,13 +112,14 @@ if (loginForm) {
 
       // Nenda dashboard
       setTimeout(() => {
-       if (data.mtumiaji.aina === "admin") {
-  window.location.href = "admin-dashboard.html";
-} else if (data.mtumiaji.aina === "landlord") {
-  window.location.href = "landlord-dashboard.html";
-} else {
-  window.location.href = "tenant-dashboard.html";
-}
+        if (data.mtumiaji.aina === "admin") {
+          window.location.href = "admin-dashboard.html";
+        } else if (data.mtumiaji.aina === "landlord" || data.mtumiaji.aina === "dalali") {
+          // ⭐ NIMEONGEZA HAPA: || data.mtumiaji.aina === "dalali"
+          window.location.href = "landlord-dashboard.html";
+        } else {
+          window.location.href = "tenant-dashboard.html";
+        }
       }, 1500);
 
     } catch (error) {
