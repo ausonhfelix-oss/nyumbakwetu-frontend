@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
       tab.style.borderBottomColor = "#1a5c2e";
 
       var tabKu = tab.getAttribute("data-main");
-      document.getElementById("sehemuYaNyumba").style.display =
-        tabKu === "nyumba" ? "block" : "none";
-      document.getElementById("sehemuYaWatumiaji").style.display =
-        tabKu === "watumiaji" ? "block" : "none";
+      document.getElementById("sehemuYaNyumba").style.display = tabKu === "nyumba" ? "block" : "none";
+      document.getElementById("sehemuYaWatumiaji").style.display = tabKu === "watumiaji" ? "block" : "none";
 
       if (tabKu === "watumiaji" && watumiajiWote.length === 0) {
         chukuaWatumiaji();
@@ -124,8 +122,7 @@ async function chukuaNyumbaZote() {
   } catch (error) {
     console.error("Error:", error);
     document.getElementById("orodhaYaNyumbaAdmin").innerHTML =
-      "<p style='text-align:center;padding:40px;color:red;'>" +
-      "Imeshindikana kupata nyumba: " + error.message + "</p>";
+      "<p style='text-align:center;padding:40px;color:red;'>Imeshindikana kupata nyumba: " + error.message + "</p>";
   }
 }
 
@@ -153,8 +150,7 @@ async function chukuaWatumiaji() {
   } catch (error) {
     console.error("Error:", error);
     document.getElementById("orodhaYaWatumiaji").innerHTML =
-      "<p style='text-align:center;padding:40px;color:red;'>" +
-      "Imeshindikana kupata watumiaji: " + error.message + "</p>";
+      "<p style='text-align:center;padding:40px;color:red;'>Imeshindikana kupata watumiaji: " + error.message + "</p>";
   }
 }
 
@@ -175,22 +171,18 @@ function sasishaStats() {
 
 
 // ==========================================
-// STATS ZA WATUMIAJI (IMEREKEBISHWA)
+// STATS ZA WATUMIAJI
 // ==========================================
 function sasishaStatsWatumiaji() {
   var jumla = watumiajiWote.length;
   var wapangaji = watumiajiWote.filter(function (w) { return w.aina === "tenant"; }).length;
   var wamiliki = watumiajiWote.filter(function (w) { return w.aina === "landlord"; }).length;
-  // ⭐ Nimebadilisha W kuwa w hapa chini
-  var madalali = watumiajiWote.filter(function (w) { return w.aina === "dalali"; }).length;
+  var madalali = watumiajiWote.filter(function (w) { return w.aina === "dalali"; }).length; // Sasa w ni ndogo
 
   document.getElementById("statWatumiajiWote").textContent = jumla;
   document.getElementById("statWapangaji").textContent = wapangaji;
   document.getElementById("statWamiliki").textContent = wamiliki;
-  
-  // ⭐ Nimeongeza hii ili kusasisha idadi ya Madalali kwenye kadi yao
-  var statMadalaliEl = document.getElementById("statMadalali");
-  if (statMadalaliEl) statMadalaliEl.textContent = madalali;
+  document.getElementById("statMadalali").textContent = madalali; 
 }
 
 
@@ -207,8 +199,7 @@ function onyeshaNyumba() {
   }
 
   if (list.length === 0) {
-    container.innerHTML =
-      "<p style='text-align:center;padding:40px;color:#888;'>Hakuna nyumba hapa.</p>";
+    container.innerHTML = "<p style='text-align:center;padding:40px;color:#888;'>Hakuna nyumba hapa.</p>";
     return;
   }
 
@@ -229,21 +220,17 @@ function onyeshaNyumba() {
 
     var kitufe = "";
     if (n.hali === "Pending") {
-      kitufe = '<button class="btn-thibitisha" onclick="thibitishaNyumba(\'' + id + '\')">' +
-               '<i class="fa-solid fa-check"></i> Thibitisha</button>';
+      kitufe = '<button class="btn-thibitisha" onclick="thibitishaNyumba(\'' + id + '\')"><i class="fa-solid fa-check"></i> Thibitisha</button>';
     }
 
     var slideshowHtml =
       '<div class="slideshow" data-current="0" data-images=\'' + JSON.stringify(pichaZote) + '\'>' +
         '<img src="' + pichaZote[0] + '" class="slide-main" alt="Nyumba">' +
         '<div class="slide-counter">1 / ' + pichaZote.length + '</div>' +
-        (pichaZote.length > 1 ?
-          '<button class="slide-prev" onclick="badilishaPicha(this, -1)">&#9668;</button>' +
-          '<button class="slide-next" onclick="badilishaPicha(this, 1)">&#9658;</button>' : '') +
+        (pichaZote.length > 1 ? '<button class="slide-prev" onclick="badilishaPicha(this, -1)">&#9668;</button><button class="slide-next" onclick="badilishaPicha(this, 1)">&#9658;</button>' : '') +
         '<div class="slide-dots">' +
           pichaZote.map(function(p, i) {
-            return '<span class="dot' + (i === 0 ? ' active' : '') + '" ' +
-                   'onclick="nendaPicha(this, ' + i + ')"></span>';
+            return '<span class="dot' + (i === 0 ? ' active' : '') + '" onclick="nendaPicha(this, ' + i + ')"></span>';
           }).join('') +
         '</div>' +
       '</div>';
@@ -255,17 +242,14 @@ function onyeshaNyumba() {
         '<p><i class="fa-solid fa-location-dot"></i> ' + (n.eneo || "") + ', ' + (n.mkoa || "") + '</p>' +
         '<p><i class="fa-solid fa-money-bill"></i> TZS ' + (n.bei || 0).toLocaleString() + '</p>' +
         '<p><i class="fa-solid fa-user"></i> ' + mmilikiJina + ' — ' + mmilikiSimu + '</p>' +
-        '<p style="background:' + haliNyumbaColor + '22;color:' + haliNyumbaColor +
-        ';padding:6px 10px;border-radius:6px;font-weight:600;font-size:13px;display:inline-block;margin-top:6px;">' +
+        '<p style="background:' + haliNyumbaColor + '22;color:' + haliNyumbaColor + ';padding:6px 10px;border-radius:6px;font-weight:600;font-size:13px;display:inline-block;margin-top:6px;">' +
           '<i class="fa-solid ' + haliNyumbaIcon + '"></i> ' + haliNyumba +
         '</p>' +
         '<span class="badge-hali ' + haliClass + '">' + haliText + '</span>' +
       '</div>' +
       '<div class="property-admin-actions">' +
         kitufe +
-        '<button class="btn-futa" onclick="futaNyumba(\'' + id + '\')">' +
-          '<i class="fa-solid fa-trash"></i> Futa' +
-        '</button>' +
+        '<button class="btn-futa" onclick="futaNyumba(\'' + id + '\')"><i class="fa-solid fa-trash"></i> Futa</button>' +
       '</div>' +
     '</div>';
   });
@@ -275,7 +259,7 @@ function onyeshaNyumba() {
 
 
 // ==========================================
-// ONYESHA WATUMIAJI (IMEREKEBISHWA)
+// ONYESHA WATUMIAJI
 // ==========================================
 function onyeshaWatumiaji() {
   var container = document.getElementById("orodhaYaWatumiaji");
@@ -283,13 +267,11 @@ function onyeshaWatumiaji() {
 
   var list = watumiajiWote;
   if (filterAina !== "all") {
-    // ⭐ Filter inatumia w.aina (ndogo)
     list = watumiajiWote.filter(function (w) { return w.aina === filterAina; });
   }
 
   if (list.length === 0) {
-    container.innerHTML =
-      "<p style='text-align:center;padding:40px;color:#888;'>Hakuna watumiaji hapa.</p>";
+    container.innerHTML = "<p style='text-align:center;padding:40px;color:#888;'>Hakuna watumiaji hapa.</p>";
     return;
   }
 
@@ -301,17 +283,11 @@ function onyeshaWatumiaji() {
     var ainaIcon = "fa-user";
 
     if (w.aina === "landlord") {
-      ainaRangi = "#16a34a";
-      ainaJina = "Mpangishaji";
-      ainaIcon = "fa-user-tie";
-    } else if (w.aina === "dalali") { // ⭐ Nimebadilisha W kuwa w hapa
-      ainaRangi = "#f59e0b";
-      ainaJina = "Dalali";
-      ainaIcon = "fa-user-tag";
+      ainaRangi = "#16a34a"; ainaJina = "Mpangishaji"; ainaIcon = "fa-user-tie";
+    } else if (w.aina === "dalali") {
+      ainaRangi = "#f59e0b"; ainaJina = "Dalali"; ainaIcon = "fa-user-tag";
     } else if (w.aina === "admin") {
-      ainaRangi = "#dc2626";
-      ainaJina = "Admin";
-      ainaIcon = "fa-user-shield";
+      ainaRangi = "#dc2626"; ainaJina = "Admin"; ainaIcon = "fa-user-shield";
     }
 
     var herufi = (w.jina || "?").charAt(0).toUpperCase();
@@ -319,42 +295,22 @@ function onyeshaWatumiaji() {
 
     html +=
       '<div style="background:#f9f9f9;border-radius:12px;padding:16px;border-left:4px solid ' + ainaRangi + ';">' +
-
         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
-          '<div style="width:48px;height:48px;border-radius:50%;background:' + ainaRangi + ';' +
-          'display:flex;align-items:center;justify-content:center;color:white;font-weight:700;' +
-          'font-size:18px;flex-shrink:0;">' +
-            herufi +
-          '</div>' +
+          '<div style="width:48px;height:48px;border-radius:50%;background:' + ainaRangi + ';display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;flex-shrink:0;">' + herufi + '</div>' +
           '<div style="flex:1;min-width:0;">' +
-            '<h4 style="margin:0 0 4px 0;color:#1a5c2e;font-size:15px;overflow:hidden;' +
-            'text-overflow:ellipsis;white-space:nowrap;">' + (w.jina || "Bila jina") + '</h4>' +
-            '<span style="padding:2px 8px;border-radius:12px;background:' + ainaRangi + '22;' +
-            'color:' + ainaRangi + ';font-size:11px;font-weight:600;">' +
-              '<i class="fa-solid ' + ainaIcon + '"></i> ' + ainaJina +
-            '</span>' +
+            '<h4 style="margin:0 0 4px 0;color:#1a5c2e;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (w.jina || "Bila jina") + '</h4>' +
+            '<span style="padding:2px 8px;border-radius:12px;background:' + ainaRangi + '22;color:' + ainaRangi + ';font-size:11px;font-weight:600;"><i class="fa-solid ' + ainaIcon + '"></i> ' + ainaJina + '</span>' +
           '</div>' +
         '</div>' +
-
         '<div style="font-size:13px;color:#666;line-height:1.8;margin-bottom:12px;">' +
           '<div><i class="fa-solid fa-envelope" style="width:16px;"></i> ' + (w.email || "-") + '</div>' +
           '<div><i class="fa-solid fa-phone" style="width:16px;"></i> ' + (w.simu || "-") + '</div>' +
-          '<div><i class="fa-regular fa-calendar" style="width:16px;"></i> ' +
-            'Alijisajili: ' + tarehe + '</div>' +
+          '<div><i class="fa-regular fa-calendar" style="width:16px;"></i> Alijisajili: ' + tarehe + '</div>' +
         '</div>' +
-
         (w.aina !== "admin" ?
-          '<button onclick="futaMtumiaji(\'' + w._id + '\', \'' +
-            (w.jina || "").replace(/'/g, "\\'") + '\')" ' +
-          'style="width:100%;padding:10px;background:#dc2626;color:white;border:none;' +
-          'border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;">' +
-            '<i class="fa-solid fa-trash"></i> Futa Mtumiaji' +
-          '</button>' :
-          '<p style="margin:0;color:#999;font-size:12px;text-align:center;padding:10px;">' +
-            'Admin hawezi kufutwa' +
-          '</p>'
+          '<button onclick="futaMtumiaji(\'' + w._id + '\', \'' + (w.jina || "").replace(/'/g, "\\'") + '\')" style="width:100%;padding:10px;background:#dc2626;color:white;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;"><i class="fa-solid fa-trash"></i> Futa Mtumiaji</button>' :
+          '<p style="margin:0;color:#999;font-size:12px;text-align:center;padding:10px;">Admin hawezi kufutwa</p>'
         ) +
-
       '</div>';
   });
 
@@ -367,9 +323,7 @@ function onyeshaWatumiaji() {
 // FUTA MTUMIAJI
 // ==========================================
 async function futaMtumiaji(id, jina) {
-  if (!confirm("Una uhakika unataka kumfuta " + jina + "?\n\nNyumba zote zake na maombi yake pia yatafutwa!")) {
-    return;
-  }
+  if (!confirm("Una uhakika unataka kumfuta " + jina + "?\n\nNyumba zote zake na maombi yake pia yatafutwa!")) return;
 
   var token = localStorage.getItem("token");
   try {
@@ -382,7 +336,7 @@ async function futaMtumiaji(id, jina) {
     if (!response.ok) throw new Error(data.kosa || "Imeshindikana");
 
     alert("✅ Mtumiaji amefutwa!");
-    watumiajiWote = []; // Reset ili ipakie upya
+    watumiajiWote = []; 
     chukuaWatumiaji();
 
   } catch (error) {
