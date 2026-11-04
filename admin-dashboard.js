@@ -136,15 +136,10 @@ async function chukuaNyumbaZote() {
 async function chukuaWatumiaji() {
   var token = localStorage.getItem("token");
 
-  console.log("Inachukua watumiaji...");
-  console.log("Token:", token ? "Ipo" : "Haipo");
-
   try {
     var response = await fetch(API_URL + "/admin/users", {
       headers: { "Authorization": "Bearer " + token }
     });
-
-    console.log("Response status:", response.status);
 
     if (!response.ok) {
       var errData = await response.json();
@@ -152,8 +147,6 @@ async function chukuaWatumiaji() {
     }
 
     var data = await response.json();
-    console.log("Watumiaji wamepakiwa:", data.watumiaji.length);
-
     watumiajiWote = data.watumiaji || [];
     sasishaStatsWatumiaji();
     onyeshaWatumiaji();
@@ -182,17 +175,22 @@ function sasishaStats() {
 
 
 // ==========================================
-// STATS ZA WATUMIAJI
+// STATS ZA WATUMIAJI (IMEREKEBISHWA)
 // ==========================================
 function sasishaStatsWatumiaji() {
   var jumla = watumiajiWote.length;
   var wapangaji = watumiajiWote.filter(function (w) { return w.aina === "tenant"; }).length;
   var wamiliki = watumiajiWote.filter(function (w) { return w.aina === "landlord"; }).length;
-  var madalali = watumiajiWote.filter(function (W) { return W.aina === "dalali"; }).length;
+  // ⭐ Nimebadilisha W kuwa w hapa chini
+  var madalali = watumiajiWote.filter(function (w) { return w.aina === "dalali"; }).length;
 
   document.getElementById("statWatumiajiWote").textContent = jumla;
   document.getElementById("statWapangaji").textContent = wapangaji;
   document.getElementById("statWamiliki").textContent = wamiliki;
+  
+  // ⭐ Nimeongeza hii ili kusasisha idadi ya Madalali kwenye kadi yao
+  var statMadalaliEl = document.getElementById("statMadalali");
+  if (statMadalaliEl) statMadalaliEl.textContent = madalali;
 }
 
 
@@ -277,7 +275,7 @@ function onyeshaNyumba() {
 
 
 // ==========================================
-// ONYESHA WATUMIAJI
+// ONYESHA WATUMIAJI (IMEREKEBISHWA)
 // ==========================================
 function onyeshaWatumiaji() {
   var container = document.getElementById("orodhaYaWatumiaji");
@@ -285,6 +283,7 @@ function onyeshaWatumiaji() {
 
   var list = watumiajiWote;
   if (filterAina !== "all") {
+    // ⭐ Filter inatumia w.aina (ndogo)
     list = watumiajiWote.filter(function (w) { return w.aina === filterAina; });
   }
 
@@ -305,7 +304,7 @@ function onyeshaWatumiaji() {
       ainaRangi = "#16a34a";
       ainaJina = "Mpangishaji";
       ainaIcon = "fa-user-tie";
-    } else if (W.aina === "dalali") {
+    } else if (w.aina === "dalali") { // ⭐ Nimebadilisha W kuwa w hapa
       ainaRangi = "#f59e0b";
       ainaJina = "Dalali";
       ainaIcon = "fa-user-tag";
@@ -383,7 +382,7 @@ async function futaMtumiaji(id, jina) {
     if (!response.ok) throw new Error(data.kosa || "Imeshindikana");
 
     alert("✅ Mtumiaji amefutwa!");
-    watumiajiWote = [];
+    watumiajiWote = []; // Reset ili ipakie upya
     chukuaWatumiaji();
 
   } catch (error) {
