@@ -188,6 +188,7 @@ function sasishaStatsWatumiaji() {
   var jumla = watumiajiWote.length;
   var wapangaji = watumiajiWote.filter(function (w) { return w.aina === "tenant"; }).length;
   var wamiliki = watumiajiWote.filter(function (w) { return w.aina === "landlord"; }).length;
+  var madalali = watumiajiWote.filter(function (W) { return W.aina === "dalali"; }).length;
 
   document.getElementById("statWatumiajiWote").textContent = jumla;
   document.getElementById("statWapangaji").textContent = wapangaji;
@@ -304,6 +305,10 @@ function onyeshaWatumiaji() {
       ainaRangi = "#16a34a";
       ainaJina = "Mpangishaji";
       ainaIcon = "fa-user-tie";
+    } else if (W.aina === "dalali") {
+      ainaRangi = "#f59e0b";
+      ainaJina = "Dalali";
+      ainaIcon = "fa-user-tag";
     } else if (w.aina === "admin") {
       ainaRangi = "#dc2626";
       ainaJina = "Admin";
