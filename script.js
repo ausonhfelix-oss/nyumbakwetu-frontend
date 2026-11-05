@@ -412,16 +412,14 @@ document.addEventListener("DOMContentLoaded", function() {
 // ==========================================
 // APPLICATION CACHE
 // ==========================================
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then(function(reg) {
-        console.log("✅ Service Worker imesajiliwa");
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker imesajiliwa vizuri');
       })
-      .catch(function(err) {
-        console.log("❌ Service Worker:", err);
+      .catch(error => {
+        console.log('Service Worker imeshindikana:', error);
       });
   });
 }
-
-console.log("script.js imepakiwa!");
