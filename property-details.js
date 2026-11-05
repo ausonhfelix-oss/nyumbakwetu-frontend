@@ -37,8 +37,6 @@ async function chukuaNyumba(id) {
 
     console.log("Nyumba imepatikana:", nyumba.jina);
 
-    // ⭐ HAKUNA code ya badge hapa — tunaiacha kwa onyeshaNyumba()
-
     onyeshaNyumba(nyumba);
     anzishaViewingForm(nyumba);
 
@@ -66,14 +64,12 @@ function onyeshaNyumba(n) {
   // ==========================================
   var imageSection = document.querySelector(".property-image-section");
 
-  console.log("Image section ipo?", imageSection ? "NDIO" : "HAPANA");
-
   if (!imageSection) {
     console.error("KOSA: .property-image-section haipatikani!");
     return;
   }
 
-  // ⭐ BADGE YA IMEPANGISHWA — IWE HAPA (ndani ya function, n ipo)
+  // ⭐ BADGE YA IMEPANGISHWA
   if (n.haliNyumba === "Imepangishwa") {
     var existingBadge = imageSection.querySelector(".badge-imepangishwa");
     if (existingBadge) existingBadge.remove();
@@ -88,21 +84,13 @@ function onyeshaNyumba(n) {
 
   // Chukua picha zote
   var pichaZote = (n.picha && n.picha.length > 0) ? n.picha : ["Images/house1.jpg"];
-  console.log("Picha zote:", pichaZote);
 
-  // Futa picha ya zamani (static)
+  // Futa picha ya zamani (static) na slideshow ya zamani
   var oldImg = imageSection.querySelector("img");
-  if (oldImg) {
-    console.log("Picha ya zamani imepatikana - inafutwa");
-    oldImg.remove();
-  }
+  if (oldImg) oldImg.remove();
 
-  // Futa slideshow ya zamani (kama ipo)
   var oldSlideshow = imageSection.querySelector(".slideshow");
-  if (oldSlideshow) {
-    console.log("Slideshow ya zamani imepatikana - inafutwa");
-    oldSlideshow.remove();
-  }
+  if (oldSlideshow) oldSlideshow.remove();
 
   // Tengeneza slideshow mpya
   var slideshowHtml =
@@ -124,13 +112,8 @@ function onyeshaNyumba(n) {
   // Ingiza slideshow mwanzo wa section
   imageSection.insertAdjacentHTML("afterbegin", slideshowHtml);
 
-  // Angalia kama imeingizwa
-  var newSlideshow = imageSection.querySelector(".slideshow");
-  console.log("Slideshow imeingizwa?", newSlideshow ? "NDIO" : "HAPANA");
-  console.log("=== MWISHO ONYESHA NYUMBA ===");
-
   // ==========================================
-  // 2. TAG
+  // 2. TAG (KUPANGA / KUUZA)
   // ==========================================
   var tag = document.querySelector(".property-image-section .property-tag");
   if (tag) {
@@ -169,17 +152,46 @@ function onyeshaNyumba(n) {
   }
 
   // ==========================================
-  // 6. FEATURES
+  // ⭐ 6. VIDEO YA NYUMBA (MPYA)
   // ==========================================
-  var features = document.querySelectorAll(".property-features > div");
-  if (features.length >= 3) {
-    features[0].querySelector("span").textContent = n.vyumba + " Vyumba";
-    features[1].querySelector("span").textContent = n.bafu + " Bafu";
-    features[2].querySelector("span").textContent = n.aina || "Nyumba";
+  var videoSection = document.getElementById("videoSection");
+  var videoPlayer = document.getElementById("propertyVideoPlayer");
+  
+  if (videoSection && videoPlayer) {
+    if (n.video && n.video !== "") {
+      videoSection.style.display = "block";
+      videoPlayer.querySelector("source").src = n.video;
+      videoPlayer.load(); // Hii inasoma video mpya
+    } else {
+      videoSection.style.display = "none";
+    }
   }
 
   // ==========================================
-  // 7. MAELEZO
+  // ⭐ 7. FEATURES (IMEREKEBISHWA KWA AJILI YA VIWANJA)
+  // ==========================================
+  var featuresContainer = document.querySelector(".property-features");
+  if (featuresContainer) {
+    var isKiwanja = n.aina && (n.aina.toLowerCase().includes("kiwanja") || n.aina.toLowerCase().includes("viwanja") || n.aina.toLowerCase().includes("shamba"));
+
+    if (isKiwanja) {
+      // Kama ni Kiwanja, ficha vyumba na bafu
+      featuresContainer.innerHTML =
+        '<div><i class="fa-solid fa-ruler-combined"></i> <span>' + (n.aina || "Kiwanja") + '</span></div>' +
+        '<div><i class="fa-solid fa-location-dot"></i> <span>' + (n.eneo || "") + '</span></div>';
+    } else {
+      // Kama ni Nyumba ya kawaida, onyesha vyumba, bafu n.k.
+      var parking = n.parking === "Ndio" ? '<div><i class="fa-solid fa-car"></i> <span>Parking</span></div>' : '';
+      featuresContainer.innerHTML =
+        '<div><i class="fa-solid fa-bed"></i> <span>' + (n.vyumba || 0) + ' Vyumba</span></div>' +
+        '<div><i class="fa-solid fa-bath"></i> <span>' + (n.bafu || 0) + ' Bafu</span></div>' +
+        '<div><i class="fa-solid fa-house"></i> <span>' + (n.aina || "Nyumba") + '</span></div>' +
+        parking;
+    }
+  }
+
+  // ==========================================
+  // 8. MAELEZO
   // ==========================================
   var maelezo = document.querySelector(".description p");
   if (maelezo) {
@@ -187,25 +199,18 @@ function onyeshaNyumba(n) {
   }
 
   // ==========================================
-  // 8. TITLE
+  // 9. SEO: TITLE NA DESCRIPTION
   // ==========================================
-  document.title = n.jina + " - NyumbaKwetu";
-
-  //============================================
-  //SEO BADILISHA TITLE NA DISCRIPTION KWA KILA NYUMBA
-  //==============================================
-
-  document.title = n.jina + "_" + (n.eneo || "") + " | NyumbaKwetu";
+  document.title = n.jina + " - " + (n.eneo || "") + " | NyumbaKwetu";
   
-  //BADILISHA META DISCRIPTION 
-
   var metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) {
     metaDesc.setAttribute("content",
-      "Tafuta " + n.jina + " iliyopo " + n.eneo + "," + n.mkoa +
-      " Bei ni TZS " + n.bei.toLocaleString() + ".Nyumba bora, maisha bora."
+      "Tafuta " + n.jina + " iliyopo " + n.eneo + ", " + n.mkoa +
+      " Bei ni TZS " + n.bei.toLocaleString() + ". Nyumba bora, maisha bora."
     );
   }
+
   console.log("Property details zimepakiwa!");
 }
 
@@ -268,8 +273,8 @@ function anzishaViewingForm(nyumba) {
 
       var mtumiaji = JSON.parse(mtumiajiStr);
 
-      if (mtumiaji.aina === "landlord" || mtumiaji.aina === "admin") {
-        alert("Wewe ni Mpangishaji. Huna uwezo wa kuomba viewing.\n\nTafuta nyumba kama Mpangaji.");
+      if (mtumiaji.aina === "landlord" || mtumiaji.aina === "admin" || mtumiaji.aina === "dalali") {
+        alert("Wewe ni Mpangishaji/Dalali. Huna uwezo wa kuomba viewing.\n\nTafuta nyumba kama Mpangaji.");
         return;
       }
 
@@ -300,7 +305,7 @@ function anzishaViewingForm(nyumba) {
 
       var mtumiajiStr = localStorage.getItem("mtumiaji");
       if (!mtumiajiStr) {
-        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba.\n\nItakuchukua sekunde 30 tu!");
+        alert("Tafadhali ingia kwanza ili kuomba kuona nyumba.");
         window.location.href = "login.html";
         return;
       }
@@ -365,4 +370,4 @@ function anzishaViewingForm(nyumba) {
   }
 }
 
-console.log("property-details.js imepakiwa!");
+console.log("✅ property-details.js imepakiwa!");

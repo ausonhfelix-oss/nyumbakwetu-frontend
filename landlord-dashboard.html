@@ -27,22 +27,6 @@
         <input type="text" placeholder="Tafuta nyumba, eneo au neno...">
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-
-   <!---- <div class="header-right">
-        <div class="notification">
-            <i class="fa-regular fa-bell"></i>
-            <span>2</span>
-        </div>
-        <i class="fa-regular fa-comment header-icon"></i>
-        <div class="account-top">
-            <div class="profile-circle" id="headerAkaunti"><i class="fa-solid fa-user"></i></div>
-            <div>
-                <strong>Ausonius</strong>
-                <small>Mpangishaji</small>
-           </div>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-    </div>-->
 </header>
 
 
@@ -101,13 +85,27 @@
             </p>
 
             <div class="photo-grid" id="photoGrid">
-                <!---picha zitaingizwa hapa na javascript-->
                 <label class="upload-photo" for="propertyImageUpload">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <strong>Ongeza Picha</strong>
                     <small>PNG, JPG (Max 5MB)</small>
                     <input type="file" id="propertyImageUpload" accept="image/*" multiple style="display: none;">
                 </label>
+            </div>
+        </section>
+
+        <!-- ⭐ VIDEO SECTION (MPYA) -->
+        <section class="card">
+            <div class="section-title">
+                <i class="fa-solid fa-video"></i>
+                <h3>Video ya Nyumba (Hiari)</h3>
+            </div>
+            <p class="section-description">
+                Pakia video fupi ya nyumba yako (Max sekunde 40) ili kuwavutia wateja zaidi.
+            </p>
+            <div class="form-group" style="margin-top: 15px;">
+                <input type="file" id="propertyVideoUpload" accept="video/*" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <div id="videoUploadStatus" style="font-size: 14px; color: #1a5c2e; margin-top: 10px; font-weight: 600;"></div>
             </div>
         </section>
 
@@ -156,50 +154,39 @@
                 </div>
 
                 <label>Mkoa</label>
-               <input 
-    type="text" 
-    id="propertyRegion" 
-    placeholder="Mfano: Dodoma, Dar es Salaam, Mwanza..."
-    list="mikoaList"
->
-
-<datalist id="mikoaList">
-    <option value="Dodoma">
-    <option value="Dar es Salaam">
-    <option value="Arusha">
-    <option value="Mwanza">
-    <option value="Mbeya">
-    <option value="Zanzibar">
-    <option value="Tanga">
-    <option value="Morogoro">
-    <option value="Kagera">
-    <option value="Kigoma">
-    <option value="Kilimanjaro">
-    <option value="Lindi">
-    <option value="Mtwara">
-    <option value="Pwani">
-    <option value="Ruvuma">
-    <option value="Shinyanga">
-    <option value="Singida">
-    <option value="Tabora">
-    <option value="Mara">
-    <option value="Manyara">
-    <option value="Njombe">
-    <option value="Katavi">
-    <option value="Rukwa">
-    <option value="Simiyu">
-    <option value="Geita">
-    <option value="Songwe">
-    <option value="Mtwara">
-    <option value="Ruvuma">
-</datalist>
+               <input type="text" id="propertyRegion" placeholder="Mfano: Dodoma, Dar es Salaam, Mwanza..." list="mikoaList">
+                <datalist id="mikoaList">
+                    <option value="Dodoma">
+                    <option value="Dar es Salaam">
+                    <option value="Arusha">
+                    <option value="Mwanza">
+                    <option value="Mbeya">
+                    <option value="Zanzibar">
+                    <option value="Tanga">
+                    <option value="Morogoro">
+                    <option value="Kagera">
+                    <option value="Kigoma">
+                    <option value="Kilimanjaro">
+                    <option value="Lindi">
+                    <option value="Mtwara">
+                    <option value="Pwani">
+                    <option value="Ruvuma">
+                    <option value="Shinyanga">
+                    <option value="Singida">
+                    <option value="Tabora">
+                    <option value="Mara">
+                    <option value="Manyara">
+                    <option value="Njombe">
+                    <option value="Katavi">
+                    <option value="Rukwa">
+                    <option value="Simiyu">
+                    <option value="Geita">
+                    <option value="Songwe">
+                </datalist>
 
                 <label>Wilaya</label>
-               <input
-               type="text"
-               id="propertyDistrict"
-               placeholder="Mfano: Mtumba, Kinondon, Nyamagana"
->
+                <input type="text" id="propertyDistrict" placeholder="Mfano: Mtumba, Kinondoni, Nyamagana">
+
                 <label>Eneo / Mtaa</label>
                 <input id="propertyArea" type="text" placeholder="Nzugu B">
 
@@ -292,8 +279,7 @@
             </div>
 
             <label>Maelezo ya Ziada</label>
-            <textarea id="propertyDescription" rows="3" placeholder="Maelezo ya ziada...">
-            </textarea>
+            <textarea id="propertyDescription" rows="3" placeholder="Maelezo ya ziada..."></textarea>
         </section>
 
 
@@ -494,6 +480,7 @@
         </a>
     </nav>
 </div>
+
 
 <!-- OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay"></div>

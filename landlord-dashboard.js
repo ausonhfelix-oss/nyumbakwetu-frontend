@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var mtumiaji = JSON.parse(mtumiajiStr);
 
-  // ⭐ Tunamruhusu Landlord, Dalali, na Admin. Tunamzuia Tenant pekee.
   if (mtumiaji.aina === "tenant") {
     alert("Wewe ni Mpangaji. Huna ruhusa kuweka nyumba.");
     window.location.href = "tenant-dashboard.html";
@@ -154,7 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
       parking: data.parking || "Hapana",
       security: data.security || "Hapana",
       eneoRamani: data.eneoRamani || "",
-      picha: pichaUrls
+      picha: pichaUrls,
+      video: videoUrl // ⭐ MPYA: Inatuma link ya Cloudinary
     };
 
     var response = await fetch(API_URL + "/properties", {
@@ -188,6 +188,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (makosa.length > 0) {
         alert("Tafadhali kamilisha:\n\n• " + makosa.join("\n• "));
+        return;
+      }
+      
+      // ⭐ MPYA: Kinga kama video bado inapakia
+      if (videoInput && videoInput.files.length > 0 && videoUrl === "") {
+        alert("Tafadhali subiri video imalize kupakia kwanza kabla ya kutuma nyumba.");
         return;
       }
 
@@ -335,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
               mkoa: n.mkoa,
               bei: n.bei,
               hali: n.hali,
-              haliNyumba: n.haliNyumba || "Inapatikana", // ⭐ Muhimu kwa ajili ya kitufe
+              haliNyumba: n.haliNyumba || "Inapatikana",
               picha: (n.picha && n.picha[0]) ? n.picha[0] : "Images/house1.jpg",
               chanzo: "API"
             });
@@ -792,6 +798,57 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () { housePhoto.remove(); }, 200);
     }
   };
+
+  // ==========================================
+  // ⭐ MPYA: VIDEO UPLOAD KWENDA CLOUDINARY
+  // ==========================================
+  const CLOUDINARY_CLOUD_NAME = "o5mbsn8h"; 
+  const CLOUDINARY_UPLOAD_PRESET = "nyumbakwetu-videos";
+  
+  var videoUrl = ""; 
+  var videoInput = document.getElementById("propertyVideoUpload");
+  var videoStatus = document.getElementById("videoUploadStatus");
+
+  if (videoInput) {
+    videoInput.addEventListener("change", async function (e) {
+      var file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 50 * 1024 * 1024) {
+        alert("Video ni kubwa sana. Tafadhali tumia video fupi chini ya 50MB.");
+        videoInput.value = "";
+        return;
+      }
+
+      videoStatus.innerHTML = "⏳ Inapakia video... Tafadhali subiri...";
+      videoStatus.style.color = "#f59e0b";
+
+      var formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      try {
+        var response = await fetch("https://api.cloudinary.com/v1_1/" + CLOUDINARY_CLOUD_NAME + "/video/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        var data = await response.json();
+        
+        if (data.secure_url) {
+          videoUrl = data.secure_url;
+          videoStatus.innerHTML = "✅ Video imepakiwa kikamilifu!";
+          videoStatus.style.color = "#16a34a";
+        } else {
+          throw new Error("Imeshindikana kupata URL");
+        }
+      } catch (error) {
+        console.error(error);
+        videoStatus.innerHTML = "❌ Imeshindikana kupakia video. Jaribu tena.";
+        videoStatus.style.color = "#dc2626";
+      }
+    });
+  }
 
   console.log("✅ landlord-dashboard.js imepakiwa!");
 });
