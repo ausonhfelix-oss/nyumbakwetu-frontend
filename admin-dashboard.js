@@ -177,17 +177,19 @@ function sasishaStatsWatumiaji() {
   var jumla = watumiajiWote.length;
   var wapangaji = watumiajiWote.filter(function (w) { return w.aina === "tenant"; }).length;
   var wamiliki = watumiajiWote.filter(function (w) { return w.aina === "landlord"; }).length;
-  var madalali = watumiajiWote.filter(function (w) { return w.aina === "dalali"; }).length; // Sasa w ni ndogo
+  var madalali = watumiajiWote.filter(function (w) { return w.aina === "dalali"; }).length; 
 
   document.getElementById("statWatumiajiWote").textContent = jumla;
   document.getElementById("statWapangaji").textContent = wapangaji;
   document.getElementById("statWamiliki").textContent = wamiliki;
-  document.getElementById("statMadalali").textContent = madalali; 
+  
+  var statMadalaliEl = document.getElementById("statMadalali");
+  if (statMadalaliEl) statMadalaliEl.textContent = madalali; 
 }
 
 
 // ==========================================
-// ONYESHA NYUMBA
+// ONYESHA NYUMBA (NA KITUFE CHA VIDEO)
 // ==========================================
 function onyeshaNyumba() {
   var container = document.getElementById("orodhaYaNyumbaAdmin");
@@ -218,6 +220,12 @@ function onyeshaNyumba() {
     var haliNyumbaColor = haliNyumba === "Imepangishwa" ? "#16a34a" : "#f59e0b";
     var haliNyumbaIcon = haliNyumba === "Imepangishwa" ? "fa-check-circle" : "fa-home";
 
+    // ⭐ MPYA: Kitufe cha kuona Video kama ipo
+    var videoLink = "";
+    if (n.video && n.video !== "") {
+      videoLink = '<a href="' + n.video + '" target="_blank" style="display:inline-block; padding:6px 12px; background:#e63946; color:white; text-decoration:none; border-radius:6px; font-size:12px; font-weight:bold; margin-top:6px;"><i class="fa-solid fa-video"></i> Tazama Video</a>';
+    }
+
     var kitufe = "";
     if (n.hali === "Pending") {
       kitufe = '<button class="btn-thibitisha" onclick="thibitishaNyumba(\'' + id + '\')"><i class="fa-solid fa-check"></i> Thibitisha</button>';
@@ -246,6 +254,10 @@ function onyeshaNyumba() {
           '<i class="fa-solid ' + haliNyumbaIcon + '"></i> ' + haliNyumba +
         '</p>' +
         '<span class="badge-hali ' + haliClass + '">' + haliText + '</span>' +
+        
+        // ⭐ MPYA: Onyesha Video Link hapa
+        (videoLink ? '<div style="margin-top:10px;">' + videoLink + '</div>' : '') +
+        
       '</div>' +
       '<div class="property-admin-actions">' +
         kitufe +
